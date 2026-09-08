@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BakeIT Instructor Dashboard</title>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><span><strong>BakeIT Instructor Dashboard</strong><small>Instructor Monitoring</small></span></div>
+      <nav class="nav"><p class="nav-label">Monitoring</p><a href="/dashboard.html"><span>Dashboard</span></a><a href="/students.html"><span>Learners</span></a><a href="/sessions.html"><span>Live sessions</span></a><a href="/reports.html"><span>Reports</span></a></nav>
+      <div class="sidebar-foot"><button class="btn" data-logout style="width:100%;background:transparent;color:white">Sign out</button></div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <span class="crumb" data-date></span>
+        <div class="topbar-actions"><label class="section-switcher"><span>Class section</span><select data-section-select aria-label="Class section"></select></label><span class="sync" data-session-count>0 active sessions</span></div>
+      </header>
+      <div class="page-head"><div><p class="eyebrow">Active session monitoring</p><h1>Live VR sessions</h1><p class="sub">Observing learner steps and events for <strong data-section-label>All Sections</strong>.</p></div></div>
+      <section class="live-grid"></section>
+    </main>
+  </div>
+  <script type="module" src="/assets/js/sessions.js"></script>
+</body>
+</html>

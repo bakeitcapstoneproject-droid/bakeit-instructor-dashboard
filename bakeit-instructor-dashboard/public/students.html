@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BakeIT Instructor Dashboard</title>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><span><strong>BakeIT Instructor Dashboard</strong><small>Instructor Monitoring</small></span></div>
+      <nav class="nav"><p class="nav-label">Monitoring</p><a href="/dashboard.html"><span>Dashboard</span></a><a href="/students.html"><span>Learners</span></a><a href="/sessions.html"><span>Live sessions</span></a><a href="/reports.html"><span>Reports</span></a></nav>
+      <div class="sidebar-foot"><button class="btn" data-logout style="width:100%;background:transparent;color:white">Sign out</button></div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <span class="crumb" data-date></span>
+        <div class="topbar-actions"><label class="section-switcher"><span>Class section</span><select data-section-select aria-label="Class section"></select></label><span class="sync">Read-only monitoring</span></div>
+      </header>
+      <div class="page-head"><div><p class="eyebrow">Learner monitoring</p><h1>Learners</h1><p class="sub">Reviewing progress and outcomes for <strong data-section-label>All Sections</strong>.</p></div></div>
+      <div class="filters">
+        <input id="search" data-filter placeholder="Search learner or ID">
+        <select id="status" data-filter><option value="">All statuses</option><option>Passed</option><option>Needs Practice</option><option>Incomplete</option></select>
+        <select id="recipe" data-filter><option value="">All recipes</option><option>Brownies</option><option>Cookies</option><option>Cupcakes</option></select>
+      </div>
+      <section class="card table-scroll"><table><thead><tr><th>Learner</th><th>Section</th><th>Latest recipe</th><th>Sessions</th><th>Score</th><th>Waste</th><th>Status</th></tr></thead><tbody></tbody></table></section>
+    </main>
+  </div>
+  <script type="module" src="/assets/js/students.js"></script>
+</body>
+</html>
