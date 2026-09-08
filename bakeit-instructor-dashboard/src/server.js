@@ -1,9 +1,10 @@
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 class StaticWebsiteServer {
-  constructor({ root = join(process.cwd(), 'public'), port = Number(process.env.PORT) || 3000 } = {}) { this.root = root; this.port = port; }
+  constructor({ root = fileURLToPath(new URL('../public/', import.meta.url)), port = Number(process.env.PORT) || 3000 } = {}) { this.root = root; this.port = port; }
   mime(path) { return ({'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml'})[extname(path)] || 'application/octet-stream'; }
   resolve(url) {
     const pathname = decodeURIComponent(new URL(url, 'http://localhost').pathname);
