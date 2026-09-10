@@ -48,10 +48,13 @@ class LoginPage {
     const seconds = this.auth.loginCooldown();
     const button = this.loginForm.querySelector('[type="submit"]');
     button.disabled = seconds > 0;
-    button.textContent = seconds ? `Try again in ${seconds}s` : 'Sign in securely';
+    button.textContent = 'Sign in';
+    const error = document.querySelector('[data-login-error]');
     if (seconds) {
-      document.querySelector('[data-login-error]').textContent = 'Invalid Password';
+      error.textContent = 'Please try again later';
       this.cooldownTimer = setTimeout(() => this.updateCooldown(), 250);
+    } else if (error.textContent === 'Please try again later') {
+      error.textContent = '';
     }
   }
 
