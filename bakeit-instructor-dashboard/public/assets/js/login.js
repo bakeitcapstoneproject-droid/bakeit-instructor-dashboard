@@ -18,6 +18,14 @@ class LoginPage {
     this.loginForm.addEventListener('submit', event => this.signIn(event));
     this.requestForm.addEventListener('submit', event => this.requestReset(event));
     this.confirmForm.addEventListener('submit', event => this.confirmReset(event));
+    const passwordToggle = document.querySelector('[data-toggle-password]');
+    passwordToggle.addEventListener('click', () => {
+      const password = this.loginForm.password;
+      const showPassword = password.type === 'password';
+      password.type = showPassword ? 'text' : 'password';
+      passwordToggle.textContent = showPassword ? 'Hide' : 'Show';
+      passwordToggle.setAttribute('aria-label', showPassword ? 'Hide password' : 'Show password');
+    });
     document.querySelector('[data-forgot]').addEventListener('click', () => this.showRecovery());
     document.querySelector('[data-back-login]').addEventListener('click', () => this.showLogin());
     document.querySelector('[data-back-request]').addEventListener('click', () => this.showResetStep('request'));

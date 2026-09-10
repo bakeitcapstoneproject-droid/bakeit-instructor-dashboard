@@ -85,6 +85,10 @@ export class SectionSelector {
   }
 }
 
+export function scoreRemark(score) {
+  return score >= 60 ? 'Passed' : 'Needs Practice';
+}
+
 export class CloudDataService {
   constructor({ mode = 'mock' } = {}) { this.mode = mode; }
   filterBySection(items, sectionId) {
@@ -92,7 +96,8 @@ export class CloudDataService {
   }
   async getStudents(sectionId = 'all') {
     const { students } = await import('./data.js');
-    return structuredClone(this.filterBySection(students, sectionId));
+    return structuredClone(this.filterBySection(students, sectionId))
+      .map(student => ({ ...student, status: scoreRemark(student.score) }));
   }
   async getLiveSessions(sectionId = 'all') {
     const { sessions } = await import('./data.js');
@@ -114,7 +119,7 @@ export class DashboardMetrics {
     return {
       enrolled: count,
       average: count ? (this.students.reduce((total, student) => total + student.score, 0) / count).toFixed(1) : '0.0',
-      passed: this.students.filter(student => student.status === 'Passed').length,
+      passed: this.students.filter(student => scoreRemark(student.score) === 'Passed').length,
       waste: this.students.filter(student => student.waste === 'High').length
     };
   }
@@ -131,7 +136,7 @@ export class TableView {
       <td><span class="section-tag">${student.section}</span></td><td>${student.recipe}</td><td>${student.sessions}</td>
       <td><strong>${student.score}</strong><div class="progress"><i style="width:${student.score}%"></i></div></td>
       <td><span class="badge ${this.statusClass(student.waste)}">${student.waste}</span></td>
-      <td><span class="badge ${this.statusClass(student.status)}">${student.status}</span></td>
+      <td><span class="badge ${this.statusClass(scoreRemark(student.score))}">${scoreRemark(student.score)}</span></td>
     </tr>`).join('') || '<tr><td colspan="7" class="empty">No learners match the selected section and filters.</td></tr>';
   }
 }

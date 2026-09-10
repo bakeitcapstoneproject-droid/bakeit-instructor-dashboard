@@ -18,10 +18,15 @@
         <section data-auth-view="login">
           <p class="eyebrow">Authorized access</p>
           <h2>Instructor sign-in</h2>
-          <p class="sub">Enter your instructor account details.</p>
           <form id="login-form">
             <div class="field"><label for="email">Institutional email</label><input id="email" name="email" type="email" value="instructor@mcl.edu.ph" autocomplete="email" required></div>
-            <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" value="demo123" autocomplete="current-password" required></div>
+            <div class="field">
+              <label for="password">Password</label>
+              <div class="password-input">
+                <input id="password" name="password" type="password" value="demo123" autocomplete="current-password" required>
+                <button class="password-toggle" type="button" data-toggle-password aria-controls="password" aria-label="Show password">Show</button>
+              </div>
+            </div>
             <div class="forgot-row"><button class="link-button" type="button" data-forgot>Forgot password?</button></div>
             <p class="error" data-login-error aria-live="polite"></p>
             <button class="btn primary" type="submit">Sign in securely</button>
