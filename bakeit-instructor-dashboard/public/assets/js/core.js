@@ -9,19 +9,46 @@ export class StorageService {
 }
 
 export class AuthService {
-  constructor(store = new StorageService()) { this.store = store; }
+  constructor(store = new StorageService(), now = () => Date.now()) { this.store = store; this.now = now; }
+  loginCooldown() {
+    const attempts = this.store.get('bakeit_login_attempts', { failures: 0, until: 0 });
+    if (attempts.until && attempts.until <= this.now()) {
+      this.store.remove('bakeit_login_attempts');
+      return 0;
+    }
+    return Math.max(0, Math.ceil((attempts.until - this.now()) / 1000));
+  }
+  validateEmail(email) {
+    const normalized = email.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized)) {
+      throw Object.assign(new Error('Invalid email'), { field: 'email' });
+    }
+    if (normalized !== 'instructor@mcl.edu.ph') {
+      throw Object.assign(new Error('Invalid email'), { field: 'email' });
+    }
+    return normalized;
+  }
   login(email, password) {
-    if (!email || !password) throw new Error('Enter your email and password.');
+    const retryAfter = this.loginCooldown();
+    if (retryAfter) throw Object.assign(new Error('Invalid Password'), { field: 'password', retryAfter });
+    email = this.validateEmail(email);
+    if (!password) throw Object.assign(new Error('Invalid Password'), { field: 'password' });
     const changedCredentials = this.store.get('bakeit_demo_credentials');
-    if (changedCredentials?.email === email && changedCredentials.password !== password) {
-      throw new Error('The password is incorrect.');
+    const expectedPassword = changedCredentials?.email === email ? changedCredentials.password : 'demo123';
+    if (password !== expectedPassword) {
+      const attempts = this.store.get('bakeit_login_attempts', { failures: 0, until: 0 });
+      attempts.failures += 1;
+      if (attempts.failures >= 3) attempts.until = this.now() + 30000;
+      this.store.set('bakeit_login_attempts', attempts);
+      throw Object.assign(new Error('Invalid Password'), { field: 'password', retryAfter: this.loginCooldown() });
     }
     const user = { name: 'Authorized Instructor', email, role: 'Instructor' };
     this.store.set('bakeit_user', user);
+    this.store.remove('bakeit_login_attempts');
     return user;
   }
   requestPasswordReset(email) {
-    if (!/^\S+@\S+\.\S+$/.test(email)) throw new Error('Enter a valid institutional email.');
+    email = this.validateEmail(email);
     this.store.set('bakeit_reset_email', email);
     return email;
   }

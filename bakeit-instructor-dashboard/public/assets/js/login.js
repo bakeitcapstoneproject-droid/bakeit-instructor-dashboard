@@ -16,6 +16,13 @@ class LoginPage {
   init() {
     if (this.auth.current()) location.href = '/dashboard.html';
     this.loginForm.addEventListener('submit', event => this.signIn(event));
+    for (const input of [this.loginForm.email, this.loginForm.password]) {
+      input.setAttribute('aria-describedby', 'login-error');
+      input.addEventListener('input', () => {
+        input.removeAttribute('aria-invalid');
+        if (!this.auth.loginCooldown()) document.querySelector('[data-login-error]').textContent = '';
+      });
+    }
     this.requestForm.addEventListener('submit', event => this.requestReset(event));
     this.confirmForm.addEventListener('submit', event => this.confirmReset(event));
     const passwordToggle = document.querySelector('[data-toggle-password]');
@@ -30,16 +37,42 @@ class LoginPage {
     document.querySelector('[data-back-login]').addEventListener('click', () => this.showLogin());
     document.querySelector('[data-back-request]').addEventListener('click', () => this.showResetStep('request'));
     document.querySelector('[data-return-login]').addEventListener('click', () => this.finishRecovery());
+    this.updateCooldown();
+    window.addEventListener('storage', event => {
+      if (event.key === 'bakeit_login_attempts' || event.key === null) this.updateCooldown();
+    });
+  }
+
+  updateCooldown() {
+    clearTimeout(this.cooldownTimer);
+    const seconds = this.auth.loginCooldown();
+    const button = this.loginForm.querySelector('[type="submit"]');
+    button.disabled = seconds > 0;
+    button.textContent = seconds ? `Try again in ${seconds}s` : 'Sign in securely';
+    if (seconds) {
+      document.querySelector('[data-login-error]').textContent = 'Invalid Password';
+      this.cooldownTimer = setTimeout(() => this.updateCooldown(), 250);
+    }
   }
 
   signIn(event) {
     event.preventDefault();
     const error = document.querySelector('[data-login-error]');
     error.textContent = '';
+    this.loginForm.email.removeAttribute('aria-invalid');
+    this.loginForm.password.removeAttribute('aria-invalid');
     try {
       this.auth.login(this.loginForm.email.value, this.loginForm.password.value);
       location.href = '/dashboard.html';
-    } catch (exception) { error.textContent = exception.message; }
+    } catch (exception) {
+      error.textContent = exception.message;
+      const input = this.loginForm.elements.namedItem(exception.field);
+      if (input) {
+        input.setAttribute('aria-invalid', 'true');
+        input.focus();
+      }
+      this.updateCooldown();
+    }
   }
 
   showRecovery() {

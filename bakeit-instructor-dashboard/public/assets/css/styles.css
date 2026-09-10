@@ -76,6 +76,7 @@ tbody tr{transition:background-color 160ms ease}tbody tr:hover{background:#faf5e
 .login-card{padding:36px;box-shadow:0 12px 40px #38291f0a;border-radius:14px}.login-main{padding:32px 24px}
 .field{margin:20px 0}.field label{font-size:10px;letter-spacing:.07em}.field input{min-height:46px;padding:11px 12px}
 .field .password-input input{padding-right:70px}.password-toggle{right:5px;top:5px;bottom:5px;border-radius:5px}
+.field input[aria-invalid="true"]{border-color:var(--red);background:#fff8f5}
 .login-card .btn{min-height:44px}.link-button{min-height:30px;text-underline-offset:3px}.demo{margin-bottom:0}
 @keyframes page-enter{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 .page-head,.login-card{animation:page-enter 240ms ease-out}
