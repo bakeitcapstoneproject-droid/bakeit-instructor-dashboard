@@ -150,7 +150,12 @@ export class AppShell {
       location.href = '/login.html';
     });
     const path = location.pathname;
-    document.querySelectorAll('.nav a').forEach(link => link.classList.toggle('active', path.endsWith(link.getAttribute('href'))));
+    document.querySelectorAll('.nav a').forEach(link => {
+      const active = path.endsWith(link.getAttribute('href'));
+      link.classList.toggle('active', active);
+      if (active) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
     document.querySelector('[data-date]')?.replaceChildren(document.createTextNode(
       new Intl.DateTimeFormat('en-PH', { dateStyle: 'long' }).format(new Date())
     ));

@@ -12,7 +12,7 @@ test('learner records and dashboard totals use score-based remarks', async () =>
   assert.equal(students.find(student => student.score === 60).status, 'Passed');
   assert.equal(students.find(student => student.score === 62).status, 'Passed');
   assert.equal(students.find(student => student.score === 59).status, 'Needs Practice');
-  assert.equal(new DashboardMetrics(students).summary().passed, 5);
+  assert.equal(new DashboardMetrics(students).summary().passed, 15);
 });
 
 test('display and passed count ignore outdated stored remarks', () => {

@@ -14,7 +14,7 @@ class StudentsPage {
     this.render();
   }
   render() {
-    const query = document.querySelector('#search').value.toLowerCase();
+    const query = document.querySelector('#search').value.trim().toLowerCase();
     const status = document.querySelector('#status').value;
     const recipe = document.querySelector('#recipe').value;
     const sectionId = this.shell.sections.selected();
