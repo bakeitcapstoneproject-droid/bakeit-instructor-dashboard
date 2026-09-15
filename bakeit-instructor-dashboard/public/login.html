@@ -5,18 +5,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>BakeIT Instructor Dashboard</title>
   <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
   <main class="login-page">
     <section class="login-art">
-      <div class="brand"><span><strong>BakeIT Instructor Dashboard</strong><small>Instructor Monitoring</small></span></div>
-      <div class="login-intro"><p class="eyebrow" style="color:#efad8e">Instructor monitoring and reporting</p><h1>Monitor learner progress and performance.</h1></div>
-      <small>Mapúa Malayan Colleges Laguna · Hospitality Management</small>
+      <div class="login-logo logo-frame"><img src="/assets/images/bakeit-logo-current.png" alt="BakeIT" width="2000" height="2000"></div>
+      <div class="login-intro"><p class="login-subtitle">Mapúa Malayan Colleges Laguna | Hospitality Management</p></div>
+
     </section>
     <section class="login-main">
-      <div class="card login-card">
+      <div class="card login-card"><div class="login-card-logo logo-frame"><img src="/assets/images/bakeit-logo-current.png" alt="BakeIT" width="2000" height="2000"></div>
         <section data-auth-view="login">
-          <p class="eyebrow">Authorized access</p>
+
           <h2>Instructor sign-in</h2>
           <form id="login-form" novalidate>
             <div class="field"><label for="email">Institutional email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
@@ -31,12 +32,12 @@
             <p class="error" id="login-error" data-login-error aria-live="polite"></p>
             <button class="btn primary" type="submit">Sign in</button>
           </form>
-          <p class="demo">Authorized instructors only</p>
+
         </section>
 
         <section data-auth-view="recovery" hidden>
           <div data-reset-step="request">
-            <p class="eyebrow">Account recovery</p>
+
             <h2>Forgot password</h2>
             <p class="sub">Enter your institutional email to receive a verification code.</p>
             <form id="request-reset-form">
@@ -48,7 +49,7 @@
           </div>
 
           <div data-reset-step="confirm" hidden>
-            <p class="eyebrow">Account recovery</p>
+
             <h2>Create a new password</h2>
             <p class="sub reset-message">Enter the code sent to <strong data-reset-email></strong>.</p>
             <form id="confirm-reset-form">
@@ -62,7 +63,7 @@
           </div>
 
           <div data-reset-step="success" class="reset-success" hidden>
-            <p class="eyebrow">Account recovery</p>
+
             <h2>Password changed</h2>
             <p class="sub">Your password has been updated. You may now sign in with your new password.</p>
             <button class="btn primary" type="button" data-return-login>Return to sign-in</button>

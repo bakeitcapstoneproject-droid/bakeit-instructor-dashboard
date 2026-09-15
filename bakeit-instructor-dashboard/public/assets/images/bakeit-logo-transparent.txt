@@ -1,0 +1,7 @@
+Tool: built-in image_gen (edit mode)
+Source: bakeit-logo.png
+Output: bakeit-logo-transparent.png
+Validation: PNG RGBA; corner and letter-interior alpha values are 0.
+
+Prompt:
+Remove only the white background from this BakeIT logo, including the white spaces inside the letters. Preserve the lettering, brown-and-gold colors, proportions, and spacing. Output a PNG with real alpha transparency, no background, no checkerboard pattern, no shadow, and no white halo.

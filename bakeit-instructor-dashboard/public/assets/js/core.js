@@ -68,13 +68,26 @@ export class AuthService {
 }
 
 export class SectionService {
-  constructor(store = new StorageService()) {
+  constructor(store = new StorageService(), request = apiRequest) {
     this.store = store;
-    this.sections = [
-      { id: 'all', name: 'All Sections' },
-      { id: 'section-a', name: 'Section A' },
-      { id: 'section-b', name: 'Section B' }
-    ];
+    this.request = request;
+    this.revision = 0;
+    this.sections = [{ id: 'all', name: 'All Sections' }];
+  }
+  async load() {
+    const revision = this.revision;
+    const { sections } = await this.request('/api/sections');
+    if (revision !== this.revision) return this.sections.filter(section => section.id !== 'all');
+    this.sections = [{ id: 'all', name: 'All Sections' }, ...sections];
+    this.select(this.selected());
+    return sections;
+  }
+  async create(name) {
+    const { section } = await this.request('/api/sections', { method: 'POST', body: JSON.stringify({ name }) });
+    this.revision += 1;
+    this.sections = [...this.sections.filter(item => item.id !== section.id), section];
+    this.select(section.id);
+    return section;
   }
   selected() {
     const saved = this.store.get('bakeit_section', 'all');
@@ -94,10 +107,7 @@ export class SectionSelector {
   constructor(root, sections) { this.root = root; this.sections = sections; }
   mount() {
     if (!this.root) return;
-    this.root.innerHTML = this.sections.sections
-      .map(section => `<option value="${section.id}">${section.name}</option>`).join('');
-    this.root.value = this.sections.selected();
-    this.updateLabels();
+    this.refresh();
     this.root.addEventListener('change', () => {
       const sectionId = this.sections.select(this.root.value);
       this.updateLabels();
@@ -106,6 +116,12 @@ export class SectionSelector {
       }));
     });
   }
+  refresh() {
+    if (!this.root) return;
+    this.root.replaceChildren(...this.sections.sections.map(section => new Option(section.name, section.id)));
+    this.root.value = this.sections.selected();
+    this.updateLabels();
+  }
   updateLabels() {
     const name = this.sections.name();
     document.querySelectorAll('[data-section-label]').forEach(element => { element.textContent = name; });
@@ -113,29 +129,49 @@ export class SectionSelector {
 }
 
 export function scoreRemark(score) {
+  if (score === null || score === undefined) return 'Not started';
   return score >= 60 ? 'Passed' : 'Needs Practice';
 }
 
+export function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+}
+
+export async function apiRequest(path, options = {}) {
+  let response;
+  try { response = await fetch(path, { ...options, headers: { 'Content-Type': 'application/json', ...options.headers } }); }
+  catch { throw new Error('Cannot reach the server. Check your connection and try again.'); }
+  let body;
+  try { body = await response.json(); }
+  catch { throw new Error('Could not load class data. Restart the BakeIT server and try again.'); }
+  if (!response.ok) throw new Error(body.error || 'Unable to load class data. Please try again.');
+  return body;
+}
+
 export class CloudDataService {
-  constructor({ mode = 'mock' } = {}) { this.mode = mode; }
+  constructor({ mode = 'api', request = apiRequest } = {}) { this.mode = mode; this.request = request; }
   filterBySection(items, sectionId) {
     return sectionId === 'all' ? items : items.filter(item => item.sectionId === sectionId);
   }
   async getStudents(sectionId = 'all') {
+    if (this.mode !== 'mock') return (await this.request(`/api/learners?sectionId=${encodeURIComponent(sectionId)}`)).students;
     const { students } = await import('./data.js');
     return structuredClone(this.filterBySection(students, sectionId))
       .map(student => ({ ...student, status: scoreRemark(student.score) }));
   }
   async getLiveSessions(sectionId = 'all') {
+    if (this.mode !== 'mock') return (await this.request(`/api/sessions?sectionId=${encodeURIComponent(sectionId)}`)).sessions;
     const { sessions } = await import('./data.js');
     return structuredClone(this.filterBySection(sessions, sectionId));
   }
   async getActivities(sectionId = 'all') {
+    if (this.mode !== 'mock') return (await this.request(`/api/activities?sectionId=${encodeURIComponent(sectionId)}`)).activities;
     const { activities } = await import('./data.js');
     return structuredClone(this.filterBySection(activities, sectionId));
   }
   async getHealth() {
-    return { connected: true, source: this.mode === 'mock' ? 'Prototype data' : 'AWS API', updated: new Date() };
+    if (this.mode !== 'mock') await this.request('/api/sections');
+    return { connected: true, source: this.mode === 'mock' ? 'Prototype data' : 'Class server', updated: new Date() };
   }
 }
 
@@ -143,9 +179,10 @@ export class DashboardMetrics {
   constructor(students) { this.students = students; }
   summary() {
     const count = this.students.length;
+    const scored = this.students.filter(student => Number.isFinite(student.score));
     return {
       enrolled: count,
-      average: count ? (this.students.reduce((total, student) => total + student.score, 0) / count).toFixed(1) : '0.0',
+      average: scored.length ? (scored.reduce((total, student) => total + student.score, 0) / scored.length).toFixed(1) : '—',
       passed: this.students.filter(student => scoreRemark(student.score) === 'Passed').length,
       waste: this.students.filter(student => student.waste === 'High').length
     };
@@ -159,19 +196,20 @@ export class TableView {
   }
   render(students) {
     this.root.innerHTML = students.map(student => `<tr>
-      <td><div class="person"><span class="avatar">${student.initials}</span><div><strong>${student.name}</strong><small style="display:block;color:var(--muted)">${student.id}</small></div></div></td>
-      <td><span class="section-tag">${student.section}</span></td><td>${student.recipe}</td><td>${student.sessions}</td>
-      <td><strong>${student.score}</strong><div class="progress"><i style="width:${student.score}%"></i></div></td>
-      <td><span class="badge ${this.statusClass(student.waste)}">${student.waste}</span></td>
+      <td><div class="person"><span class="avatar">${escapeHtml(student.initials)}</span><div><strong>${escapeHtml(student.name)}</strong>${student.demo ? ' <span class="badge demo-label">Demo</span>' : ''}<small style="display:block;color:var(--muted)">${escapeHtml(student.id)}</small></div></div></td>
+      <td><span class="section-tag">${escapeHtml(student.section)}</span></td><td>${escapeHtml(student.recipe)}</td><td>${escapeHtml(student.sessions)}</td>
+      <td><strong>${student.score == null ? '—' : escapeHtml(student.score)}</strong>${student.score == null ? '' : `<div class="progress"><i style="width:${Math.max(0, Math.min(100, Number(student.score) || 0))}%"></i></div>`}</td>
+      <td><span class="badge ${this.statusClass(student.waste)}">${escapeHtml(student.waste)}</span></td>
       <td><span class="badge ${this.statusClass(scoreRemark(student.score))}">${scoreRemark(student.score)}</span></td>
-    </tr>`).join('') || '<tr><td colspan="7" class="empty">No learners match the selected section and filters.</td></tr>';
+    </tr>`).join('') || '<tr><td colspan="7" class="empty">No learners to show.</td></tr>';
   }
 }
 
 export class AppShell {
   constructor() { this.auth = new AuthService(); this.sections = new SectionService(); }
-  init({ protect = true } = {}) {
+  async init({ protect = true } = {}) {
     if (protect) this.auth.requireAuth();
+    this.initNavigation();
     document.querySelector('[data-logout]')?.addEventListener('click', () => {
       this.auth.logout();
       location.href = '/login.html';
@@ -186,7 +224,86 @@ export class AppShell {
     document.querySelector('[data-date]')?.replaceChildren(document.createTextNode(
       new Intl.DateTimeFormat('en-PH', { dateStyle: 'long' }).format(new Date())
     ));
-    new SectionSelector(document.querySelector('[data-section-select]'), this.sections).mount();
+    await this.sections.load();
+    this.selector = new SectionSelector(document.querySelector('[data-section-select]'), this.sections);
+    this.selector.mount();
     return this;
+  }
+  initNavigation() {
+    const sidebar = document.querySelector('#main-sidebar');
+    const toggle = document.querySelector('[data-nav-toggle]');
+    if (!sidebar || !toggle) return;
+    const mobile = window.matchMedia('(max-width: 800px)');
+    const main = document.querySelector('.main');
+    const header = document.querySelector('.mobile-header');
+    const overlay = document.querySelector('[data-nav-overlay]');
+    const setOpen = open => {
+      open = mobile.matches && open;
+      sidebar.classList.toggle('is-open', open);
+      sidebar.inert = mobile.matches && !open;
+      main.inert = header.inert = open;
+      overlay.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+      document.body.classList.toggle('nav-open', open);
+      if (open) {
+        sidebar.setAttribute('role', 'dialog');
+        sidebar.setAttribute('aria-modal', 'true');
+        (sidebar.querySelector('.nav a[aria-current="page"]') || sidebar.querySelector('.nav a')).focus();
+      } else {
+        sidebar.removeAttribute('role');
+        sidebar.removeAttribute('aria-modal');
+      }
+    };
+    const dismiss = () => { setOpen(false); toggle.focus(); };
+    toggle.addEventListener('click', () => setOpen(true));
+    overlay.addEventListener('click', dismiss);
+    sidebar.addEventListener('keydown', event => {
+      if (!sidebar.classList.contains('is-open')) return;
+      if (event.key === 'Escape') { event.preventDefault(); dismiss(); }
+      if (event.key === 'Tab') {
+        const items = [...sidebar.querySelectorAll('a[href], button:not(:disabled)')];
+        const first = items[0], last = items.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    });
+    mobile.addEventListener('change', () => {
+      const focusWasInside = sidebar.contains(document.activeElement);
+      setOpen(false);
+      if (mobile.matches && focusWasInside) toggle.focus();
+    });
+    setOpen(false);
+  }
+  showError(error) {
+    let notice = document.querySelector('[data-page-error]');
+    if (!notice) {
+      notice = document.createElement('p');
+      notice.dataset.pageError = '';
+      notice.className = 'error page-error';
+      notice.setAttribute('role', 'alert');
+      document.querySelector('.main').prepend(notice);
+    }
+    notice.textContent = error.message;
+  }
+  watch(refresh) {
+    let busy = false;
+    let queued = false;
+    const update = async () => {
+      if (busy) { queued = true; return; }
+      busy = true;
+      try {
+        await this.sections.load();
+        this.selector.refresh();
+        await refresh();
+        document.querySelector('[data-page-error]')?.remove();
+      } catch (error) { this.showError(error); }
+      finally {
+        busy = false;
+        if (queued) { queued = false; update(); }
+      }
+    };
+    document.addEventListener('bakeit:section-change', update);
+    window.addEventListener('focus', update);
+    setInterval(() => { if (!document.hidden) update(); }, 15000);
   }
 }

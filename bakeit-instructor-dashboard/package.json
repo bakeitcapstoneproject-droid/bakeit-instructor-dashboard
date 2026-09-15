@@ -1,1 +1,1 @@
-{"name":"bakeit-instructor-dashboard","version":"1.0.0","private":true,"type":"module","scripts":{"start":"node src/server.js","dev":"node --watch src/server.js","test":"node --test"},"engines":{"node":">=18"}}
+{"name":"bakeit-instructor-dashboard","version":"1.0.0","private":true,"type":"module","scripts":{"start":"node src/server.js","dev":"node --watch src/server.js","test":"node --test","demo:add":"node src/demo.js add","demo:remove":"node src/demo.js remove"},"engines":{"node":">=18"}}

@@ -4,29 +4,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>BakeIT Instructor Dashboard</title>
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="/assets/css/dashboard.css">
+  <link rel="stylesheet" href="/assets/css/theme.css">
 </head>
 <body>
   <div class="app">
-    <aside class="sidebar">
-      <div class="brand"><span><strong>BakeIT Instructor Dashboard</strong><small>Instructor Monitoring</small></span></div>
-      <nav class="nav"><p class="nav-label">Monitoring</p><a href="/dashboard.html"><span>Dashboard</span></a><a href="/students.html"><span>Learners</span></a><a href="/sessions.html"><span>Live sessions</span></a><a href="/reports.html"><span>Reports</span></a></nav>
-      <div class="sidebar-foot">
-        <div class="profile"><span class="avatar">AI</span><div><strong style="font-size:12px">Authorized Instructor</strong><small style="display:block">Instructor</small></div></div>
-        <button class="btn" data-logout style="width:100%;margin-top:12px;background:transparent;color:#d9cbc1;border-color:#5a463b">Sign out</button>
+    <aside class="sidebar" id="main-sidebar" aria-label="Navigation">
+      <div class="sidebar-brand">
+        <a class="wordmark" href="/dashboard.html" aria-label="BakeIT Instructor Dashboard"><span class="logo-frame"><img class="brand-logo" src="/assets/images/bakeit-logo-current.png" alt="BakeIT" width="2000" height="2000"></span></a>
       </div>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="/dashboard.html"><span>Dashboard</span></a>
+        <a href="/students.html"><span>Learners</span></a>
+        <a href="/sessions.html"><span>Live sessions</span></a>
+        <a href="/reports.html"><span>Reports</span></a>
+      </nav>
+      <div class="account-actions"><span class="account-role">Instructor</span><button class="btn quiet" data-logout>Sign out</button></div>
     </aside>
+    <button class="nav-overlay" data-nav-overlay type="button" tabindex="-1" aria-label="Close navigation" hidden></button>
+    <div class="mobile-header"><a class="wordmark" href="/dashboard.html" aria-label="BakeIT Instructor Dashboard"><span class="logo-frame"><img class="brand-logo" src="/assets/images/bakeit-logo-current.png" alt="BakeIT" width="2000" height="2000"></span></a><button class="btn" type="button" data-nav-toggle aria-controls="main-sidebar" aria-expanded="false">Menu</button></div>
     <main class="main">
-      <header class="topbar">
-        <span class="crumb" data-date></span>
-        <div class="topbar-actions"><label class="section-switcher"><span>Class section</span><select data-section-select aria-label="Class section"></select></label><span class="sync">Privacy-aware exports</span></div>
-      </header>
-      <div class="page-head"><div><p class="eyebrow">Monitoring outputs</p><h1>Reports</h1></div></div>
+      <div class="page-head"><h1>Reports</h1><div class="page-actions"><select data-section-select aria-label="Class section"></select></div></div>
       <section class="report-grid">
         <article class="card report">
-          <h3>Class Performance</h3>
-          <p>A combined report for the selected section covering scores, stage completion, chef-hat ratings and readiness status; safety events, measurement errors, spills and virtual waste indicators; and procedural accuracy, including criterion-level results, sequence errors, corrective prompts and retry conditions.</p>
-          <button class="btn" data-export>Prepare report</button>
+          <h2>Class performance</h2>
+          <ul class="report-contents"><li>Scores and completion</li><li>Safety and waste</li><li>Procedural accuracy</li></ul>
+          <button class="btn primary" data-export>Prepare report</button>
         </article>
       </section>
     </main>
