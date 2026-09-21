@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68fd7ab89cb31e4390b9c6fb2c67722, type: 3}
+  m_Name: Brownies
+  m_EditorClassIdentifier: Assembly-CSharp::RecipeDefinition
+  recipeId: brownies
+  displayName: Brownies
+  productSingular: brownie
+  productPlural: brownies
+  ingredients:
+  - ingredientId: Sugar
+    displayName: Granulated White Sugar
+    requiredQuantity: 2
+    unitLabel: 1 cup
+    stage: 0
+    requiredTool: 3
+  - ingredientId: Flour
+    displayName: All-Purpose Flour
+    requiredQuantity: 1
+    unitLabel: 1 cup
+    stage: 0
+    requiredTool: 3
+  - ingredientId: Flour
+    displayName: All-Purpose Flour
+    requiredQuantity: 1
+    unitLabel: 1/4 cup
+    stage: 0
+    requiredTool: 5
+  - ingredientId: MeltedButter
+    displayName: Melted Unsalted Butter
+    requiredQuantity: 1
+    unitLabel: 1 cup
+    stage: 0
+    requiredTool: 0
+  - ingredientId: Egg
+    displayName: Large Eggs
+    requiredQuantity: 4
+    unitLabel: large egg
+    stage: 0
+    requiredTool: 0
+  - ingredientId: Cocoa
+    displayName: Cocoa Powder
+    requiredQuantity: 1
+    unitLabel: 1/2 cup
+    stage: 0
+    requiredTool: 4
+  - ingredientId: Vanilla
+    displayName: Vanilla Extract
+    requiredQuantity: 1
+    unitLabel: 1 teaspoon
+    stage: 0
+    requiredTool: 6
+  - ingredientId: BakingPowder
+    displayName: Baking Powder
+    requiredQuantity: 1
+    unitLabel: 1/2 teaspoon
+    stage: 0
+    requiredTool: 7
+  - ingredientId: Salt
+    displayName: Salt
+    requiredQuantity: 1
+    unitLabel: 1/2 teaspoon
+    stage: 0
+    requiredTool: 7
+  - ingredientId: Walnuts
+    displayName: Walnuts
+    requiredQuantity: 1
+    unitLabel: 1/2 cup
+    stage: 1
+    requiredTool: 4
+  baseMixPasses: 4
+  finishingMixPasses: 2
+  shapingMethod: 1
+  shapingPasses: 4
+  targetPortionCount: 12
+  minimumPortionCount: 12
+  maximumPortionCount: 12
+  panPreparation: 0
+  postBakeFinish: 0
+  mixedProductIngredientName: BrownieBatter
+  shapedProductIngredientName: SpreadBrownieBatter
+  portionIngredientName: BrowniePortion
+  underbakedIngredientName: UnderbakedBrownie
+  bakedIngredientName: BakedBrownie
+  overcookedIngredientName: OvercookedBrownie
+  burntIngredientName: BurntBrownie
+  bakeDurationSeconds: 8
+  minimumPerfectTemperature: 170
+  maximumPerfectTemperature: 180
+  minimumBurntTemperature: 210
