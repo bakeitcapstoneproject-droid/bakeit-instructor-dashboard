@@ -33,7 +33,7 @@
       <a class="btn section-back" href="#" data-back-sections>&larr; Class sections</a>
       <div class="section-detail-head">
         <h2 id="section-title" tabindex="-1"></h2>
-        <div class="class-code-row"><div><span class="code-label">Class code</span><code class="class-code" data-detail-code></code></div><button class="btn" type="button" data-copy-detail>Copy code</button></div>
+        <div class="section-detail-actions"><div class="class-code-row"><div><span class="code-label">Class code</span><code class="class-code" data-detail-code></code></div><button class="btn" type="button" data-copy-detail>Copy code</button></div><button class="btn delete-section" type="button" data-delete-detail>Delete Section</button></div>
       </div>
       <div class="section-head"><h2 id="learner-records-title">Learner progress</h2><span class="count-badge" data-learner-count></span></div>
       <div class="filters">
@@ -50,6 +50,15 @@
           <div class="field"><label for="section-name">Section name</label><input id="section-name" name="name" placeholder="e.g. BSHM 2A" required maxlength="80" aria-describedby="create-error" autofocus></div>
           <p id="create-error" class="error" data-create-error role="alert"></p>
           <div class="dialog-actions"><button class="btn quiet" type="button" data-cancel-create>Cancel</button><button class="btn primary" type="submit">Create class section</button></div>
+        </form>
+      </dialog>
+      <dialog class="class-dialog" data-delete-dialog aria-labelledby="delete-section-title" aria-describedby="delete-section-description">
+        <form data-delete-section>
+          <h2 id="delete-section-title">Delete class section?</h2>
+          <p id="delete-section-description" class="delete-description"></p>
+          <p class="delete-description">The class code will stop working. This cannot be undone. Learners enrolled in other sections will remain there.</p>
+          <p class="error" data-delete-error role="alert"></p>
+          <div class="dialog-actions"><button class="btn quiet" type="button" data-cancel-delete autofocus>Cancel</button><button class="btn danger" type="submit" data-confirm-delete>Delete Section</button></div>
         </form>
       </dialog>
     </main>

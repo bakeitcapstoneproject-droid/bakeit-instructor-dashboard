@@ -10,12 +10,22 @@ class StudentsPage {
   async init() {
     await this.shell.init();
     this.students = await this.cloud.getStudents();
-    this.sectionManager = new SectionManager(this.shell, () => this.render());
+    this.sectionManager = new SectionManager(this.shell, () => this.render(), section => {
+      this.students = this.students.filter(student => student.sectionId !== section.id);
+      if (new URLSearchParams(location.hash.slice(1)).get('section') === section.id) {
+        history.replaceState(null, '', location.pathname + location.search);
+      }
+      this.showSection();
+    });
     this.sectionManager.init();
     window.addEventListener('hashchange', () => this.showSection(true));
     document.querySelector('[data-copy-detail]').addEventListener('click', () => {
       const section = this.currentSection();
       if (section) this.sectionManager.copy(section.classCode);
+    });
+    document.querySelector('[data-delete-detail]').addEventListener('click', event => {
+      const section = this.currentSection();
+      if (section) this.sectionManager.openDelete(section.id, event.currentTarget);
     });
     document.querySelectorAll('[data-filter]').forEach(element => element.addEventListener('input', () => this.render()));
     this.shell.watch(async () => {

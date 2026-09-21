@@ -6,7 +6,7 @@ class ReportsPage {
     await this.shell.init();
     this.shell.watch(async () => {});
     document.querySelectorAll('[data-export]').forEach(button => button.addEventListener('click', () => {
-      button.textContent = `Prepared for ${this.shell.sections.name()} (demo)`;
+      button.textContent = `Prepared for ${this.shell.sections.name()}`;
       setTimeout(() => { button.textContent = 'Prepare report'; }, 1600);
     }));
   }

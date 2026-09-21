@@ -14,7 +14,28 @@
 .nav a { color: #f0e5dc; }
 .nav a.active { background: #946c50; box-shadow: inset 3px 0 #dfbea2; color: #fff; }
 .account-role, .sidebar .btn.quiet { color: #f0e5dc; }
-.demo-label { background: var(--brown-light); color: var(--brown); }
+.session-badge { background: var(--brown-light); color: var(--brown); }
+.live-grid { align-items: start; }
+.live-card .row-between { flex-wrap: wrap; gap: 12px; }
+.live-card .row-between > div { min-width: 0; }
+.live-card { overflow-wrap: anywhere; }
+.live-card .progress { height: 10px; margin: 12px 0 8px; background: var(--brown-light); }
+.live-card .progress i { background: var(--brown); }
+.session-progress-caption { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 16px; color: var(--brown-dark); font-size: 12px; }
+.step-instruction { font-size: 13px; line-height: 1.65; color: var(--brown-dark); margin: 0 0 16px; }
+.recipe-details { margin-top: 20px; border-top: 1px solid var(--line); padding-top: 16px; }
+.recipe-details summary { cursor: pointer; color: var(--brown); font-size: 13px; font-weight: 600; padding: 8px 0; }
+.recipe-details summary:hover { color: var(--brown-dark); }
+.recipe-details summary:focus-visible { outline: 2px solid var(--brown); outline-offset: 4px; border-radius: 4px; }
+.recipe-scope, .recipe-note { font-size: 12px; line-height: 1.6; color: var(--brown-dark); }
+.recipe-note { background: var(--brown-light); padding: 12px; border-radius: 8px; }
+.recipe-steps { padding-left: 24px; margin: 16px 0 0; }
+.recipe-steps li { padding: 10px 8px; font-size: 12px; line-height: 1.6; }
+.recipe-steps li::marker { color: var(--brown); font-weight: 600; }
+.recipe-steps li[aria-current="step"] { background: var(--brown-light); border-radius: 8px; }
+.recipe-step-title { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; }
+.recipe-step-title span { color: var(--brown); font-size: 11px; }
+.recipe-steps p { margin: 4px 0 0; color: var(--brown-dark); }
 
 /* Frame the supplied transparent PNG without changing its artwork. */
 .logo-frame { display: block; position: relative; width: 164px; aspect-ratio: 3.6; overflow: hidden; border-radius: 7px; }
@@ -30,11 +51,18 @@
 
 /* Section overview and progress remain within Learners. */
 .class-card { position: relative; }
+.class-card h3 { font-size: 26px; line-height: 1.25; }
 .class-card:hover { border-color: #b39680; }
 .section-open { gap: 8px; }
 .section-open::after { content: ""; position: absolute; inset: 0; border-radius: 10px; }
 .section-open:focus-visible::after { outline: 3px solid #b88d70; outline-offset: 4px; }
-.class-card [data-copy] { position: relative; z-index: 1; }
+.section-detail-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.btn.delete-section { color: #9c3028; border-color: #e3c9c6; }
+.btn.delete-section:hover { background: #fff1ef; border-color: #9c3028; }
+.btn.danger { color: #fff; background: #9c3028; border-color: #9c3028; }
+.btn.danger:hover { background: #7d261f; }
+.btn.danger:disabled { opacity: .6; cursor: wait; }
+.delete-description { color: var(--text); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
 .create-section-card { min-height: 210px; padding: 28px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 3px dashed #cbb8a8; border-radius: 10px; background: transparent; color: #805f48; font-family: inherit; font-size: 18px; font-weight: 600; cursor: pointer; }
 .create-section-card:hover { background: var(--brown-light); border-color: #a78568; color: var(--brown-dark); }
 .create-section-card > span { font-size: 28px; font-weight: 400; }

@@ -66,6 +66,17 @@ export class ClassStore {
       return { ...section, learnerCount: 0 };
     });
   }
+  deleteSection(sectionId) {
+    const id = requiredText(sectionId, 'Section ID', 128);
+    return this.mutate(data => {
+      const section = data.sections.find(item => item.id === id);
+      if (!section) throw new RequestError(404, 'Section not found. It may already have been deleted.');
+      const removedEnrollments = data.enrollments.filter(item => item.sectionId === id).length;
+      data.sections = data.sections.filter(item => item.id !== id);
+      data.enrollments = data.enrollments.filter(item => item.sectionId !== id);
+      return { section, removedEnrollments };
+    });
+  }
   joinSection(input) {
     const classCode = requiredText(input.classCode, 'Class code', 8).toUpperCase();
     if (!/^[A-HJ-NP-Z2-9]{8}$/.test(classCode)) throw new RequestError(400, 'Enter a valid 8-character class code.');

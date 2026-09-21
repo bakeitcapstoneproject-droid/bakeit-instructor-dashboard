@@ -133,6 +133,69 @@ test('demo learners can be added repeatedly and removed without changing real en
   assert.deepEqual((await request('/api/sessions')).body.sessions, []);
 });
 
+test('deleting a section removes only its enrollments and sessions and persists after reload', async t => {
+  const { app, post, request, dataFile } = await fixture(t);
+  const first = (await post('/api/sections', { name: 'Delete me' })).body.section;
+  const second = (await post('/api/sections', { name: 'Keep me' })).body.section;
+  for (const section of [first, second]) {
+    await post('/api/sections/join', { classCode: section.classCode, learnerId: 'shared-learner', learnerName: 'Ana' });
+  }
+  await addDemoLearners(app.classes);
+  const before = await app.classes.read();
+  const deleted = await request(`/api/sections/${first.id}`, { method: 'DELETE' });
+  assert.equal(deleted.status, 200);
+  assert.equal(deleted.body.section.id, first.id);
+  assert.equal(deleted.body.removedEnrollments, 7);
+  const reloaded = new ClassStore(dataFile);
+  assert.deepEqual((await reloaded.listSections()).map(section => section.id), [second.id]);
+  assert.deepEqual((await reloaded.read()).enrollments, before.enrollments.filter(item => item.sectionId === second.id));
+  assert.equal((await reloaded.learners(second.id)).length, 7);
+  assert.deepEqual((await request(`/api/sessions?sectionId=${first.id}`)).body.sessions, []);
+  assert.equal((await request(`/api/sessions?sectionId=${second.id}`)).body.sessions.length, 3);
+  assert.equal((await post('/api/sections/join', { classCode: first.classCode, learnerId: 'new', learnerName: 'New' })).status, 404);
+  const saved = await readFile(dataFile, 'utf8');
+  assert.equal((await request(`/api/sections/${first.id}`, { method: 'DELETE' })).status, 404);
+  assert.equal((await request('/api/sections/%ZZ', { method: 'DELETE' })).status, 400);
+  assert.equal(await readFile(dataFile, 'utf8'), saved);
+  assert.equal((await request(`/api/sections/${second.id}`, { method: 'DELETE' })).status, 200);
+  assert.deepEqual((await reloaded.read()), { sections: [], enrollments: [] });
+});
+
+test('concurrent joins and section deletion cannot leave orphan enrollments', async t => {
+  const { post, request, app } = await fixture(t);
+  const section = (await post('/api/sections', { name: 'Concurrent' })).body.section;
+  const results = await Promise.all([
+    request(`/api/sections/${section.id}`, { method: 'DELETE' }),
+    post('/api/sections/join', { classCode: section.classCode, learnerId: 'racing-join', learnerName: 'Ana' })
+  ]);
+  assert.equal(results[0].status, 200);
+  assert.ok([201, 404].includes(results[1].status));
+  assert.deepEqual(await app.classes.read(), { sections: [], enrollments: [] });
+});
+
+test('section deletion resets selection and ignores an older in-flight section list', async () => {
+  const values = new Map();
+  const storage = new StorageService({ getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) });
+  let finishLoad;
+  const service = new SectionService(storage, (path, options) => {
+    if (options?.method === 'DELETE') return Promise.resolve({ section: { id: 'first' }, removedEnrollments: 0 });
+    return new Promise(resolve => { finishLoad = resolve; });
+  });
+  service.sections = [{ id: 'all', name: 'All Sections' }, { id: 'first', name: 'First' }, { id: 'second', name: 'Second' }];
+  service.select('first');
+  const loading = service.load();
+  await service.delete('first');
+  finishLoad({ sections: [{ id: 'first', name: 'First' }, { id: 'second', name: 'Second' }] });
+  await loading;
+  assert.equal(service.selected(), 'all');
+  assert.equal(storage.get('bakeit_section'), 'all');
+  assert.deepEqual(service.sections.map(section => section.id), ['all', 'second']);
+  service.select('second');
+  service.request = async () => { throw new Error('Connection failed'); };
+  await assert.rejects(service.delete('second'), /Connection failed/);
+  assert.equal(service.selected(), 'second');
+});
+
 test('class code collisions are retried', async t => {
   const { dataFile } = await fixture(t);
   const codes = ['ABCDEFGH', 'ABCDEFGH', 'BCDEFGHJ'];

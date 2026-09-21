@@ -1,3 +1,5 @@
+import { getRecipeProgress, recipeVersion } from './recipes.js';
+
 export const students = [
   { id:'S-0241', name:'Angela Dela Cruz', initials:'AD', sectionId:'section-a', section:'Section A', recipe:'Brownies', sessions:4, score:88, progress:100, waste:'Low', status:'Passed', rating:4 },
   { id:'S-0242', name:'Miguel Reyes', initials:'MR', sectionId:'section-a', section:'Section A', recipe:'Cookies', sessions:2, score:62, progress:55, waste:'High', status:'Needs Practice', rating:2, live:true },
@@ -22,12 +24,16 @@ export const students = [
 ];
 
 export const sessions = [
-  { student:'Miguel Reyes', sectionId:'section-a', section:'Section A', recipe:'Cookies', step:'Mix wet ingredients', current:6, total:11, time:'14:10', events:['Measurement corrected','Safety reminder acknowledged','First mixture completed'] },
-  { student:'Noel Garcia', sectionId:'section-b', section:'Section B', recipe:'Brownies', step:'Check brownie doneness', current:7, total:9, time:'22:40', events:['Batter mixed','Pan prepared','Baking timer started'] }
-];
+  { student:'Miguel Reyes', sectionId:'section-a', section:'Section A', recipe:'Cookies', stepId:'combine-chips', time:'14:10', events:['Base ingredients measured','4 base whisk passes completed','1/2 cup chocolate chips added'] },
+  { student:'Noel Garcia', sectionId:'section-b', section:'Section B', recipe:'Brownies', stepId:'bake', time:'22:40', events:['Batter spread','Oven preheated','Brownie pan loaded'] }
+].map(session => {
+  const progress = getRecipeProgress(session.recipe, session.stepId);
+  return { ...session, demo: true, recipeId: progress.recipe.id, recipeVersion,
+    step: progress.step.title, current: progress.current, total: progress.total };
+});
 
 export const activities = [
-  { sectionId:'section-b', text:'Noel began Second proof', time:'30s' },
+  { sectionId:'section-b', text:'Noel began baking brownies', time:'30s' },
   { sectionId:'section-a', text:'Miguel corrected a measurement', time:'2m' },
   { sectionId:'section-a', text:'Bea earned Master Mixer', time:'8m' },
   { sectionId:'section-a', text:'Angela completed Brownies', time:'1h' }

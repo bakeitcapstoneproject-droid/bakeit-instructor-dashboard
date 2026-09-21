@@ -56,11 +56,14 @@ Class codes have eight characters using uppercase letters and digits, excluding 
 | --- | --- | --- |
 | GET | `/api/sections` | `{ sections: [...] }`, including codes and learner counts |
 | POST | `/api/sections` | Body `{ "name": "BSHM 2A" }`; returns `201` and `{ section: {...} }` |
+| DELETE | `/api/sections/ID` | Permanently removes the section and its enrollments; returns `200` and `{ section: {...}, removedEnrollments: N }`. Unknown/deleted IDs return `404`. |
 | GET | `/api/learners?sectionId=ID` | `{ students: [...] }`; omit filter for all memberships |
 | GET | `/api/activities?sectionId=ID` | Recent enrollment activity |
-| GET | `/api/sessions` | Empty list until VR session ingestion is implemented |
+| GET | `/api/sessions?sectionId=ID` | Recipe-aligned samples for tagged demo learners; otherwise empty until VR ingestion is implemented |
 
 Section names allow 1–80 characters and must be unique ignoring case and outer whitespace. Duplicate names return `409`. Code generation checks for collisions before saving.
+
+Deletion and enrollment writes are serialized together. Removing a section invalidates its class code; later join attempts return `404`. The same learner's memberships in other sections are preserved. Sample sessions derived from removed enrollments disappear. Deletion has no undo; the website asks for confirmation first. The existing local/trusted-development authentication limitations below also apply to deletion.
 
 ## Storage and deployment
 

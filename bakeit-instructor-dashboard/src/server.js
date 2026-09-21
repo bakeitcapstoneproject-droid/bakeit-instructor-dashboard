@@ -19,6 +19,13 @@ export class StaticWebsiteServer {
       const route = `${req.method} ${url.pathname}`;
       if (route === 'GET /api/sections') return this.json(res, 200, { sections: await this.classes.listSections() });
       if (route === 'POST /api/sections') return this.json(res, 201, { section: await this.classes.createSection(await readJson(req)) });
+      const deleteSection = req.method === 'DELETE' && url.pathname.match(/^\/api\/sections\/([^/]+)$/);
+      if (deleteSection) {
+        let sectionId;
+        try { sectionId = decodeURIComponent(deleteSection[1]); }
+        catch { throw new RequestError(400, 'Enter a valid section ID.'); }
+        return this.json(res, 200, await this.classes.deleteSection(sectionId));
+      }
       if (route === 'POST /api/sections/join') {
         const result = await this.classes.joinSection(await readJson(req));
         return this.json(res, result.alreadyJoined ? 200 : 201, result);

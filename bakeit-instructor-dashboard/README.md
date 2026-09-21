@@ -20,17 +20,21 @@ Open `http://localhost:3000`. The demo instructor login is `instructor@mcl.edu.p
 
 ## Demo learners
 
-Run `npm run demo:add` to add six fictional learners to each existing section. Repeating it skips existing samples. Sample scores cover Passed, Needs Practice, and Not started across Brownies, Cookies, and Cupcakes. Each sample has a Demo label and a DEMO-prefixed ID. Demo learners contribute to section counts and dashboard metrics while present.
+Run `npm run demo:add` to add six fictional learners to each existing section. Repeating it skips existing samples. Sample scores cover Passed, Needs Practice, and Not started across Brownies, Cookies, and Cupcakes. Records retain internal demo tags and DEMO-prefixed IDs; the interface omits the label and ID prefix for presentation. Demo learners contribute to section counts and dashboard metrics while present.
 
 Run `npm run demo:remove` to remove only the tagged demo learners and keep real enrollments and class sections. Stop the server before running these data commands, then restart it; they use the same data file as the server (including `BAKEIT_DATA_FILE` when set). New class sections stay empty until learners join or you run the add command again.
 
-Live sessions displays up to three sample sessions per section from the tagged demo learners. Each card is labeled **Demo session**, with fixed sample steps, elapsed times, and activity events for Brownies, Cookies, or Cupcakes. The section selector filters these samples. These are presentation snapshots; removing the demo learners also removes their sample sessions.
+Live sessions displays up to three sample sessions per section from the tagged demo learners. Cards use **Live session**, **Session time**, and **Recorded**, with active-session counts and no visible demo/sample wording, as requested for presentation. Recipe instructions and expandable step lists follow the supplied BakeIT_V1 game: 16 steps each for Cookies and Brownies, and 14 steps for Cupcake baking practice through cooling. Current titles, totals and completed-step progress come from one shared recipe catalog. The section selector filters these presentation snapshots; removing the demo learners also removes their sample sessions. There is no VR session ingestion yet.
+
+See [recipe alignment and VR integration review](docs/vr-recipe-review.md) for the reviewed game sources, implemented recipe scope, and remaining identity, telemetry, scoring and waste-tracking work.
 
 ## Create a class section
 
-Open **Learners**, choose the dashed **+ Create class section** card, and enter a name in the dialog. Copy the generated eight-character code to share with learners. Click a class card to open its learner progress within Learners; use **Class sections** to return to the overview. Browser Back/Forward and reload preserve the section view. New sections start empty. Learners join when the VR client submits the code and their account details to the server. Dashboard and learner views refresh every 15 seconds while visible and when the window regains focus.
+Open **Learners**, choose the dashed **+ Create class section** card, and enter a name in the dialog. Open the section using **View learners** to see and copy its eight-character class code. The code and copy button appear only inside the section, keeping overview cards focused on the section name, learner count and actions. Use **Class sections** to return to the overview. Browser Back/Forward and reload preserve the section view. New sections start empty. Learners join when the VR client submits the code and their account details to the server. Dashboard and learner views refresh every 15 seconds while visible and when the window regains focus.
 
 Sections and enrollments are saved in `data/classes.json`, outside the public directory and ignored by Git. They survive server restarts. Set `BAKEIT_DATA_FILE` to use another location. Run one server process per data file.
+
+Open a section using **View learners**, then choose **Delete Section** inside its learner view. Deletion is not shown on overview cards. The confirmation names the section and shows its enrollment count. Confirming permanently removes the section and its enrollment records, including associated sample results/sessions; its class code stops working. Memberships in other sections remain intact. Deleting the selected section resets the filter to All Sections. Cancel leaves the records unchanged.
 
 See [VR enrollment integration](docs/vr-enrollment.md) for the request contract and prototype limitations. The Unity/VR application is not included in this repository and must be connected to the join endpoint separately.
 
