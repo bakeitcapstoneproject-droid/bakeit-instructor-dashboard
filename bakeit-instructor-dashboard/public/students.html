@@ -33,7 +33,15 @@
       <a class="btn section-back" href="#" data-back-sections>&larr; Class sections</a>
       <div class="section-detail-head">
         <h2 id="section-title" tabindex="-1"></h2>
-        <div class="section-detail-actions"><div class="class-code-row"><div><span class="code-label">Class code</span><code class="class-code" data-detail-code></code></div><button class="btn" type="button" data-copy-detail>Copy code</button></div><button class="btn delete-section" type="button" data-delete-detail>Delete Section</button></div>
+        <div class="section-detail-actions">
+          <button class="btn section-options-toggle" type="button" data-section-options aria-expanded="false" aria-controls="section-options">Section options <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="section-options-panel" id="section-options" hidden>
+            <div class="section-options-code"><span class="code-label">Class code</span><code class="class-code" data-detail-code></code></div>
+            <button class="btn section-option" type="button" data-copy-detail>Copy code</button>
+            <div class="section-options-divider"></div>
+            <button class="btn section-option delete-section" type="button" data-delete-detail>Delete Section</button>
+          </div>
+        </div>
       </div>
       <div class="section-head"><h2 id="learner-records-title">Learner progress</h2><span class="count-badge" data-learner-count></span></div>
       <div class="filters">

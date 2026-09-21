@@ -18,14 +18,32 @@ class StudentsPage {
       this.showSection();
     });
     this.sectionManager.init();
+    this.optionsToggle = document.querySelector('[data-section-options]');
+    this.optionsPanel = document.querySelector('#section-options');
+    this.optionsToggle.addEventListener('click', () => this.setOptionsOpen(this.optionsPanel.hidden));
+    const actions = document.querySelector('.section-detail-actions');
+    document.addEventListener('click', event => {
+      if (!actions.contains(event.target)) this.setOptionsOpen(false);
+    });
+    actions.addEventListener('focusout', event => {
+      if (!actions.contains(event.relatedTarget)) this.setOptionsOpen(false);
+    });
+    actions.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !this.optionsPanel.hidden) {
+        event.preventDefault();
+        this.setOptionsOpen(false, true);
+      }
+    });
     window.addEventListener('hashchange', () => this.showSection(true));
     document.querySelector('[data-copy-detail]').addEventListener('click', () => {
       const section = this.currentSection();
       if (section) this.sectionManager.copy(section.classCode);
+      this.setOptionsOpen(false, true);
     });
-    document.querySelector('[data-delete-detail]').addEventListener('click', event => {
+    document.querySelector('[data-delete-detail]').addEventListener('click', () => {
       const section = this.currentSection();
-      if (section) this.sectionManager.openDelete(section.id, event.currentTarget);
+      this.setOptionsOpen(false);
+      if (section) this.sectionManager.openDelete(section.id, this.optionsToggle);
     });
     document.querySelectorAll('[data-filter]').forEach(element => element.addEventListener('input', () => this.render()));
     this.shell.watch(async () => {
@@ -34,6 +52,11 @@ class StudentsPage {
       this.showSection();
     });
     this.showSection();
+  }
+  setOptionsOpen(open, restoreFocus = false) {
+    this.optionsPanel.hidden = !open;
+    this.optionsToggle.setAttribute('aria-expanded', String(open));
+    if (restoreFocus) this.optionsToggle.focus();
   }
   currentSection() {
     const id = new URLSearchParams(location.hash.slice(1)).get('section');
@@ -46,6 +69,7 @@ class StudentsPage {
     document.querySelector('.learner-sections').hidden = !!section;
     document.querySelector('#learner-records').hidden = !section;
     if (previous !== this.openSectionId) {
+      this.setOptionsOpen(false);
       document.querySelectorAll('[data-filter]').forEach(element => { element.value = ''; });
       document.querySelector('[data-section-message]').textContent = '';
     }

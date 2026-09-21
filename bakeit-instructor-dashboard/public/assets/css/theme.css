@@ -56,7 +56,16 @@
 .section-open { gap: 8px; }
 .section-open::after { content: ""; position: absolute; inset: 0; border-radius: 10px; }
 .section-open:focus-visible::after { outline: 3px solid #b88d70; outline-offset: 4px; }
-.section-detail-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.section-detail-actions { position: relative; margin-left: auto; }
+.section-options-toggle { gap: 10px; min-height: 44px; }
+.section-options-toggle[aria-expanded="true"] { background: var(--brown-light); border-color: #b39680; }
+.section-options-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+.section-options-panel { position: absolute; z-index: 10; top: calc(100% + 8px); right: 0; width: 240px; max-width: calc(100vw - 40px); padding: 8px; border-radius: 10px; background: var(--white); box-shadow: 0 8px 28px #38291f26; }
+.section-options-code { padding: 8px 12px 12px; }
+.section-options-code .code-label { color: var(--brown-dark); }
+.section-options-panel .section-option { width: 100%; min-height: 44px; justify-content: flex-start; padding: 10px 12px; border-color: transparent; }
+.section-options-panel .section-option:focus-visible { outline-offset: -3px; }
+.section-options-divider { margin: 6px 4px; border-top: 1px solid var(--line); }
 .btn.delete-section { color: #9c3028; border-color: #e3c9c6; }
 .btn.delete-section:hover { background: #fff1ef; border-color: #9c3028; }
 .btn.danger { color: #fff; background: #9c3028; border-color: #9c3028; }
@@ -69,7 +78,6 @@
 .section-back { margin-bottom: 24px; }
 .section-detail-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
 .section-detail-head h2 { font-size: 24px; overflow-wrap: anywhere; min-width: 0; }
-.section-detail-head .class-code-row { margin: 0; gap: 24px; }
 @media(max-width: 900px) {
   .login-card-logo { display: block; }
 }
