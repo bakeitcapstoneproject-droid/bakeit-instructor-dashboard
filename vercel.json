@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "",
+  "buildCommand": "node bakeit-instructor-dashboard/scripts/build-static.mjs",
+  "outputDirectory": "bakeit-instructor-dashboard/dist",
+  "redirects": [
+    { "source": "/sections.html", "destination": "/students.html", "permanent": false }
+  ]
+}

@@ -1,3 +1,5 @@
+import { dataMode } from './runtime-config.js';
+
 export class StorageService {
   constructor(storage = localStorage) { this.storage = storage; }
   get(key, fallback = null) {
@@ -144,7 +146,12 @@ export function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
 }
 
+let staticRequest;
 export async function apiRequest(path, options = {}) {
+  if (dataMode === 'static') {
+    staticRequest ??= import('./static-data.js').then(({ createStaticRequest }) => createStaticRequest(localStorage));
+    return (await staticRequest)(path, options);
+  }
   let response;
   try { response = await fetch(path, { ...options, headers: { 'Content-Type': 'application/json', ...options.headers } }); }
   catch { throw new Error('Cannot reach the server. Check your connection and try again.'); }
@@ -178,7 +185,7 @@ export class CloudDataService {
   }
   async getHealth() {
     if (this.mode !== 'mock') await this.request('/api/sections');
-    return { connected: true, source: this.mode === 'mock' ? 'Prototype data' : 'Class server', updated: new Date() };
+    return { connected: true, source: this.mode === 'mock' ? 'Prototype data' : dataMode === 'static' ? 'Browser storage' : 'Class server', updated: new Date() };
   }
 }
 

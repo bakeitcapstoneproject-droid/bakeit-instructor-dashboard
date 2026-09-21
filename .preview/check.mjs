@@ -8,8 +8,18 @@ import { StaticWebsiteServer } from '../bakeit-instructor-dashboard/src/server.j
 import { addDemoLearners } from '../bakeit-instructor-dashboard/src/demo.js';
 
 const temporary = await mkdtemp(join(tmpdir(), 'bakeit-layout-'));
-const app = new StaticWebsiteServer({ dataFile: join(temporary, 'classes.json') });
-const server = createServer((req, res) => app.respond(req, res));
+const staticMode = process.argv.includes('--static');
+let apiCalls = 0;
+const app = new StaticWebsiteServer({ dataFile: join(temporary, 'classes.json'),
+  ...(staticMode ? { root: join(process.cwd(), 'bakeit-instructor-dashboard/dist') } : {}) });
+const server = createServer((req, res) => {
+  if (staticMode && req.url.startsWith('/api/')) {
+    apiCalls++;
+    res.writeHead(404); res.end('No backend in static hosting'); return;
+  }
+  if (staticMode && req.url === '/') req.url = '/index.html';
+  return app.respond(req, res);
+});
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
 const browser = spawn('C:/Program Files/Google/Chrome/Application/chrome.exe', [
@@ -49,7 +59,7 @@ try {
     pending.set(id, { resolve, reject });
     socket.send(JSON.stringify({ id, method, params, sessionId }));
   });
-  const { targetId } = await send('Target.createTarget', { url: origin + '/login.html' });
+  const { targetId } = await send('Target.createTarget', { url: origin + (staticMode ? '/' : '/login.html') });
   const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });
   const cdp = (method, params) => send(method, params, sessionId);
   await cdp('Runtime.enable');
@@ -84,6 +94,52 @@ try {
   await screenshot('login-desktop');
   await evaluate("document.querySelector('#email').value='instructor@mcl.edu.ph'; document.querySelector('#password').value='demo123'; document.querySelector('#login-form').requestSubmit()");
   await until("location.pathname === '/dashboard.html' && !!document.querySelector('[data-section-select] option')");
+  if (staticMode) {
+    await until("document.querySelector('[data-metric=enrolled]').textContent === '20'");
+    await screenshot('static-dashboard-desktop');
+    await navigate('students');
+    assert.equal(await evaluate("document.querySelectorAll('.class-card').length"), 2);
+    await evaluate("document.querySelector('[data-open-create]').click(); document.querySelector('#section-name').value='Static BSHM'; document.querySelector('[data-create-section]').requestSubmit()");
+    await until("document.querySelectorAll('.class-card').length === 3 && !document.querySelector('[data-create-dialog]').open");
+    await evaluate("document.querySelectorAll('[data-view]')[2].click()");
+    await until("document.querySelector('#section-title').textContent === 'Static BSHM'");
+    const staticCode = await evaluate("document.querySelector('[data-detail-code]').textContent");
+    assert.match(staticCode, /^[A-HJ-NP-Z2-9]{8}$/);
+    await cdp('Page.reload');
+    await until("document.querySelector('#section-title')?.textContent === 'Static BSHM'");
+    assert.equal(await evaluate("document.querySelector('[data-detail-code]').textContent"), staticCode);
+    await evaluate("document.querySelector('[data-section-options]').click(); document.querySelector('[data-copy-detail]').click()");
+    await until("/copied|Select and copy/.test(document.querySelector('[data-section-message]').textContent)");
+    await evaluate("document.querySelector('[data-section-options]').click(); document.querySelector('[data-delete-detail]').click(); document.querySelector('[data-cancel-delete]').click()");
+    await until("!document.querySelector('[data-delete-dialog]').open");
+    await evaluate("document.querySelector('[data-section-options]').click(); document.querySelector('[data-delete-detail]').click(); document.querySelector('[data-confirm-delete]').click()");
+    await until("document.querySelectorAll('.class-card').length === 2 && !document.querySelector('[data-delete-dialog]').open");
+    await cdp('Page.reload');
+    await until("document.querySelectorAll('.class-card').length === 2");
+    await evaluate("document.querySelector('[data-view]').click()");
+    await until("document.querySelectorAll('tbody tr').length > 1");
+    await evaluate("document.querySelector('#search').value='Sofia'; document.querySelector('#search').dispatchEvent(new Event('input'))");
+    assert.equal(await evaluate("document.querySelectorAll('tbody tr').length"), 1);
+    assert.match(await evaluate("document.querySelector('tbody').textContent"), /Sofia Ramos/);
+    await size(390, 844);
+    await evaluate("document.querySelector('[data-section-options]').click()");
+    await screenshot('static-learners-mobile');
+    assert.equal(await evaluate("document.documentElement.scrollWidth <= innerWidth"), true);
+    await navigate('sessions');
+    await until("document.querySelectorAll('.live-card').length > 0");
+    await screenshot('static-sessions-mobile');
+    await navigate('reports');
+    await evaluate("document.querySelector('[data-export]').click()");
+    assert.match(await evaluate("document.querySelector('[data-export]').textContent"), /Prepared for/);
+    await evaluate("document.querySelector('[data-logout]').click()");
+    await until("location.pathname === '/login.html' && document.readyState === 'complete' && !!document.querySelector('#login-form')");
+    await evaluate("document.querySelector('#email').value='instructor@mcl.edu.ph'; document.querySelector('#password').value='demo123'; document.querySelector('#login-form').requestSubmit()");
+    await until("location.pathname === '/dashboard.html' && !!document.querySelector('[data-section-select] option')");
+    assert.equal(await evaluate("document.querySelectorAll('[data-section-select] option').length"), 3);
+    assert.equal(apiCalls, 0, 'Static demo must never call an API');
+    assert.deepEqual(errors, []);
+    console.log('Static browser checks passed: homepage, login, sample data, create/copy/delete/cancel, reload persistence, filtering, sessions, reports, sign-out, mobile, and zero API calls or JavaScript exceptions.');
+  } else {
   await navigate('students');
   assert.equal(await evaluate("document.querySelector('#learner-records').hidden && !document.querySelector('.page-head [data-open-create]') && !!document.querySelector('.create-section-card')"), true);
   await screenshot('sections-empty');
@@ -250,6 +306,7 @@ try {
   assert.equal(await evaluate("document.querySelector('[data-section-select]').value"), 'all');
   assert.deepEqual(errors, []);
   console.log('Browser checks passed: section creation/deletion, cancel and focus restoration, deletion error/retry, persisted deletion, empty-state filters, enrollment, recipe cards, desktop/mobile layouts, and no JavaScript exceptions.');
+  }
 } finally {
   socket?.close();
   browser.kill();

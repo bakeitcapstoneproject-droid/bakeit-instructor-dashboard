@@ -2,6 +2,12 @@
 
 Node.js prototype for creating class sections, enrolling learners by class code, and monitoring learner results.
 
+## Vercel static deployment
+
+Use the [Vercel deployment guide](docs/vercel-deployment.md) to publish a static demo on Hobby. `npm run build` produces `dist/` with browser storage and fictional initial data; no backend or paid integration is required. The committed Vercel configuration runs this build automatically. The main URL opens the login page.
+
+The static demo keeps data separately in each browser. Class codes do not connect VR clients, login is not production authentication, and reports remain a presentation feature. The sections below describe the original **local Node server** workflow, which remains available with `npm start`.
+
 The interface uses the original full-height left sidebar with a mobile navigation drawer, white cards on a light gray background, and warm brown navigation and accents. Page headers contain titles and controls without subtitles.
 
 The website includes class enrollment, class performance, learner records, active VR sessions, and reports.

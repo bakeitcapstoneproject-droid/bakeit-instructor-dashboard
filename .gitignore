@@ -1,2 +1,5 @@
 bakeit-instructor-dashboard/data/
 .preview/
+bakeit-instructor-dashboard/dist/
+.vercel/
+**/.vercel/
