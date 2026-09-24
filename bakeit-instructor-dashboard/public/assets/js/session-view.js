@@ -1,4 +1,4 @@
-import { escapeHtml } from './core.js';
+import { escapeHtml } from './utils/html.js';
 import { getRecipeProgress } from './recipes.js';
 
 export class SessionView {
@@ -6,7 +6,6 @@ export class SessionView {
   render(items) {
     const snapshot = JSON.stringify(items);
     if (snapshot === this.snapshot) return;
-    this.snapshot = snapshot;
     const expanded = new Set([...this.root.querySelectorAll('details[open]')].map(item => item.dataset.session));
     const focused = this.root.ownerDocument.activeElement?.closest('details')?.dataset.session;
     this.root.innerHTML = items.map(session => {
@@ -45,6 +44,7 @@ export class SessionView {
         <ul class="event-list">${(session.events ?? []).map(event => `<li><span>${escapeHtml(event)}</span><span class="session-badge badge">Recorded</span></li>`).join('')}</ul>
       </article>`;
     }).join('') || '<div class="card empty">No active VR sessions in this section.</div>';
+    this.snapshot = snapshot;
     if (focused) [...this.root.querySelectorAll('details')].find(item => item.dataset.session === focused)?.querySelector('summary').focus();
   }
 }

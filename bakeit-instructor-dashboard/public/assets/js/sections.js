@@ -1,4 +1,4 @@
-import { escapeHtml } from './core.js';
+import { escapeHtml } from './utils/html.js';
 
 export class SectionManager {
   constructor(shell, onSelect, onDelete = () => {}) {

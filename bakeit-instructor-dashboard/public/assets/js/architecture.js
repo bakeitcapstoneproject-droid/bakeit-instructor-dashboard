@@ -1,1 +1,4 @@
-import{AppShell}from'./core.js';const shell=new AppShell();shell.init().catch(error=>shell.showError(error));
+import { AppShell } from './app/app-shell.js';
+
+const shell = new AppShell();
+shell.init().catch(error => shell.showError(error));

@@ -1,4 +1,4 @@
-import { getRecipeProgress, recipeVersion } from '../public/assets/js/recipes.js';
+import { recipeCatalog, recipeVersion } from '../public/assets/js/recipes.js';
 
 const samples = {
   Brownies: {
@@ -17,21 +17,29 @@ const samples = {
 
 // Fixed presentation samples derived only from explicitly tagged demo learners.
 // Removing demo learners also removes their sample sessions.
-export function demoSessions(learners) {
-  const counts = new Map();
-  return learners.filter(learner => {
-    const count = counts.get(learner.sectionId) || 0;
-    if (!learner.demo || !Object.hasOwn(samples, learner.recipe) || count >= 3) return false;
-    counts.set(learner.sectionId, count + 1);
-    return true;
-  }).map(learner => {
-    const sample = samples[learner.recipe];
-    const progress = getRecipeProgress(learner.recipe, sample.stepId);
-    return {
-      id: `session-${learner.id}`, learnerId: learner.id, student: learner.name,
-      sectionId: learner.sectionId, section: learner.section, recipe: learner.recipe,
-      ...sample, recipeId: progress.recipe.id, recipeVersion,
-      step: progress.step.title, current: progress.current, total: progress.total, demo: true
-    };
-  });
+export class DemoSessionFactory {
+  constructor({ catalog = recipeCatalog, version = recipeVersion, limit = 3 } = {}) {
+    Object.assign(this, { catalog, version, limit });
+  }
+  create(learners) {
+    const counts = new Map();
+    return learners.filter(learner => {
+      const count = counts.get(learner.sectionId) || 0;
+      if (!learner.demo || !Object.hasOwn(samples, learner.recipe) || count >= this.limit) return false;
+      counts.set(learner.sectionId, count + 1);
+      return true;
+    }).map(learner => {
+      const sample = samples[learner.recipe];
+      const progress = this.catalog.progress(learner.recipe, sample.stepId);
+      return {
+        id: `session-${learner.id}`, learnerId: learner.id, student: learner.name,
+        sectionId: learner.sectionId, section: learner.section, recipe: learner.recipe,
+        ...sample, recipeId: progress.recipe.id, recipeVersion: this.version,
+        step: progress.step.title, current: progress.current, total: progress.total, demo: true
+      };
+    });
+  }
 }
+
+const factory = new DemoSessionFactory();
+export const demoSessions = learners => factory.create(learners);

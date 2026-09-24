@@ -46,14 +46,18 @@ See [VR enrollment integration](docs/vr-enrollment.md) for the request contract 
 
 Run `npm test` (`npm.cmd test` in PowerShell if script execution is restricted) to check creation, persistence, joining, concurrent requests, code collisions, validation, filters, scoring, and login behavior.
 
+See the [reliability review](docs/reliability-review.md) for outage/recovery scenarios, browser checks, animation changes, and the current verification limits.
+
 ## Structure and OOP design
 
-- `src/server.js` — `StaticWebsiteServer`, a small Node HTTP server.
+- `src/server.js` — `StaticWebsiteServer`, which delegates to API and static-file handlers.
 - `public/*.html` — separate Login, Dashboard, Learners, Live Sessions, and Reports pages.
-- `public/assets/js/core.js` — reusable `StorageService`, `AuthService`, `CloudDataService`, `DashboardMetrics`, `TableView`, and `AppShell` classes.
-- Page controllers (`login.js`, `dashboard.js`, etc.) encapsulate page behavior.
-- `src/classes.js` validates and persists sections and enrollments; `public/students.html` provides section creation and code copying.
+- `public/assets/js/core.js` — compatibility exports; implementations are organized under `app/`, `services/`, `views/`, and `domain/`.
+- `public/assets/js/pages/` — exported page controllers. Protected pages share the `PageController` lifecycle; the original page scripts are small entry points.
+- `src/services/classroom-service.js` — section and enrollment rules, with persistence supplied by `src/repositories/json-file-repository.js`. `src/classes.js` preserves the existing `ClassStore` constructor.
 - `CloudDataService` loads learners and enrollment activity from the Node server. Explicit mock mode retains sample performance data for tests.
+
+See [OOP architecture](docs/oop-architecture.md) for class responsibilities, dependency diagrams, extension conventions, and testing seams.
 
 ## Future AWS integration
 

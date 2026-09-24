@@ -1,3 +1,7 @@
+import { RecipeCatalog } from './domain/recipe-catalog.js';
+
+export { RecipeCatalog };
+
 // Matched to BakeIT_V1-main.zip: RecipeDefinitions and CookieRecipeSessionController.
 // These IDs are dashboard identifiers for a future Unity adapter, not existing Unity events.
 export const recipeVersion = 'bakeit-v1-2026-09-15';
@@ -71,18 +75,6 @@ export const recipes = [
   }
 ];
 
-export function getRecipe(value) {
-  return recipes.find(recipe => [recipe.id, recipe.name, recipe.displayName].includes(value));
-}
-
-export function getRecipeProgress(recipeId, stepId, completed = false) {
-  const recipe = getRecipe(recipeId);
-  const index = recipe?.steps.findIndex(item => item.id === stepId) ?? -1;
-  if (index < 0) return null;
-  const finished = completed && index === recipe.steps.length - 1;
-  return {
-    recipe, step: recipe.steps[index], current: index + 1, total: recipe.steps.length,
-    completed: finished, completedSteps: finished ? recipe.steps.length : index,
-    percent: Math.round((finished ? recipe.steps.length : index) / recipe.steps.length * 100)
-  };
-}
+export const recipeCatalog = new RecipeCatalog(recipes);
+export const getRecipe = value => recipeCatalog.get(value);
+export const getRecipeProgress = (recipeId, stepId, completed = false) => recipeCatalog.progress(recipeId, stepId, completed);

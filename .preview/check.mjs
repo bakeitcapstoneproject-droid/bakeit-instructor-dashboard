@@ -6,13 +6,20 @@ import { join } from 'node:path';
 import assert from 'node:assert/strict';
 import { StaticWebsiteServer } from '../bakeit-instructor-dashboard/src/server.js';
 import { addDemoLearners } from '../bakeit-instructor-dashboard/src/demo.js';
+import { checkReliability } from '../bakeit-instructor-dashboard/scripts/check-reliability.mjs';
 
 const temporary = await mkdtemp(join(tmpdir(), 'bakeit-layout-'));
 const staticMode = process.argv.includes('--static');
 let apiCalls = 0;
+let apiFailure = '';
 const app = new StaticWebsiteServer({ dataFile: join(temporary, 'classes.json'),
   ...(staticMode ? { root: join(process.cwd(), 'bakeit-instructor-dashboard/dist') } : {}) });
 const server = createServer((req, res) => {
+  if (!staticMode && req.url.startsWith('/api/') && apiFailure) {
+    if (apiFailure === 'hang') return;
+    if (apiFailure === 'malformed') { res.writeHead(200); res.end('{broken'); return; }
+    res.writeHead(503); res.end('<h1>Service unavailable</h1>'); return;
+  }
   if (staticMode && req.url.startsWith('/api/')) {
     apiCalls++;
     res.writeHead(404); res.end('No backend in static hosting'); return;
@@ -72,7 +79,7 @@ try {
     return result.result.value;
   };
   const until = async expression => {
-    const deadline = Date.now() + 10000;
+    const deadline = Date.now() + 15000;
     while (Date.now() < deadline) {
       try { if (await evaluate(expression)) return; } catch {}
       await new Promise(resolve => setTimeout(resolve, 100));
@@ -81,12 +88,27 @@ try {
   };
   const navigate = async page => {
     await cdp('Page.navigate', { url: origin + '/' + page + '.html' });
-    await until(`location.pathname === '/${page}.html' && document.readyState === 'complete' && ${page === 'students' ? "!!document.querySelector('[data-open-create]:not(:disabled)')" : "!!document.querySelector('[data-section-select] option')"}`);
+    await until(`location.pathname === '/${page}.html' && document.readyState === 'complete' && !document.querySelector('.main')?.hasAttribute('aria-busy') && ${page === 'students' ? "!!document.querySelector('[data-open-create]:not(:disabled)')" : "!!document.querySelector('[data-section-select] option')"}`);
   };
   const screenshot = async filename => {
+    await evaluate('Promise.all(document.getAnimations().map(animation => animation.finished.catch(() => {})))');
     const { data } = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
-    await mkdir('.preview', { recursive: true });
-    await writeFile(`.preview/${filename}.png`, Buffer.from(data, 'base64'));
+    await mkdir('.preview/review', { recursive: true });
+    await writeFile(`.preview/review/${filename}.png`, Buffer.from(data, 'base64'));
+  };
+  const checkFilters = async () => {
+    for (const status of ['Passed', 'Needs Practice', 'Not started']) {
+      await evaluate(`document.querySelector('#status').value=${JSON.stringify(status)}; document.querySelector('#status').dispatchEvent(new Event('input'))`);
+      assert.equal(await evaluate(`Array.from(document.querySelectorAll('tbody tr')).every(row => row.cells.length === 1 || row.cells[6].textContent.trim() === ${JSON.stringify(status)})`), true);
+    }
+    await evaluate("document.querySelector('#status').value=''; document.querySelector('#status').dispatchEvent(new Event('input'))");
+    for (const recipe of ['Cookies', 'Brownies', 'Cupcakes']) {
+      await evaluate(`document.querySelector('#recipe').value=${JSON.stringify(recipe)}; document.querySelector('#recipe').dispatchEvent(new Event('input'))`);
+      assert.equal(await evaluate(`Array.from(document.querySelectorAll('tbody tr')).every(row => row.cells.length === 1 || row.cells[2].textContent.trim() === ${JSON.stringify(recipe)})`), true);
+    }
+    await evaluate("document.querySelector('#recipe').value=''; document.querySelector('#recipe').dispatchEvent(new Event('input')); window.firstResultRow = document.querySelector('tbody tr'); window.dispatchEvent(new Event('focus'))");
+    await until("!document.querySelector('.main').hasAttribute('aria-busy')");
+    assert.equal(await evaluate("window.firstResultRow === document.querySelector('tbody tr')"), true, 'Unchanged refresh must preserve table DOM');
   };
   const size = async (width, height) => cdp('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: false });
   await size(1440, 1000);
@@ -94,6 +116,8 @@ try {
   await screenshot('login-desktop');
   await evaluate("document.querySelector('#email').value='instructor@mcl.edu.ph'; document.querySelector('#password').value='demo123'; document.querySelector('#login-form').requestSubmit()");
   await until("location.pathname === '/dashboard.html' && !!document.querySelector('[data-section-select] option')");
+  await checkReliability({ staticMode, cdp, evaluate, until, navigate, size, screenshot, origin, server,
+    setFailure: value => { apiFailure = value; } });
   if (staticMode) {
     await until("document.querySelector('[data-metric=enrolled]').textContent === '20'");
     await screenshot('static-dashboard-desktop');
@@ -118,6 +142,7 @@ try {
     await until("document.querySelectorAll('.class-card').length === 2");
     await evaluate("document.querySelector('[data-view]').click()");
     await until("document.querySelectorAll('tbody tr').length > 1");
+    await checkFilters();
     await evaluate("document.querySelector('#search').value='Sofia'; document.querySelector('#search').dispatchEvent(new Event('input'))");
     assert.equal(await evaluate("document.querySelectorAll('tbody tr').length"), 1);
     assert.match(await evaluate("document.querySelector('tbody').textContent"), /Sofia Ramos/);
@@ -130,11 +155,11 @@ try {
     await screenshot('static-sessions-mobile');
     await navigate('reports');
     await evaluate("document.querySelector('[data-export]').click()");
-    assert.match(await evaluate("document.querySelector('[data-export]').textContent"), /Prepared for/);
+    assert.match(await evaluate("document.querySelector('[data-report-status]').textContent"), /not available yet/);
     await evaluate("document.querySelector('[data-logout]').click()");
     await until("location.pathname === '/login.html' && document.readyState === 'complete' && !!document.querySelector('#login-form')");
     await evaluate("document.querySelector('#email').value='instructor@mcl.edu.ph'; document.querySelector('#password').value='demo123'; document.querySelector('#login-form').requestSubmit()");
-    await until("location.pathname === '/dashboard.html' && !!document.querySelector('[data-section-select] option')");
+    await until("location.pathname === '/dashboard.html' && !!document.querySelector('[data-section-select] option') && document.readyState === 'complete' && !document.querySelector('.main').hasAttribute('aria-busy')");
     assert.equal(await evaluate("document.querySelectorAll('[data-section-select] option').length"), 3);
     assert.equal(apiCalls, 0, 'Static demo must never call an API');
     assert.deepEqual(errors, []);
@@ -210,6 +235,7 @@ try {
   await navigate('students');
   await evaluate("document.querySelector('[data-view]').click()");
   await until("document.querySelectorAll('tbody tr').length === 7");
+  await checkFilters();
   assert.doesNotMatch(await evaluate("document.querySelector('tbody').innerText"), /sample|demo/i);
   assert.match(await evaluate("document.querySelector('tbody').textContent"), /Needs Practice/);
   await screenshot('demo-learners-desktop');

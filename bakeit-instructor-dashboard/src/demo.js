@@ -17,31 +17,37 @@ const examples = [
   { name: 'Nathan Castillo', recipe: 'Not started', sessions: 0, score: null, waste: '—' }
 ];
 
-export function addDemoLearners(store) {
-  return store.mutate(data => {
-    if (!data.sections.length) throw new Error('Create a class section in Learners first.');
-    let added = 0;
-    data.sections.forEach((section, sectionIndex) => {
-      for (let index = 0; index < 6; index++) {
-        const learnerId = `DEMO-${section.id.slice(0, 8).toUpperCase()}-${index + 1}`;
-        if (data.enrollments.some(item => item.sectionId === section.id && item.learnerId === learnerId)) continue;
-        const { name, ...result } = examples[(sectionIndex * 6 + index) % examples.length];
-        data.enrollments.push({ sectionId: section.id, learnerId, learnerName: name,
-          joinedAt: new Date().toISOString(), demo: true, demoResult: result });
-        added++;
-      }
+export class DemoLearnerSeeder {
+  constructor(store) { this.store = store; }
+  add() {
+    return this.store.mutate(data => {
+      if (!data.sections.length) throw new Error('Create a class section in Learners first.');
+      let added = 0;
+      data.sections.forEach((section, sectionIndex) => {
+        for (let index = 0; index < 6; index++) {
+          const learnerId = `DEMO-${section.id.slice(0, 8).toUpperCase()}-${index + 1}`;
+          if (data.enrollments.some(item => item.sectionId === section.id && item.learnerId === learnerId)) continue;
+          const { name, ...result } = examples[(sectionIndex * 6 + index) % examples.length];
+          data.enrollments.push({ sectionId: section.id, learnerId, learnerName: name,
+            joinedAt: new Date().toISOString(), demo: true, demoResult: result });
+          added++;
+        }
+      });
+      return added;
     });
-    return added;
-  });
+  }
+
+  remove() {
+    return this.store.mutate(data => {
+      const count = data.enrollments.length;
+      data.enrollments = data.enrollments.filter(item => item.demo !== true);
+      return count - data.enrollments.length;
+    });
+  }
 }
 
-export function removeDemoLearners(store) {
-  return store.mutate(data => {
-    const count = data.enrollments.length;
-    data.enrollments = data.enrollments.filter(item => item.demo !== true);
-    return count - data.enrollments.length;
-  });
-}
+export const addDemoLearners = store => new DemoLearnerSeeder(store).add();
+export const removeDemoLearners = store => new DemoLearnerSeeder(store).remove();
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const action = process.argv[2];

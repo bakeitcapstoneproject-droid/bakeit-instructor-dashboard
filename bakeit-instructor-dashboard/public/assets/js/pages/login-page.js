@@ -1,0 +1,147 @@
+import { AuthService } from '../services/auth-service.js';
+
+export class LoginPage {
+  constructor({ auth = new AuthService() } = {}) {
+    this.auth = auth;
+    this.loginView = document.querySelector('[data-auth-view="login"]');
+    this.recoveryView = document.querySelector('[data-auth-view="recovery"]');
+    this.requestStep = document.querySelector('[data-reset-step="request"]');
+    this.confirmStep = document.querySelector('[data-reset-step="confirm"]');
+    this.successStep = document.querySelector('[data-reset-step="success"]');
+    this.loginForm = document.querySelector('#login-form');
+    this.requestForm = document.querySelector('#request-reset-form');
+    this.confirmForm = document.querySelector('#confirm-reset-form');
+  }
+
+  init() {
+    if (this.auth.current()) location.href = '/dashboard.html';
+    this.loginForm.addEventListener('submit', event => this.signIn(event));
+    for (const input of [this.loginForm.email, this.loginForm.password]) {
+      input.setAttribute('aria-describedby', 'login-error');
+      input.addEventListener('input', () => {
+        input.removeAttribute('aria-invalid');
+        if (!this.auth.loginCooldown()) document.querySelector('[data-login-error]').textContent = '';
+      });
+    }
+    this.requestForm.addEventListener('submit', event => this.requestReset(event));
+    this.confirmForm.addEventListener('submit', event => this.confirmReset(event));
+    const passwordToggle = document.querySelector('[data-toggle-password]');
+    passwordToggle.addEventListener('click', () => {
+      const password = this.loginForm.password;
+      const showPassword = password.type === 'password';
+      password.type = showPassword ? 'text' : 'password';
+      passwordToggle.textContent = showPassword ? 'Hide' : 'Show';
+      passwordToggle.setAttribute('aria-label', showPassword ? 'Hide password' : 'Show password');
+    });
+    document.querySelector('[data-forgot]').addEventListener('click', () => this.showRecovery());
+    document.querySelector('[data-back-login]').addEventListener('click', () => this.showLogin());
+    document.querySelector('[data-back-request]').addEventListener('click', () => this.showResetStep('request'));
+    document.querySelector('[data-return-login]').addEventListener('click', () => this.finishRecovery());
+    this.updateCooldown();
+    window.addEventListener('storage', event => {
+      if (event.key === 'bakeit_login_attempts' || event.key === null) this.updateCooldown();
+    });
+  }
+
+  updateCooldown() {
+    clearTimeout(this.cooldownTimer);
+    const seconds = this.auth.loginCooldown();
+    const button = this.loginForm.querySelector('[type="submit"]');
+    button.disabled = seconds > 0;
+    button.textContent = 'Sign in';
+    const error = document.querySelector('[data-login-error]');
+    if (seconds) {
+      error.textContent = 'Please try again later';
+      this.cooldownTimer = setTimeout(() => this.updateCooldown(), 250);
+    } else if (error.textContent === 'Please try again later') {
+      error.textContent = '';
+    }
+  }
+
+  signIn(event) {
+    event.preventDefault();
+    const error = document.querySelector('[data-login-error]');
+    error.textContent = '';
+    this.loginForm.email.removeAttribute('aria-invalid');
+    this.loginForm.password.removeAttribute('aria-invalid');
+    try {
+      this.auth.login(this.loginForm.email.value, this.loginForm.password.value);
+      location.href = '/dashboard.html';
+    } catch (exception) {
+      error.textContent = exception.message;
+      const input = this.loginForm.elements.namedItem(exception.field);
+      if (input) {
+        input.setAttribute('aria-invalid', 'true');
+        input.focus();
+      }
+      this.updateCooldown();
+    }
+  }
+
+  showRecovery() {
+    this.loginView.hidden = true;
+    this.recoveryView.hidden = false;
+    this.requestForm.resetEmail.value = this.loginForm.email.value;
+    this.confirmForm.reset();
+    document.querySelector('[data-request-error]').textContent = '';
+    document.querySelector('[data-confirm-error]').textContent = '';
+    this.showResetStep('request');
+    this.requestForm.resetEmail.focus();
+  }
+
+  showLogin() {
+    this.recoveryView.hidden = true;
+    this.loginView.hidden = false;
+    this.loginForm.email.focus();
+  }
+
+  showResetStep(step) {
+    this.requestStep.hidden = step !== 'request';
+    this.confirmStep.hidden = step !== 'confirm';
+    this.successStep.hidden = step !== 'success';
+    const focus = step === 'request' ? this.requestForm.resetEmail : step === 'confirm'
+      ? this.confirmForm.resetCode : document.querySelector('[data-return-login]');
+    focus.focus();
+  }
+
+  requestReset(event) {
+    event.preventDefault();
+    const error = document.querySelector('[data-request-error]');
+    error.textContent = '';
+    try {
+      const email = this.auth.requestPasswordReset(this.requestForm.resetEmail.value.trim());
+      document.querySelector('[data-reset-email]').textContent = email;
+      this.showResetStep('confirm');
+      this.confirmForm.resetCode.focus();
+    } catch (exception) { error.textContent = exception.message; }
+  }
+
+  confirmReset(event) {
+    event.preventDefault();
+    const error = document.querySelector('[data-confirm-error]');
+    error.textContent = '';
+    try {
+      this.auth.resetPassword(
+        this.confirmForm.resetCode.value.trim(),
+        this.confirmForm.newPassword.value,
+        this.confirmForm.confirmPassword.value
+      );
+      this.showResetStep('success');
+    } catch (exception) { error.textContent = exception.message; }
+  }
+
+  finishRecovery() {
+    const email = document.querySelector('[data-reset-email]').textContent;
+    this.loginForm.email.value = email;
+    this.loginForm.password.value = '';
+    this.loginForm.password.type = 'password';
+    const toggle = document.querySelector('[data-toggle-password]');
+    toggle.textContent = 'Show';
+    toggle.setAttribute('aria-label', 'Show password');
+    this.requestForm.reset();
+    this.confirmForm.reset();
+    this.showLogin();
+    this.updateCooldown();
+    this.loginForm.password.focus();
+  }
+}
