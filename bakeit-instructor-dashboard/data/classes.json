@@ -1,24 +1,18 @@
 {
   "sections": [
     {
-      "id": "6957ff9e-6100-4a9d-85ec-4e35c658ea22",
+      "id": "c602dbeb-1c35-417c-8a4f-168bae0b25d9",
       "name": "BSHM2A",
-      "classCode": "8VDAC9Y9",
-      "createdAt": "2026-09-15T08:04:30.479Z"
-    },
-    {
-      "id": "79047ec2-009b-4e21-8c43-7adc71b69d34",
-      "name": "BSHM2B",
-      "classCode": "8LFGW22Y",
-      "createdAt": "2026-09-15T08:33:47.041Z"
+      "classCode": "CKBZHTJ6",
+      "createdAt": "2026-09-25T00:54:39.953Z"
     }
   ],
   "enrollments": [
     {
-      "sectionId": "6957ff9e-6100-4a9d-85ec-4e35c658ea22",
-      "learnerId": "DEMO-6957FF9E-1",
+      "sectionId": "c602dbeb-1c35-417c-8a4f-168bae0b25d9",
+      "learnerId": "DEMO-C602DBEB-1",
       "learnerName": "Angela Dela Cruz",
-      "joinedAt": "2026-09-15T09:08:23.746Z",
+      "joinedAt": "2026-09-25T00:56:04.784Z",
       "demo": true,
       "demoResult": {
         "recipe": "Brownies",
@@ -28,10 +22,10 @@
       }
     },
     {
-      "sectionId": "6957ff9e-6100-4a9d-85ec-4e35c658ea22",
-      "learnerId": "DEMO-6957FF9E-2",
+      "sectionId": "c602dbeb-1c35-417c-8a4f-168bae0b25d9",
+      "learnerId": "DEMO-C602DBEB-2",
       "learnerName": "Miguel Reyes",
-      "joinedAt": "2026-09-15T09:08:23.747Z",
+      "joinedAt": "2026-09-25T00:56:04.785Z",
       "demo": true,
       "demoResult": {
         "recipe": "Cookies",
@@ -41,10 +35,10 @@
       }
     },
     {
-      "sectionId": "6957ff9e-6100-4a9d-85ec-4e35c658ea22",
-      "learnerId": "DEMO-6957FF9E-3",
+      "sectionId": "c602dbeb-1c35-417c-8a4f-168bae0b25d9",
+      "learnerId": "DEMO-C602DBEB-3",
       "learnerName": "Bea Santos",
-      "joinedAt": "2026-09-15T09:08:23.747Z",
+      "joinedAt": "2026-09-25T00:56:04.785Z",
       "demo": true,
       "demoResult": {
         "recipe": "Cupcakes",
@@ -54,10 +48,10 @@
       }
     },
     {
-      "sectionId": "6957ff9e-6100-4a9d-85ec-4e35c658ea22",
-      "learnerId": "DEMO-6957FF9E-4",
+      "sectionId": "c602dbeb-1c35-417c-8a4f-168bae0b25d9",
+      "learnerId": "DEMO-C602DBEB-4",
       "learnerName": "Noel Garcia",
-      "joinedAt": "2026-09-15T09:08:23.747Z",
+      "joinedAt": "2026-09-25T00:56:04.785Z",
       "demo": true,
       "demoResult": {
         "recipe": "Brownies",
@@ -67,10 +61,10 @@
       }
     },
     {
-      "sectionId": "6957ff9e-6100-4a9d-85ec-4e35c658ea22",
-      "learnerId": "DEMO-6957FF9E-5",
+      "sectionId": "c602dbeb-1c35-417c-8a4f-168bae0b25d9",
+      "learnerId": "DEMO-C602DBEB-5",
       "learnerName": "Liane Torres",
-      "joinedAt": "2026-09-15T09:08:23.747Z",
+      "joinedAt": "2026-09-25T00:56:04.785Z",
       "demo": true,
       "demoResult": {
         "recipe": "Cookies",
@@ -80,88 +74,10 @@
       }
     },
     {
-      "sectionId": "6957ff9e-6100-4a9d-85ec-4e35c658ea22",
-      "learnerId": "DEMO-6957FF9E-6",
+      "sectionId": "c602dbeb-1c35-417c-8a4f-168bae0b25d9",
+      "learnerId": "DEMO-C602DBEB-6",
       "learnerName": "Carlo Mendoza",
-      "joinedAt": "2026-09-15T09:08:23.747Z",
-      "demo": true,
-      "demoResult": {
-        "recipe": "Not started",
-        "sessions": 0,
-        "score": null,
-        "waste": "—"
-      }
-    },
-    {
-      "sectionId": "79047ec2-009b-4e21-8c43-7adc71b69d34",
-      "learnerId": "DEMO-79047EC2-1",
-      "learnerName": "Sofia Ramos",
-      "joinedAt": "2026-09-15T09:08:23.748Z",
-      "demo": true,
-      "demoResult": {
-        "recipe": "Cupcakes",
-        "sessions": 4,
-        "score": 92,
-        "waste": "Low"
-      }
-    },
-    {
-      "sectionId": "79047ec2-009b-4e21-8c43-7adc71b69d34",
-      "learnerId": "DEMO-79047EC2-2",
-      "learnerName": "Ethan Lim",
-      "joinedAt": "2026-09-15T09:08:23.748Z",
-      "demo": true,
-      "demoResult": {
-        "recipe": "Brownies",
-        "sessions": 3,
-        "score": 78,
-        "waste": "Medium"
-      }
-    },
-    {
-      "sectionId": "79047ec2-009b-4e21-8c43-7adc71b69d34",
-      "learnerId": "DEMO-79047EC2-3",
-      "learnerName": "Isabel Flores",
-      "joinedAt": "2026-09-15T09:08:23.748Z",
-      "demo": true,
-      "demoResult": {
-        "recipe": "Cookies",
-        "sessions": 2,
-        "score": 54,
-        "waste": "High"
-      }
-    },
-    {
-      "sectionId": "79047ec2-009b-4e21-8c43-7adc71b69d34",
-      "learnerId": "DEMO-79047EC2-4",
-      "learnerName": "Daniel Aquino",
-      "joinedAt": "2026-09-15T09:08:23.748Z",
-      "demo": true,
-      "demoResult": {
-        "recipe": "Cookies",
-        "sessions": 3,
-        "score": 81,
-        "waste": "Low"
-      }
-    },
-    {
-      "sectionId": "79047ec2-009b-4e21-8c43-7adc71b69d34",
-      "learnerId": "DEMO-79047EC2-5",
-      "learnerName": "Alyssa Cruz",
-      "joinedAt": "2026-09-15T09:08:23.748Z",
-      "demo": true,
-      "demoResult": {
-        "recipe": "Cupcakes",
-        "sessions": 1,
-        "score": 57,
-        "waste": "High"
-      }
-    },
-    {
-      "sectionId": "79047ec2-009b-4e21-8c43-7adc71b69d34",
-      "learnerId": "DEMO-79047EC2-6",
-      "learnerName": "Nathan Castillo",
-      "joinedAt": "2026-09-15T09:08:23.748Z",
+      "joinedAt": "2026-09-25T00:56:04.785Z",
       "demo": true,
       "demoResult": {
         "recipe": "Not started",
