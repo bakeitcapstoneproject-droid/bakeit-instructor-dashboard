@@ -14,6 +14,7 @@ export class AppShell {
   async init({ protect = true } = {}) {
     if (protect) this.auth.requireAuth();
     this.navigation.init();
+    this.renderProfile();
     this.status = new PageStatusView(document.querySelector('.main'));
     document.querySelector('[data-logout]')?.addEventListener('click', () => {
       try { this.auth.logout(); location.href = '/login.html'; }
@@ -32,6 +33,20 @@ export class AppShell {
     this.selector = new SectionSelector(document.querySelector('[data-section-select]'), this.sections);
     this.selector.mount();
     return this;
+  }
+
+  renderProfile() {
+    const profile = document.querySelector('.account-profile');
+    if (!profile) return;
+    const user = this.auth.current();
+    const name = typeof user?.name === 'string' && user.name.trim() ? user.name.trim() : 'Instructor';
+    const words = name.split(/\s+/);
+    const initials = (Array.from(words[0])[0] + (words.length > 1 ? Array.from(words.at(-1))[0] : '')).toLocaleUpperCase();
+    profile.querySelector('[data-profile-initials]').textContent = initials;
+    profile.querySelector('[data-profile-name]').textContent = name;
+    const email = profile.querySelector('[data-profile-email]');
+    email.textContent = user?.email || '';
+    email.hidden = !user?.email;
   }
 
   showError(error) { this.status.showError(error); }

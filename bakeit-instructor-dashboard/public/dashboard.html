@@ -19,26 +19,34 @@
         <a href="/sessions.html"><span>Live sessions</span></a>
         <a href="/reports.html"><span>Reports</span></a>
       </nav>
-      <div class="account-actions"><span class="account-role">Instructor</span><button class="btn quiet" data-logout>Sign out</button></div>
+      <div class="account-actions">
+        <div class="account-profile" role="group" aria-label="Instructor profile">
+          <span class="account-avatar" data-profile-initials aria-hidden="true">I</span>
+          <div class="account-details"><span class="account-name" data-profile-name>Instructor</span><span class="account-email" data-profile-email hidden></span></div>
+        </div>
+        <button class="btn quiet" data-logout>Sign out</button>
+      </div>
     </aside>
     <button class="nav-overlay" data-nav-overlay type="button" tabindex="-1" aria-label="Close navigation" hidden></button>
     <div class="mobile-header"><a class="wordmark" href="/dashboard.html" aria-label="BakeIT Instructor Dashboard"><span class="logo-frame"><img class="brand-logo" src="/assets/images/bakeit-logo-current.png" alt="BakeIT" width="2000" height="2000"></span></a><button class="btn" type="button" data-nav-toggle aria-controls="main-sidebar" aria-expanded="false">Menu</button></div>
     <main class="main">
       <div class="page-head"><h1>Dashboard</h1><div class="page-actions"><select data-section-select aria-label="Class section"></select><a class="btn" href="/reports.html">Export report</a></div></div>
       <section class="metrics" aria-label="Class performance">
-        <article class="card metric"><span class="label">Enrolled learners</span><div class="value" data-metric="enrolled">—</div></article>
-        <article class="card metric"><span class="label">Average score</span><div class="value" data-metric="average">—</div></article>
-        <article class="card metric"><span class="label">Passed</span><div class="value" data-metric="passed">—</div></article>
-        <article class="card metric"><span class="label">High waste flags</span><div class="value" data-metric="waste">—</div></article>
+        <article class="metric"><span class="label">Enrolled learners</span><div class="value" data-metric="enrolled">—</div></article>
+        <article class="metric"><span class="label">Average score</span><div class="value" data-metric="average">—</div></article>
+        <article class="metric"><span class="label">Passed</span><div class="value" data-metric="passed">—</div></article>
+        <article class="metric"><span class="label">High waste flags</span><div class="value" data-metric="waste">—</div></article>
       </section>
       <div class="grid-2">
-        <section class="card section table-scroll">
-          <div class="section-head"><h2>Recent learner results</h2><a href="/students.html">View all</a></div>
-          <table><thead><tr><th>Learner</th><th>Section</th><th>Recipe</th><th>Sessions</th><th>Score</th><th>Waste</th><th>Status</th></tr></thead><tbody></tbody></table>
+        <section class="card section overview-card">
+          <div class="section-head"><h2 id="results-heading">Recent learner results</h2><a href="/students.html">View all</a></div>
+          <div class="overview-scroll table-scroll" data-overview-scroll tabindex="0" role="region" aria-labelledby="results-heading">
+            <table><thead><tr><th scope="col">Learner</th><th scope="col">Section</th><th scope="col">Recipe</th><th scope="col">Sessions</th><th scope="col">Score</th><th scope="col">Waste</th><th scope="col">Status</th></tr></thead><tbody></tbody></table>
+          </div>
         </section>
-        <section class="card section">
-          <div class="section-head"><h2>Recent activity</h2></div>
-          <div data-activity-list></div>
+        <section class="card section overview-card">
+          <div class="section-head"><h2 id="activity-heading">Recent activity</h2></div>
+          <div class="overview-scroll activity-scroll" data-overview-scroll data-activity-list tabindex="0" role="region" aria-labelledby="activity-heading"></div>
         </section>
       </div>
     </main>

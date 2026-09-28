@@ -1,26 +1,16 @@
-﻿/* Original BakeIT layout with warm brown accents. */
+/* BakeIT component details for the bakery reference palette. */
 :root {
-  --brown: #80543d;
-  --brown-dark: #38291f;
-  --brown-light: #f4ece5;
-  --sidebar-brown: #6b3d23;
-  --page: #f7f8fa;
-  --white: #fff;
-  --text: #302d2b;
-  --muted: #686562;
-  --line: #e6e7e9;
+  color-scheme: light;
+  scrollbar-color: #ad9473 var(--page);
 }
 .sidebar { background: var(--sidebar-brown); }
-.nav a { color: #f0e5dc; }
-.nav a.active { background: #946c50; box-shadow: inset 3px 0 #dfbea2; color: #fff; }
-.account-role, .sidebar .btn.quiet { color: #f0e5dc; }
 .session-badge { background: var(--brown-light); color: var(--brown); }
 .live-grid { align-items: start; }
 .live-card .row-between { flex-wrap: wrap; gap: 12px; }
 .live-card .row-between > div { min-width: 0; }
 .live-card { overflow-wrap: anywhere; }
 .live-card .progress { height: 10px; margin: 12px 0 8px; background: var(--brown-light); }
-.live-card .progress i { background: var(--brown); }
+.live-card .progress i { background: #ad621d; }
 .session-progress-caption { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 16px; color: var(--brown-dark); font-size: 12px; }
 .step-instruction { font-size: 13px; line-height: 1.65; color: var(--brown-dark); margin: 0 0 16px; }
 .recipe-details { margin-top: 20px; border-top: 1px solid var(--line); padding-top: 16px; }
@@ -42,20 +32,16 @@
 .logo-frame img { position: absolute; display: block; width: 120%; max-width: none; height: auto; left: -10%; top: 50%; transform: translateY(-50%); border-radius: 0; }
 .mobile-header .logo-frame { width: 120px; background: var(--sidebar-brown); }
 .mobile-header .logo-frame img { width: 120%; }
-.login-logo { width: min(280px, 100%); }
+.login-logo { width: 200px; }
 .login-card-logo { display: none; background: var(--sidebar-brown); }
-.login-art { background: var(--sidebar-brown); }
-/* Match the visible lettering inside the logo's transparent frame. */
-.login-intro { margin: 14px 0 0; padding-left: 19px; }
-.login-art .login-subtitle { margin: 0; font-size: 16px; font-weight: 400; line-height: 1.6; color: #f0e5dc; }
 
 /* Section overview and progress remain within Learners. */
 .class-card { position: relative; }
-.class-card h3 { font-size: 26px; line-height: 1.25; }
+.class-card h3 { font-size: 22px; line-height: 1.3; letter-spacing: -.02em; }
 .class-card:hover { border-color: #b39680; }
 .section-open { gap: 8px; }
-.section-open::after { content: ""; position: absolute; inset: 0; border-radius: 10px; }
-.section-open:focus-visible::after { outline: 3px solid #b88d70; outline-offset: 4px; }
+.section-open::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius); }
+.section-open:focus-visible::after { outline: 3px solid var(--brown); outline-offset: 4px; }
 .section-detail-actions { position: relative; margin-left: auto; }
 .section-options-toggle { gap: 10px; min-height: 44px; }
 .section-options-toggle[aria-expanded="true"] { background: var(--brown-light); border-color: #b39680; }
@@ -72,8 +58,8 @@
 .btn.danger:hover { background: #7d261f; }
 .btn.danger:disabled { opacity: .6; cursor: wait; }
 .delete-description { color: var(--text); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
-.create-section-card { min-height: 210px; padding: 28px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 3px dashed #cbb8a8; border-radius: 10px; background: transparent; color: #805f48; font-family: inherit; font-size: 18px; font-weight: 600; cursor: pointer; }
-.create-section-card:hover { background: var(--brown-light); border-color: #a78568; color: var(--brown-dark); }
+.create-section-card { min-height: 72px; grid-column: 1 / -1; padding: var(--space-4) var(--space-6); display: flex; align-items: center; justify-content: center; gap: var(--space-3); border: 1px dashed var(--control-line); border-radius: var(--radius); background: var(--brown-light); color: var(--brown); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.create-section-card:hover { background: var(--accent); border-color: var(--brown); color: var(--accent-ink); }
 .create-section-card > span { font-size: 28px; font-weight: 400; }
 .section-back { margin-bottom: 24px; }
 .section-detail-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
@@ -96,7 +82,7 @@
 .section-detail-head h2 { flex: 1 1 180px; }
 input::placeholder { color: var(--muted); opacity: 1; }
 input { caret-color: var(--brown); }
-::selection { background: #e8d7c9; color: var(--brown-dark); }
+::selection { background: #ffdb9e; color: var(--brown-dark); }
 @keyframes surface-open { from { opacity: .4; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes backdrop-open { from { opacity: 0; } to { opacity: 1; } }
 @media(max-width: 800px) {

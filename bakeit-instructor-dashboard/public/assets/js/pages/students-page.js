@@ -85,6 +85,7 @@ export class StudentsPage extends PageController {
         : [...document.querySelectorAll('[data-view]')].find(link => link.dataset.view === previous)
           || document.querySelector('[data-open-create]');
       target?.focus({ preventScroll: true });
+      document.querySelector('.main')?.scrollTo({ top: 0 });
       window.scrollTo({ top: 0 });
     }
   }

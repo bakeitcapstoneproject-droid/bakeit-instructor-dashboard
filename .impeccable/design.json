@@ -1,0 +1,613 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-28T03:32:13Z",
+  "title": "Design System: BakeIT",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Amber orange",
+        "canonical": "#ffae38",
+        "tonalRamp": [
+          "oklch(15% 0.1563 71.45)",
+          "oklch(26.43% 0.1563 71.45)",
+          "oklch(37.86% 0.1563 71.45)",
+          "oklch(49.29% 0.1563 71.45)",
+          "oklch(60.71% 0.1563 71.45)",
+          "oklch(72.14% 0.1563 71.45)",
+          "oklch(83.57% 0.1563 71.45)",
+          "oklch(95% 0.1563 71.45)"
+        ]
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "Deeper amber orange",
+        "canonical": "#f69a20",
+        "tonalRamp": [
+          "oklch(15% 0.1620 66.14)",
+          "oklch(26.43% 0.1620 66.14)",
+          "oklch(37.86% 0.1620 66.14)",
+          "oklch(49.29% 0.1620 66.14)",
+          "oklch(60.71% 0.1620 66.14)",
+          "oklch(72.14% 0.1620 66.14)",
+          "oklch(83.57% 0.1620 66.14)",
+          "oklch(95% 0.1620 66.14)"
+        ]
+      },
+      "accent-ink": {
+        "role": "primary",
+        "displayName": "Orange-action cocoa",
+        "canonical": "#392010",
+        "tonalRamp": [
+          "oklch(15% 0.0469 52.20)",
+          "oklch(26.43% 0.0469 52.20)",
+          "oklch(37.86% 0.0469 52.20)",
+          "oklch(49.29% 0.0469 52.20)",
+          "oklch(60.71% 0.0469 52.20)",
+          "oklch(72.14% 0.0469 52.20)",
+          "oklch(83.57% 0.0469 52.20)",
+          "oklch(95% 0.0469 52.20)"
+        ]
+      },
+      "brown": {
+        "role": "neutral",
+        "displayName": "Link cocoa",
+        "canonical": "#75462c",
+        "tonalRamp": [
+          "oklch(15% 0.0755 48.92)",
+          "oklch(26.43% 0.0755 48.92)",
+          "oklch(37.86% 0.0755 48.92)",
+          "oklch(49.29% 0.0755 48.92)",
+          "oklch(60.71% 0.0755 48.92)",
+          "oklch(72.14% 0.0755 48.92)",
+          "oklch(83.57% 0.0755 48.92)",
+          "oklch(95% 0.0755 48.92)"
+        ]
+      },
+      "brown-dark": {
+        "role": "neutral",
+        "displayName": "Deep cocoa",
+        "canonical": "#321d15",
+        "tonalRamp": [
+          "oklch(15% 0.0364 41.59)",
+          "oklch(26.43% 0.0364 41.59)",
+          "oklch(37.86% 0.0364 41.59)",
+          "oklch(49.29% 0.0364 41.59)",
+          "oklch(60.71% 0.0364 41.59)",
+          "oklch(72.14% 0.0364 41.59)",
+          "oklch(83.57% 0.0364 41.59)",
+          "oklch(95% 0.0364 41.59)"
+        ]
+      },
+      "brown-light": {
+        "role": "neutral",
+        "displayName": "Pale cream",
+        "canonical": "#fff1d4",
+        "tonalRamp": [
+          "oklch(15% 0.0408 85.29)",
+          "oklch(26.43% 0.0408 85.29)",
+          "oklch(37.86% 0.0408 85.29)",
+          "oklch(49.29% 0.0408 85.29)",
+          "oklch(60.71% 0.0408 85.29)",
+          "oklch(72.14% 0.0408 85.29)",
+          "oklch(83.57% 0.0408 85.29)",
+          "oklch(95% 0.0408 85.29)"
+        ]
+      },
+      "sidebar-brown": {
+        "role": "neutral",
+        "displayName": "Sidebar cocoa",
+        "canonical": "#704329",
+        "tonalRamp": [
+          "oklch(15% 0.0736 49.87)",
+          "oklch(26.43% 0.0736 49.87)",
+          "oklch(37.86% 0.0736 49.87)",
+          "oklch(49.29% 0.0736 49.87)",
+          "oklch(60.71% 0.0736 49.87)",
+          "oklch(72.14% 0.0736 49.87)",
+          "oklch(83.57% 0.0736 49.87)",
+          "oklch(95% 0.0736 49.87)"
+        ]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Outer parchment",
+        "canonical": "#f4eddf",
+        "tonalRamp": [
+          "oklch(15% 0.0201 84.59)",
+          "oklch(26.43% 0.0201 84.59)",
+          "oklch(37.86% 0.0201 84.59)",
+          "oklch(49.29% 0.0201 84.59)",
+          "oklch(60.71% 0.0201 84.59)",
+          "oklch(72.14% 0.0201 84.59)",
+          "oklch(83.57% 0.0201 84.59)",
+          "oklch(95% 0.0201 84.59)"
+        ]
+      },
+      "page": {
+        "role": "neutral",
+        "displayName": "Ivory workspace",
+        "canonical": "#fffdf3",
+        "tonalRamp": [
+          "oklch(15% 0.0133 97.44)",
+          "oklch(26.43% 0.0133 97.44)",
+          "oklch(37.86% 0.0133 97.44)",
+          "oklch(49.29% 0.0133 97.44)",
+          "oklch(60.71% 0.0133 97.44)",
+          "oklch(72.14% 0.0133 97.44)",
+          "oklch(83.57% 0.0133 97.44)",
+          "oklch(95% 0.0133 97.44)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "Warm panel white",
+        "canonical": "#fffef9",
+        "tonalRamp": [
+          "oklch(15% 0.0067 97.35)",
+          "oklch(26.43% 0.0067 97.35)",
+          "oklch(37.86% 0.0067 97.35)",
+          "oklch(49.29% 0.0067 97.35)",
+          "oklch(60.71% 0.0067 97.35)",
+          "oklch(72.14% 0.0067 97.35)",
+          "oklch(83.57% 0.0067 97.35)",
+          "oklch(95% 0.0067 97.35)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Text cocoa",
+        "canonical": "#321d15",
+        "tonalRamp": [
+          "oklch(15% 0.0364 41.59)",
+          "oklch(26.43% 0.0364 41.59)",
+          "oklch(37.86% 0.0364 41.59)",
+          "oklch(49.29% 0.0364 41.59)",
+          "oklch(60.71% 0.0364 41.59)",
+          "oklch(72.14% 0.0364 41.59)",
+          "oklch(83.57% 0.0364 41.59)",
+          "oklch(95% 0.0364 41.59)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted brown",
+        "canonical": "#73614f",
+        "tonalRamp": [
+          "oklch(15% 0.0359 66.86)",
+          "oklch(26.43% 0.0359 66.86)",
+          "oklch(37.86% 0.0359 66.86)",
+          "oklch(49.29% 0.0359 66.86)",
+          "oklch(60.71% 0.0359 66.86)",
+          "oklch(72.14% 0.0359 66.86)",
+          "oklch(83.57% 0.0359 66.86)",
+          "oklch(95% 0.0359 66.86)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Content divider",
+        "canonical": "#e3dccb",
+        "tonalRamp": [
+          "oklch(15% 0.0241 88.24)",
+          "oklch(26.43% 0.0241 88.24)",
+          "oklch(37.86% 0.0241 88.24)",
+          "oklch(49.29% 0.0241 88.24)",
+          "oklch(60.71% 0.0241 88.24)",
+          "oklch(72.14% 0.0241 88.24)",
+          "oklch(83.57% 0.0241 88.24)",
+          "oklch(95% 0.0241 88.24)"
+        ]
+      },
+      "control-line": {
+        "role": "neutral",
+        "displayName": "Control border",
+        "canonical": "#958268",
+        "tonalRamp": [
+          "oklch(15% 0.0440 75.46)",
+          "oklch(26.43% 0.0440 75.46)",
+          "oklch(37.86% 0.0440 75.46)",
+          "oklch(49.29% 0.0440 75.46)",
+          "oklch(60.71% 0.0440 75.46)",
+          "oklch(72.14% 0.0440 75.46)",
+          "oklch(83.57% 0.0440 75.46)",
+          "oklch(95% 0.0440 75.46)"
+        ]
+      },
+      "nav-text": {
+        "role": "neutral",
+        "displayName": "Pale navigation text",
+        "canonical": "#f9e6b8",
+        "tonalRamp": [
+          "oklch(15% 0.0631 88.23)",
+          "oklch(26.43% 0.0631 88.23)",
+          "oklch(37.86% 0.0631 88.23)",
+          "oklch(49.29% 0.0631 88.23)",
+          "oklch(60.71% 0.0631 88.23)",
+          "oklch(72.14% 0.0631 88.23)",
+          "oklch(83.57% 0.0631 88.23)",
+          "oklch(95% 0.0631 88.23)"
+        ]
+      },
+      "nav-hover": {
+        "role": "neutral",
+        "displayName": "Lighter sidebar cocoa",
+        "canonical": "#865537",
+        "tonalRamp": [
+          "oklch(15% 0.0786 51.56)",
+          "oklch(26.43% 0.0786 51.56)",
+          "oklch(37.86% 0.0786 51.56)",
+          "oklch(49.29% 0.0786 51.56)",
+          "oklch(60.71% 0.0786 51.56)",
+          "oklch(72.14% 0.0786 51.56)",
+          "oklch(83.57% 0.0786 51.56)",
+          "oklch(95% 0.0786 51.56)"
+        ]
+      },
+      "table-surface": {
+        "role": "neutral",
+        "displayName": "Table cream",
+        "canonical": "#fff7e4",
+        "tonalRamp": [
+          "oklch(15% 0.0264 87.85)",
+          "oklch(26.43% 0.0264 87.85)",
+          "oklch(37.86% 0.0264 87.85)",
+          "oklch(49.29% 0.0264 87.85)",
+          "oklch(60.71% 0.0264 87.85)",
+          "oklch(72.14% 0.0264 87.85)",
+          "oklch(83.57% 0.0264 87.85)",
+          "oklch(95% 0.0264 87.85)"
+        ]
+      },
+      "progress-fill": {
+        "role": "neutral",
+        "displayName": "Progress brown",
+        "canonical": "#ad621d",
+        "tonalRamp": [
+          "oklch(15% 0.1245 57.65)",
+          "oklch(26.43% 0.1245 57.65)",
+          "oklch(37.86% 0.1245 57.65)",
+          "oklch(49.29% 0.1245 57.65)",
+          "oklch(60.71% 0.1245 57.65)",
+          "oklch(72.14% 0.1245 57.65)",
+          "oklch(83.57% 0.1245 57.65)",
+          "oklch(95% 0.1245 57.65)"
+        ]
+      },
+      "green": {
+        "role": "neutral",
+        "displayName": "Success green",
+        "canonical": "#3e684e",
+        "tonalRamp": [
+          "oklch(15% 0.0635 155.92)",
+          "oklch(26.43% 0.0635 155.92)",
+          "oklch(37.86% 0.0635 155.92)",
+          "oklch(49.29% 0.0635 155.92)",
+          "oklch(60.71% 0.0635 155.92)",
+          "oklch(72.14% 0.0635 155.92)",
+          "oklch(83.57% 0.0635 155.92)",
+          "oklch(95% 0.0635 155.92)"
+        ]
+      },
+      "green-bg": {
+        "role": "neutral",
+        "displayName": "Success surface",
+        "canonical": "#eaf2eb",
+        "tonalRamp": [
+          "oklch(15% 0.0126 149.25)",
+          "oklch(26.43% 0.0126 149.25)",
+          "oklch(37.86% 0.0126 149.25)",
+          "oklch(49.29% 0.0126 149.25)",
+          "oklch(60.71% 0.0126 149.25)",
+          "oklch(72.14% 0.0126 149.25)",
+          "oklch(83.57% 0.0126 149.25)",
+          "oklch(95% 0.0126 149.25)"
+        ]
+      },
+      "orange": {
+        "role": "neutral",
+        "displayName": "Warning amber",
+        "canonical": "#875d16",
+        "tonalRamp": [
+          "oklch(15% 0.0988 75.07)",
+          "oklch(26.43% 0.0988 75.07)",
+          "oklch(37.86% 0.0988 75.07)",
+          "oklch(49.29% 0.0988 75.07)",
+          "oklch(60.71% 0.0988 75.07)",
+          "oklch(72.14% 0.0988 75.07)",
+          "oklch(83.57% 0.0988 75.07)",
+          "oklch(95% 0.0988 75.07)"
+        ]
+      },
+      "orange-bg": {
+        "role": "neutral",
+        "displayName": "Warning surface",
+        "canonical": "#fbf0d9",
+        "tonalRamp": [
+          "oklch(15% 0.0325 85.48)",
+          "oklch(26.43% 0.0325 85.48)",
+          "oklch(37.86% 0.0325 85.48)",
+          "oklch(49.29% 0.0325 85.48)",
+          "oklch(60.71% 0.0325 85.48)",
+          "oklch(72.14% 0.0325 85.48)",
+          "oklch(83.57% 0.0325 85.48)",
+          "oklch(95% 0.0325 85.48)"
+        ]
+      },
+      "red": {
+        "role": "neutral",
+        "displayName": "Error red",
+        "canonical": "#a04437",
+        "tonalRamp": [
+          "oklch(15% 0.1253 30.16)",
+          "oklch(26.43% 0.1253 30.16)",
+          "oklch(37.86% 0.1253 30.16)",
+          "oklch(49.29% 0.1253 30.16)",
+          "oklch(60.71% 0.1253 30.16)",
+          "oklch(72.14% 0.1253 30.16)",
+          "oklch(83.57% 0.1253 30.16)",
+          "oklch(95% 0.1253 30.16)"
+        ]
+      },
+      "red-bg": {
+        "role": "neutral",
+        "displayName": "Error surface",
+        "canonical": "#f9eae5",
+        "tonalRamp": [
+          "oklch(15% 0.0177 39.40)",
+          "oklch(26.43% 0.0177 39.40)",
+          "oklch(37.86% 0.0177 39.40)",
+          "oklch(49.29% 0.0177 39.40)",
+          "oklch(60.71% 0.0177 39.40)",
+          "oklch(72.14% 0.0177 39.40)",
+          "oklch(83.57% 0.0177 39.40)",
+          "oklch(95% 0.0177 39.40)"
+        ]
+      },
+      "destructive": {
+        "role": "neutral",
+        "displayName": "Destructive red",
+        "canonical": "#9c3028",
+        "tonalRamp": [
+          "oklch(15% 0.1448 28.16)",
+          "oklch(26.43% 0.1448 28.16)",
+          "oklch(37.86% 0.1448 28.16)",
+          "oklch(49.29% 0.1448 28.16)",
+          "oklch(60.71% 0.1448 28.16)",
+          "oklch(72.14% 0.1448 28.16)",
+          "oklch(83.57% 0.1448 28.16)",
+          "oklch(95% 0.1448 28.16)"
+        ]
+      }
+    },
+    "tonalRampPurpose": "Synthesized OKLCH strips for the design panel only. These are not additional application tokens.",
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Page headline",
+        "purpose": "Desktop app page titles; 28px below 560px."
+      },
+      "signin-title": {
+        "displayName": "Sign-in title",
+        "purpose": "Sign-in and recovery headings; 30px below 560px."
+      },
+      "title": {
+        "displayName": "Section title",
+        "purpose": "Shared panel and section headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default application text."
+      },
+      "label": {
+        "displayName": "Control label",
+        "purpose": "Standard button labels."
+      },
+      "metric": {
+        "displayName": "Metric value",
+        "purpose": "Performance summary values with tabular numerals; 30px below 560px."
+      }
+    },
+    "shadows": [
+      {
+        "name": "app-frame",
+        "value": "0 8px 28px #50311c12",
+        "purpose": "Soft separation for the rounded desktop frame; content scrolls inside its continuous background."
+      },
+      {
+        "name": "metric",
+        "value": "0 3px 12px #50311c12",
+        "purpose": "Light separation for performance summaries."
+      },
+      {
+        "name": "options",
+        "value": "0 8px 28px #38291f26",
+        "purpose": "Section options popover."
+      },
+      {
+        "name": "dialog",
+        "value": "0 24px 90px #30261f20",
+        "purpose": "Native class dialogs."
+      },
+      {
+        "name": "feedback",
+        "value": "0 4px 20px #30261f0c",
+        "purpose": "Transient feedback."
+      }
+    ],
+    "motion": [
+      {
+        "name": "control-state",
+        "value": "140ms ease",
+        "purpose": "Background, border, and text color transitions."
+      },
+      {
+        "name": "surface-open",
+        "value": "160ms cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "Dialog/popover opacity .4 to 1 and translation -4px to 0."
+      },
+      {
+        "name": "backdrop-open",
+        "value": "120ms ease-out",
+        "purpose": "Backdrop/overlay opacity 0 to 1."
+      },
+      {
+        "name": "drawer",
+        "value": "200ms cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "Mobile drawer translation."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation: none; transition: none; scroll-behavior: auto",
+        "purpose": "Applied with important priority when reduced motion is requested."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "results-stack",
+        "value": "1320px"
+      },
+      {
+        "name": "compact-desktop",
+        "value": "1100px"
+      },
+      {
+        "name": "signin-single-column",
+        "value": "900px"
+      },
+      {
+        "name": "mobile-navigation",
+        "value": "800px"
+      },
+      {
+        "name": "compact-phone",
+        "value": "560px"
+      }
+    ],
+    "focus": {
+      "default": "3px solid var(--brown)",
+      "offset": "4px",
+      "sidebarColor": "#f6e5d5",
+      "recipeDisclosure": "2px solid var(--brown)"
+    }
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Orange primary task action.",
+      "html": "<button class=\"ds-primary\" type=\"button\">Prepare report</button>",
+      "css": ".ds-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border: 1px solid var(--control-line, #958268); border-radius: 10px; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 13px; line-height: 1.6; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-primary:disabled { opacity: .55; cursor: wait; } .ds-primary:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-primary { transition: none; } }.ds-primary { border-color: transparent; background: var(--accent, #ffae38); color: var(--accent-ink, #392010); font-weight: 600; } .ds-primary:hover { background: var(--accent-hover, #f69a20); } .ds-primary:active { background: #eb8910; }"
+    },
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Bordered supporting task control.",
+      "html": "<button class=\"ds-secondary\" type=\"button\">Copy code</button>",
+      "css": ".ds-secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border: 1px solid var(--control-line, #958268); border-radius: 10px; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 13px; line-height: 1.6; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-secondary:disabled { opacity: .55; cursor: wait; } .ds-secondary:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-secondary { transition: none; } }.ds-secondary { background: var(--white, #fffef9); color: var(--text, #321d15); } .ds-secondary:hover { border-color: var(--brown, #75462c); background: var(--brown-light, #fff1d4); } .ds-secondary:active { background: #f5e4be; }"
+    },
+    {
+      "name": "Quiet button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Low-emphasis action used beside a primary control.",
+      "html": "<button class=\"ds-quiet\" type=\"button\">Cancel</button>",
+      "css": ".ds-quiet { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border: 1px solid var(--control-line, #958268); border-radius: 10px; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 13px; line-height: 1.6; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-quiet:disabled { opacity: .55; cursor: wait; } .ds-quiet:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-quiet { transition: none; } }.ds-quiet { border-color: transparent; background: transparent; color: var(--muted, #73614f); } .ds-quiet:hover { background: var(--brown-light, #fff1d4); color: var(--text, #321d15); } .ds-quiet:active { background: #f5e4be; }"
+    },
+    {
+      "name": "Destructive button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Confirmation action for deleting a class section.",
+      "html": "<button class=\"ds-danger\" type=\"button\">Delete Section</button>",
+      "css": ".ds-danger { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border: 1px solid var(--control-line, #958268); border-radius: 10px; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 13px; line-height: 1.6; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-danger:disabled { opacity: .55; cursor: wait; } .ds-danger:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-danger { transition: none; } }.ds-danger { border-color: #9c3028; background: #9c3028; color: #fff; } .ds-danger:hover { background: #7d261f; } .ds-danger:disabled { opacity: .6; }"
+    },
+    {
+      "name": "Text field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Visible label, strong border, and keyboard focus for class entry.",
+      "html": "<label class=\"ds-field\">Section name<input class=\"ds-input\" placeholder=\"e.g. BSHM 2A\"></label>",
+      "css": ".ds-field { display: block; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 12px; line-height: 1.6; font-weight: 600; color: var(--text, #321d15); } .ds-input { display: block; width: 100%; margin-top: 8px; min-height: 48px; padding: 12px 14px; border: 1px solid var(--control-line, #958268); border-radius: 10px; background: var(--white, #fffef9); color: var(--text, #321d15); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 1.6; caret-color: var(--brown, #75462c); transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-input::placeholder { color: var(--muted, #73614f); opacity: 1; } .ds-input[aria-invalid=\"true\"] { border-color: var(--red, #a04437); } .ds-input:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (max-width: 800px) { .ds-input { font-size: 16px; } } @media (prefers-reduced-motion: reduce) { .ds-input { transition: none; } }"
+    },
+    {
+      "name": "Workspace navigation",
+      "kind": "nav",
+      "refersTo": "nav-active",
+      "description": "Cocoa text navigation with a clear orange current-page state.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><a class=\"ds-nav-link ds-current\" href=\"#dashboard\" aria-current=\"page\">Dashboard</a><a class=\"ds-nav-link\" href=\"#learners\">Learners</a><a class=\"ds-nav-link\" href=\"#sessions\">Live sessions</a><a class=\"ds-nav-link\" href=\"#reports\">Reports</a></nav>",
+      "css": ".ds-nav { display: flex; flex-direction: column; gap: 12px; padding: 20px; width: 192px; background: var(--sidebar-brown, #704329); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; } .ds-nav-link { display: block; padding: 14px 16px; border-radius: 12px; color: #f9e6b8; font-size: 15px; line-height: 1.6; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 140ms ease, color 140ms ease; } .ds-nav-link:hover { color: #fff6df; background: #865537; } .ds-nav-link.ds-current { color: var(--accent-ink, #392010); background: var(--accent, #ffae38); font-weight: 600; } .ds-nav-link:focus-visible { outline: 3px solid #f6e5d5; outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-nav-link { transition: none; } }"
+    },
+    {
+      "name": "Status labels",
+      "kind": "chip",
+      "refersTo": "badge-good",
+      "description": "Read-only status text with semantic foreground/background pairs.",
+      "html": "<span class=\"ds-status ds-good\">Passed</span> <span class=\"ds-status ds-warn\">Needs Practice</span>",
+      "css": ".ds-status { display: inline-block; border-radius: 5px; padding: 4px 8px; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 11px; line-height: 1.6; font-weight: 600; white-space: nowrap; } .ds-good { background: var(--green-bg, #eaf2eb); color: var(--green, #3e684e); } .ds-warn { background: var(--orange-bg, #fbf0d9); color: var(--orange, #875d16); }"
+    },
+    {
+      "name": "Content panel",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Shared bordered panel for readable application content.",
+      "html": "<section class=\"ds-card\"><h2 class=\"ds-card-title\">Recent activity</h2><p class=\"ds-card-copy\">Activity appears here as learners complete sessions.</p></section>",
+      "css": ".ds-card { padding: 24px; border: 1px solid var(--line, #e3dccb); border-radius: var(--radius, 16px); background: var(--white, #fffef9); color: var(--text, #321d15); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; } .ds-card-title { margin: 0 0 24px; font-size: 18px; line-height: 1.3; font-weight: 600; } .ds-card-copy { margin: 0; font-size: 13px; line-height: 1.6; } @media (max-width: 560px) { .ds-card { padding: 20px; } }"
+    },
+    {
+      "name": "Metric panel",
+      "kind": "card",
+      "refersTo": "metric",
+      "description": "Text-only summary; the example shows the application's initial loading placeholder.",
+      "html": "<article class=\"ds-metric\"><span class=\"ds-metric-label\">Enrolled learners</span><div class=\"ds-metric-value\">—</div></article>",
+      "css": ".ds-metric { padding: 24px; border-radius: var(--radius, 16px); background: var(--white, #fffef9); box-shadow: 0 3px 12px #50311c12; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; } .ds-metric-label { color: var(--muted, #73614f); font-size: 13px; line-height: 1.6; } .ds-metric-value { margin-top: 8px; font-size: 34px; line-height: 1.2; font-weight: 600; letter-spacing: -.025em; font-variant-numeric: tabular-nums; color: var(--brown-dark, #321d15); } @media (max-width: 560px) { .ds-metric { padding: 20px 16px; } .ds-metric-label { font-size: 12px; } .ds-metric-value { font-size: 30px; } }"
+    },
+    {
+      "name": "Session progress",
+      "kind": "custom",
+      "description": "Thicker session progress track; 50% here is a component preview value.",
+      "html": "<div class=\"ds-progress\" role=\"progressbar\" aria-label=\"Recipe progress\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"50\"><span class=\"ds-progress-fill\"></span></div>",
+      "css": ".ds-progress { height: 10px; margin: 12px 0 8px; border-radius: 10px; background: var(--brown-light, #fff1d4); overflow: hidden; } .ds-progress-fill { display: block; width: 50%; height: 100%; border-radius: inherit; background: #ad621d; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "A familiar instructor workspace",
+    "overview": "BakeIT adapts the user-selected bakery reference into a warm, practical instructor interface. Ivory surfaces, a deep cocoa navigation area, amber-orange actions, and Poppins give the existing class and learner tools a consistent identity.\n\nSolid panels, visible table rules, and restrained blurred shadows support scanning. The original BakeIT logo remains the identity asset. Photography belongs to sign-in; records and performance views rely on real application content.",
+    "keyCharacteristics": [
+      "Ivory workspace, cocoa navigation, and orange active states.",
+      "Locally hosted Poppins with clear size and weight hierarchy.",
+      "Rounded panels, explicit borders, and compact task controls.",
+      "Short feedback motion with reduced-motion support."
+    ],
+    "rules": [
+      {
+        "name": "The Orange Action Rule",
+        "body": "Pair orange actions and active navigation with dark cocoa text; reserve semantic green, amber, and red for status feedback.",
+        "section": "colors"
+      },
+      {
+        "name": "The Visible Focus Rule",
+        "body": "Keep the keyboard outline visible on every interactive control, using the light outline on the cocoa sidebar.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do preserve the BakeIT logo and the supplied ivory, cocoa, and orange direction.",
+      "Do use the shared spacing scale, rounded panels, table dividers, and locally hosted Poppins.",
+      "Do retain visible labels, keyboard focus, readable status text, and reduced-motion behavior.",
+      "Do keep record tables usable through their own horizontal scrolling region on narrow screens.",
+      "Do record image origins and generation prompts in the asset provenance document."
+    ],
+    "donts": [
+      "Don't use purple-to-blue gradients or text gradients.",
+      "Don't add heading emojis, headline badges, or three icon boxes.",
+      "Don't use Inter, italic serif accents, or Space Grotesk with Instrument Serif.",
+      "Don't introduce colored left-border cards, glassmorphism, or low-contrast dark mode.",
+      "Don't add ubiquitous Lucide icons or default shadcn styling.",
+      "Don't add scroll fades, cursor beams, or fading button hovers.",
+      "Don't introduce inconsistent spacing, repeated em-dash prose, or buzzword copy.",
+      "Don't add grain over gradients."
+    ]
+  }
+}

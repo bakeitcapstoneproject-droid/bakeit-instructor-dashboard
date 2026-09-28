@@ -23,7 +23,10 @@ test('static demo persists creation, filters samples and starts new classes empt
   assert.ok(students.length > 0 && students.every(student => student.sectionId === 'section-a'));
   assert.equal(students.find(student => student.score === 62).status, 'Passed');
   const { activities } = await request('/api/activities?sectionId=section-a');
+  assert.equal(activities.length, students.length);
+  assert.ok(activities.length > 5);
   assert.ok(activities.every(item => Number.isFinite(Date.parse(item.time))));
+  assert.deepEqual(activities.map(item => item.time), activities.map(item => item.time).sort().reverse());
 });
 
 test('deleting demo sections removes related data and never reseeds an empty workspace', async () => {

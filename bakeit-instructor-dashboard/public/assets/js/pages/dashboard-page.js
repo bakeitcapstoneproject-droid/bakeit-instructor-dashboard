@@ -17,9 +17,17 @@ export class DashboardPage extends PageController {
     if (sectionId !== this.shell.sections.selected()) return;
     const metrics = new DashboardMetrics(students).summary();
     for (const [key, value] of Object.entries(metrics)) document.querySelector(`[data-metric="${key}"]`).textContent = value;
-    this.table.render(students.slice(0, 4));
-    document.querySelector('[data-activity-list]').innerHTML = activities
+    this.table.render(students);
+    const activityMarkup = activities
       .map(activity => `<div class="activity"><span>${escapeHtml(activity.text)}</span><time>${escapeHtml(new Date(activity.time).toLocaleDateString())}</time></div>`).join('')
       || '<p class="empty">No recent activity for this section.</p>';
+    if (activityMarkup !== this.activityMarkup) {
+      document.querySelector('[data-activity-list]').innerHTML = activityMarkup;
+      this.activityMarkup = activityMarkup;
+    }
+    if (sectionId !== this.renderedSectionId) {
+      document.querySelectorAll('[data-overview-scroll]').forEach(region => region.scrollTo(0, 0));
+      this.renderedSectionId = sectionId;
+    }
   }
 }

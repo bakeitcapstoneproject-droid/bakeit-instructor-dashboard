@@ -33,7 +33,7 @@ export class ClassApiController {
       }
       if (route === 'GET /api/activities') {
         const learners = await this.classes.learners(url.searchParams.get('sectionId') || 'all');
-        return this.json(res, 200, { activities: learners.sort((a, b) => b.joinedAt.localeCompare(a.joinedAt)).slice(0, 5)
+        return this.json(res, 200, { activities: learners.sort((a, b) => b.joinedAt.localeCompare(a.joinedAt))
           .map(item => ({ text: `${item.name} joined ${item.section}`, time: item.joinedAt })) });
       }
       throw new RequestError(404, 'Endpoint not found.');

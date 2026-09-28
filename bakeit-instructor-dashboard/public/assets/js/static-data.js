@@ -27,7 +27,7 @@ export class StaticDataService {
     })) };
     if (method === 'GET' && url.pathname === '/api/sessions') return { sessions: filter(data.sessions) };
     if (method === 'GET' && url.pathname === '/api/activities') {
-      return { activities: filter(data.students).slice(0, 5).map(student => ({
+      return { activities: filter(data.students).sort((a, b) => b.joinedAt.localeCompare(a.joinedAt)).map(student => ({
         text: `${student.name} joined ${student.section}`, time: student.joinedAt
       })) };
     }

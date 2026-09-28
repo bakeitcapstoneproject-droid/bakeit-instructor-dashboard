@@ -4,7 +4,7 @@ import { RequestError } from './request-error.js';
 
 export class StaticFileHandler {
   constructor(root) { this.root = root; }
-  mime(path) { return ({'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.png':'image/png'})[extname(path)] || 'application/octet-stream'; }
+  mime(path) { return ({'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.ttf':'font/ttf','.woff2':'font/woff2'})[extname(path)] || 'application/octet-stream'; }
   resolve(url) {
     const pathname = decodeURIComponent(new URL(url, 'http://localhost').pathname);
     const route = pathname === '/' ? '/login.html' : pathname;
