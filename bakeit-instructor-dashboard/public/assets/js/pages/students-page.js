@@ -36,10 +36,10 @@ export class StudentsPage extends PageController {
       }
     });
     window.addEventListener('hashchange', () => this.showSection(true));
-    document.querySelector('[data-copy-detail]').addEventListener('click', () => {
+    document.querySelector('[data-copy-detail]').addEventListener('click', async event => {
       const section = this.currentSection();
-      if (section) this.sectionManager.copy(section.classCode);
-      this.setOptionsOpen(false, true);
+      if (section) await this.sectionManager.copy(section.classCode, event.currentTarget);
+      if (!this.optionsPanel.hidden) this.setOptionsOpen(false, true);
     });
     document.querySelector('[data-delete-detail]').addEventListener('click', () => {
       const section = this.currentSection();

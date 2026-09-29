@@ -11,7 +11,7 @@
   <div class="app">
     <aside class="sidebar" id="main-sidebar" aria-label="Navigation">
       <div class="sidebar-brand">
-        <a class="wordmark" href="/dashboard.html" aria-label="BakeIT Instructor Dashboard"><span class="logo-frame"><img class="brand-logo" src="/assets/images/bakeit-logo-current.png" alt="BakeIT" width="2000" height="2000"></span></a>
+        <a class="wordmark" href="/dashboard.html" aria-label="BakeIT Instructor Dashboard"><span class="logo-frame"><img class="brand-logo" src="/assets/images/bakeit-logo-chef.png" alt="BakeIT" width="2000" height="2000"></span></a>
       </div>
       <nav class="nav" aria-label="Main navigation">
         <a href="/dashboard.html"><span>Dashboard</span></a>
@@ -28,7 +28,7 @@
       </div>
     </aside>
     <button class="nav-overlay" data-nav-overlay type="button" tabindex="-1" aria-label="Close navigation" hidden></button>
-    <div class="mobile-header"><a class="wordmark" href="/dashboard.html" aria-label="BakeIT Instructor Dashboard"><span class="logo-frame"><img class="brand-logo" src="/assets/images/bakeit-logo-current.png" alt="BakeIT" width="2000" height="2000"></span></a><button class="btn" type="button" data-nav-toggle aria-controls="main-sidebar" aria-expanded="false">Menu</button></div>
+    <div class="mobile-header"><a class="wordmark" href="/dashboard.html" aria-label="BakeIT Instructor Dashboard"><span class="logo-frame"><img class="brand-logo" src="/assets/images/bakeit-logo-chef.png" alt="BakeIT" width="2000" height="2000"></span></a><button class="btn" type="button" data-nav-toggle aria-controls="main-sidebar" aria-expanded="false">Menu</button></div>
     <main class="main">
       <div class="page-head"><h1>Learners</h1></div>
       <section class="learner-sections" aria-labelledby="class-sections-title">
@@ -52,7 +52,7 @@
       <div class="section-head"><h2 id="learner-records-title">Learner progress</h2><span class="count-badge" data-learner-count></span></div>
       <div class="filters">
         <input id="search" data-filter placeholder="Search learner or ID" aria-label="Search learner or ID" type="search">
-        <select id="status" data-filter aria-label="Learner status"><option value="">All statuses</option><option>Passed</option><option>Needs Practice</option><option>Not started</option></select>
+        <select id="status" data-filter aria-label="Learner status"><option value="">All Status</option><option>Passed</option><option>Needs Practice</option><option>Not started</option></select>
         <select id="recipe" data-filter aria-label="Recipe"><option value="">All recipes</option><option>Brownies</option><option>Cookies</option><option>Cupcakes</option></select>
       </div>
       <section class="card table-scroll"><table><thead><tr><th>Learner</th><th>Section</th><th>Latest recipe</th><th>Sessions</th><th>Score</th><th>Waste</th><th>Status</th></tr></thead><tbody></tbody></table></section>
@@ -61,7 +61,7 @@
       <dialog class="class-dialog" data-create-dialog aria-labelledby="create-title">
         <form data-create-section>
           <h2 id="create-title">Create class section</h2>
-          <div class="field"><label for="section-name">Section name</label><input id="section-name" name="name" placeholder="e.g. BSHM 2A" required maxlength="80" aria-describedby="create-error" autofocus></div>
+          <div class="field"><label for="section-name">Section name</label><input id="section-name" name="name" required maxlength="80" aria-describedby="create-error" autofocus></div>
           <p id="create-error" class="error" data-create-error role="alert"></p>
           <div class="dialog-actions"><button class="btn quiet" type="button" data-cancel-create>Cancel</button><button class="btn primary" type="submit">Create class section</button></div>
         </form>

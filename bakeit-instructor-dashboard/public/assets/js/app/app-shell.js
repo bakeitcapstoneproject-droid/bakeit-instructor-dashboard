@@ -4,6 +4,7 @@ import { SectionSelector } from '../views/section-selector.js';
 import { NavigationController } from '../views/navigation-controller.js';
 import { PageStatusView } from '../views/page-status-view.js';
 import { RefreshController } from './refresh-controller.js';
+import { beginBusy } from '../views/busy-action.js';
 
 export class AppShell {
   constructor({ auth = new AuthService(), sections = new SectionService(), navigation = new NavigationController() } = {}) {
@@ -16,9 +17,12 @@ export class AppShell {
     this.navigation.init();
     this.renderProfile();
     this.status = new PageStatusView(document.querySelector('.main'));
-    document.querySelector('[data-logout]')?.addEventListener('click', () => {
-      try { this.auth.logout(); location.href = '/login.html'; }
-      catch (error) { this.showError(error); }
+    document.querySelector('[data-logout]')?.addEventListener('click', async event => {
+      if (this.signingOut) return;
+      this.signingOut = true;
+      const finish = beginBusy(event.currentTarget, 'Signing out…');
+      try { await this.auth.logout(); location.href = '/login.html'; }
+      catch (error) { finish(); this.signingOut = false; this.showError(error); }
     });
     const path = location.pathname;
     document.querySelectorAll('.nav a').forEach(link => {

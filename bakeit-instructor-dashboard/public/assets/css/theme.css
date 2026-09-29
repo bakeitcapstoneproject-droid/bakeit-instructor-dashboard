@@ -1,4 +1,4 @@
-/* BakeIT component details for the bakery reference palette. */
+/* BakeIT component details: one quiet workspace, with amber reserved for actions. */
 :root {
   color-scheme: light;
   scrollbar-color: #ad9473 var(--page);
@@ -6,15 +6,14 @@
 .sidebar { background: var(--sidebar-brown); }
 .session-badge { background: var(--brown-light); color: var(--brown); }
 .live-grid { align-items: start; }
-.live-card .row-between { flex-wrap: wrap; gap: 12px; }
+.live-card .row-between { flex-wrap: wrap; align-items: flex-start; gap: 12px; padding-bottom: var(--space-4); border-bottom: 1px solid var(--line); }
 .live-card .row-between > div { min-width: 0; }
 .live-card { overflow-wrap: anywhere; }
-.live-card .progress { height: 10px; margin: 12px 0 8px; background: var(--brown-light); }
+.live-card .progress { height: 6px; margin: 16px 0 12px; background: var(--brown-light); }
 .live-card .progress i { background: #ad621d; }
 .session-progress-caption { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 16px; color: var(--brown-dark); font-size: 12px; }
-.step-instruction { font-size: 13px; line-height: 1.65; color: var(--brown-dark); margin: 0 0 16px; }
-.recipe-details { margin-top: 20px; border-top: 1px solid var(--line); padding-top: 16px; }
-.recipe-details summary { cursor: pointer; color: var(--brown); font-size: 13px; font-weight: 600; padding: 8px 0; }
+.recipe-details { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 8px; }
+.recipe-details summary { cursor: pointer; color: var(--brown); font-size: 13px; font-weight: 600; min-height: 44px; padding: 12px 0; }
 .recipe-details summary:hover { color: var(--brown-dark); }
 .recipe-details summary:focus-visible { outline: 2px solid var(--brown); outline-offset: 4px; border-radius: 4px; }
 .recipe-scope, .recipe-note { font-size: 12px; line-height: 1.6; color: var(--brown-dark); }
@@ -27,17 +26,19 @@
 .recipe-step-title span { color: var(--brown); font-size: 11px; }
 .recipe-steps p { margin: 4px 0 0; color: var(--brown-dark); }
 
-/* Frame the supplied transparent PNG without changing its artwork. */
-.logo-frame { display: block; position: relative; width: 164px; aspect-ratio: 3.6; overflow: hidden; border-radius: 7px; }
-.logo-frame img { position: absolute; display: block; width: 120%; max-width: none; height: auto; left: -10%; top: 50%; transform: translateY(-50%); border-radius: 0; }
-.mobile-header .logo-frame { width: 120px; background: var(--sidebar-brown); }
-.mobile-header .logo-frame img { width: 120%; }
-.login-logo { width: 200px; }
-.login-card-logo { display: none; background: var(--sidebar-brown); }
+/* Frame the full chef-hat logo; only the source PNG's transparent margins are clipped.
+   Artwork bounds on its 2000px canvas: x 426–1614, y 468–1336. */
+.logo-frame { display: block; position: relative; width: 164px; max-width: 100%; aspect-ratio: 1.3; overflow: hidden; border-radius: 7px; }
+.logo-frame img { position: absolute; display: block; width: 160%; max-width: none; height: auto; left: -31.6%; top: 50%; transform: translateY(-45.1%); border-radius: 0; }
+.sidebar-brand .logo-frame { width: 128px; }
+.mobile-header .logo-frame { width: 64px; background: var(--sidebar-brown); }
+.mobile-header .logo-frame img { width: 160%; }
+.login-logo { width: 240px; }
+.login-card-logo { display: none; width: 120px; background: var(--sidebar-brown); }
 
 /* Section overview and progress remain within Learners. */
 .class-card { position: relative; }
-.class-card h3 { font-size: 22px; line-height: 1.3; letter-spacing: -.02em; }
+.class-card h3 { font-size: 20px; line-height: 1.3; letter-spacing: -.02em; }
 .class-card:hover { border-color: #b39680; }
 .section-open { gap: 8px; }
 .section-open::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius); }
@@ -58,18 +59,37 @@
 .btn.danger:hover { background: #7d261f; }
 .btn.danger:disabled { opacity: .6; cursor: wait; }
 .delete-description { color: var(--text); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
-.create-section-card { min-height: 72px; grid-column: 1 / -1; padding: var(--space-4) var(--space-6); display: flex; align-items: center; justify-content: center; gap: var(--space-3); border: 1px dashed var(--control-line); border-radius: var(--radius); background: var(--brown-light); color: var(--brown); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
-.create-section-card:hover { background: var(--accent); border-color: var(--brown); color: var(--accent-ink); }
+.create-section-card { min-height: 56px; grid-column: 1 / -1; padding: 12px var(--space-6); display: flex; align-items: center; justify-content: flex-start; gap: var(--space-3); border: 1px dashed var(--control-line); border-radius: var(--radius); background: transparent; color: var(--brown); font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; overflow-wrap: anywhere; }
+.create-section-card:hover { background: var(--brown-light); border-color: var(--brown); color: var(--accent-ink); }
 .create-section-card > span { font-size: 28px; font-weight: 400; }
 .section-back { margin-bottom: 24px; }
-.section-detail-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+.section-detail-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 24px; margin-bottom: 32px; border-bottom: 1px solid var(--line); }
 .section-detail-head h2 { font-size: 24px; overflow-wrap: anywhere; min-width: 0; }
+/* Keep paired session summaries aligned while allowing disclosures to grow independently. */
+@media(min-width: 1101px) {
+  .live-card .row-between { min-height: 76px; }
+  .live-card .step { min-height: 42px; }
+}
+@media(min-width: 801px) and (max-width: 1100px) {
+  .live-grid { grid-template-columns: minmax(0, 1fr); }
+}
 @media(max-width: 900px) {
   .login-card-logo { display: block; }
 }
 @media(max-width: 560px) {
   .section-head { flex-wrap: wrap; }
 }
+
+/* Shared loading feedback; existing records remain readable during refreshes. */
+.page-loading { position: fixed; right: 24px; bottom: 24px; z-index: 6; display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 48px); margin: 0; padding: 12px 16px; border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--white); color: var(--brown); font-size: 13px; }
+.page-loading::before, .loading-block::before, button[data-loading]::before { content: ""; display: inline-block; width: 16px; height: 16px; flex: 0 0 16px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: loading-spin 800ms linear infinite; }
+.loading-block::before { margin-right: 10px; vertical-align: -3px; }
+.loading-block { color: var(--muted); }
+td[data-loading-placeholder] { text-align: left; }
+button[data-loading] { gap: 8px; opacity: 1; cursor: wait; }
+.main[data-initial-loading] [data-metric] { color: transparent; position: relative; }
+.main[data-initial-loading] [data-metric]::after { content: ""; position: absolute; inset: 4px auto 4px 0; width: min(88px, 80%); border-radius: 4px; background: var(--line); }
+@keyframes loading-spin { to { transform: rotate(360deg); } }
 
 /* Short feedback transitions; data refreshes do not replay entrances. */
 .page-error { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }

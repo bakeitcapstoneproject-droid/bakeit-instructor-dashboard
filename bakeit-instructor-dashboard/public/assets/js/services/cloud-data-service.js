@@ -1,6 +1,7 @@
 import { dataMode } from '../runtime-config.js';
 import { apiRequest } from './api-client.js';
 import { scoreRemark } from '../domain/performance.js';
+import { validateSectionReport } from '../domain/section-report.js';
 
 export class CloudDataService {
   constructor({ mode = 'api', request = apiRequest } = {}) { this.mode = mode; this.request = request; }
@@ -41,5 +42,10 @@ export class CloudDataService {
   async getHealth() {
     if (this.mode !== 'mock') await this.request('/api/sections');
     return { connected: true, source: this.mode === 'mock' ? 'Prototype data' : dataMode === 'static' ? 'Browser storage' : 'Class server', updated: new Date() };
+  }
+  async getSectionReport(sectionId) {
+    if (!sectionId || sectionId === 'all') throw new Error('Choose a class section first.');
+    const body = await this.request(`/api/reports/sections/${encodeURIComponent(sectionId)}`);
+    return validateSectionReport(body?.report, sectionId);
   }
 }

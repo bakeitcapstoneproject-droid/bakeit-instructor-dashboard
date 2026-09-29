@@ -18,13 +18,13 @@ Repository evidence: `bakeit-instructor-dashboard/README.md`, `public/*.html`, a
 - Dashboard metrics, recent learner results, recent activity, and section filtering.
 - Class section creation, viewing learners, copying class codes, deletion with confirmation, and learner search/status/recipe filters.
 - Session progress, current recipe instructions, and expandable recipe steps for Cookies, Brownies, and Cupcakes.
-- A report preparation action with feedback. File export is not implemented.
+- Per-section Excel downloads with one row per learner's latest recorded result, plus a blank template. Prepare report opens a confirmation popup identifying the section and Excel format, with section validation, cancellation, duplicate-submit protection and retryable errors. Excel provides colored headings, readable columns and separate scores/completion, safety/waste and procedural-accuracy sheets. A complete data sheet preserves the integration fields; missing measurements remain blank. The versioned JSON data contract is documented in `bakeit-instructor-dashboard/docs/section-reports.md` for future AWS integration.
 
 ## Constraints
 
 The user's 2026-09-28 request authorizes applying the supplied bakery reference's visual style and UI treatment to the existing website. Existing BakeIT features and behavior must be preserved. Do not introduce the reference's customers, products, inventory, orders, sales, or staff-management features.
 
-The repository describes this as a prototype: authentication is browser-local, the Node API is not authenticated, live recipe sessions are presentation samples, and VR ingestion and external report export remain future work. Visual changes must not imply these integrations have been added.
+The repository describes this as a prototype: authentication is browser-local, the Node API is not authenticated, and live recipe sessions are presentation samples. Local/static Excel downloads are implemented; AWS integration, server-side export jobs, and VR assessment ingestion remain future work. Uncollected safety and procedural results must not be invented.
 
 ## Brand and assets
 

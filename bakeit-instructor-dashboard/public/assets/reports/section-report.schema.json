@@ -1,0 +1,245 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BakeIT section report v1.0",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "section",
+    "rows"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "section": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "not": {
+            "const": "all"
+          }
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "generated_at",
+          "section_id",
+          "section_name",
+          "learner_id",
+          "learner_name",
+          "data_source",
+          "recipe",
+          "session_id",
+          "assessed_at",
+          "session_count",
+          "score_percent",
+          "score_remark",
+          "completion_status",
+          "completion_percent",
+          "completion_scope",
+          "safety_score_percent",
+          "safety_checks_passed",
+          "safety_checks_total",
+          "safety_incident_count",
+          "waste_level",
+          "waste_quantity",
+          "waste_unit",
+          "procedural_correct_steps",
+          "procedural_assessed_steps",
+          "procedural_accuracy_percent"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "const": "1.0"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "section_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "section_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "learner_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "learner_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "data_source": {
+            "enum": [
+              "local",
+              "demo",
+              "aws"
+            ]
+          },
+          "recipe": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "session_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "assessed_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "session_count": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "score_percent": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 100
+          },
+          "score_remark": {
+            "enum": [
+              "Passed",
+              "Needs Practice",
+              null
+            ]
+          },
+          "completion_status": {
+            "enum": [
+              "Not started",
+              "In progress",
+              "Completed",
+              "Abandoned",
+              null
+            ]
+          },
+          "completion_percent": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 100
+          },
+          "completion_scope": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "safety_score_percent": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 100
+          },
+          "safety_checks_passed": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "safety_checks_total": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "safety_incident_count": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "waste_level": {
+            "enum": [
+              "Low",
+              "Medium",
+              "High",
+              null
+            ]
+          },
+          "waste_quantity": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "waste_unit": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "procedural_correct_steps": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "procedural_assessed_steps": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "procedural_accuracy_percent": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      }
+    }
+  }
+}

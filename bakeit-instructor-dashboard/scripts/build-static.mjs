@@ -1,4 +1,4 @@
-import { cp, mkdir, writeFile } from 'node:fs/promises';
+import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 
@@ -10,6 +10,10 @@ export class StaticSiteBuilder {
   async build() {
     await mkdir(this.output, { recursive: true });
     await cp(new URL('public/', this.project), this.output, { recursive: true });
+    // Remove retired report formats from an existing build without clearing other output.
+    for (const name of ['section-report-template.csv', 'section-report-example.csv']) {
+      await rm(new URL(`assets/reports/${name}`, this.output), { force: true });
+    }
     await writeFile(new URL('assets/js/runtime-config.js', this.output), "export const dataMode = 'static';\n");
     await cp(new URL('public/login.html', this.project), new URL('index.html', this.output));
     return fileURLToPath(this.output);

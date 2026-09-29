@@ -14,6 +14,13 @@ export class ClassApiController {
     try {
       const route = `${req.method} ${url.pathname}`;
       if (route === 'GET /api/sections') return this.json(res, 200, { sections: await this.classes.listSections() });
+      const sectionReport = req.method === 'GET' && url.pathname.match(/^\/api\/reports\/sections\/([^/]+)$/);
+      if (sectionReport) {
+        let sectionId;
+        try { sectionId = decodeURIComponent(sectionReport[1]); }
+        catch { throw new RequestError(400, 'Enter a valid section ID.'); }
+        return this.json(res, 200, { report: await this.classes.sectionReport(sectionId) });
+      }
       if (route === 'POST /api/sections') return this.json(res, 201, { section: await this.classes.createSection(await this.bodyReader.read(req)) });
       const deleteSection = req.method === 'DELETE' && url.pathname.match(/^\/api\/sections\/([^/]+)$/);
       if (deleteSection) {

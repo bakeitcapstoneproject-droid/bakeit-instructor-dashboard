@@ -30,6 +30,23 @@ async function fixture(t) {
   return { app, dataFile, request, post, base };
 }
 
+test('section report endpoint returns a scoped snapshot including unstarted learners', async t => {
+  const { post, request } = await fixture(t);
+  const first = (await post('/api/sections', { name: 'Report A' })).body.section;
+  const second = (await post('/api/sections', { name: 'Report B' })).body.section;
+  await post('/api/sections/join', { classCode: first.classCode, learnerId: 'A-1', learnerName: 'First learner' });
+  await post('/api/sections/join', { classCode: second.classCode, learnerId: 'B-1', learnerName: 'Second learner' });
+  const result = await request(`/api/reports/sections/${first.id}`);
+  assert.equal(result.status, 200);
+  assert.equal(result.body.report.section.name, 'Report A');
+  assert.deepEqual(result.body.report.rows.map(row => row.learner_id), ['A-1']);
+  assert.equal(result.body.report.rows[0].score_percent, null);
+  assert.equal(result.body.report.rows[0].completion_status, 'Not started');
+  assert.equal((await request('/api/reports/sections/all')).status, 400);
+  assert.equal((await request('/api/reports/sections/missing')).status, 404);
+  assert.equal((await request('/api/reports/sections/%ZZ')).status, 400);
+});
+
 test('create a section, join from a separate client, filter learners, and reload saved enrollment', async t => {
   const { post, request, dataFile, base } = await fixture(t);
   assert.deepEqual((await request('/api/sections')).body.sections, []);

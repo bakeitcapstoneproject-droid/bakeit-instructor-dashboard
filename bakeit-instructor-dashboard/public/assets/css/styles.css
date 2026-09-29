@@ -1,17 +1,17 @@
 /* Sign-in uses the same type, controls, and spacing as the instructor workspace. */
-.login-page { min-height: 100vh; min-height: 100dvh; display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); background: var(--page); }
-.login-art { position: relative; min-height: 100%; overflow: hidden; padding: 48px; background: #ecdbc1; }
+.login-page { width: 100%; min-height: 100vh; min-height: 100dvh; margin: 0; padding: 16px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; background: var(--page); }
+.login-art { position: relative; min-height: 100%; overflow: hidden; border-radius: 12px; background: #ecdbc1; }
 .login-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 15% 50%; }
 .login-art .login-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; }
-.login-main { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: var(--space-12); }
-.login-card { width: min(440px, 100%); }
-.login-card h2 { font-size: 36px; font-weight: 700; letter-spacing: -.03em; line-height: 1.3; margin-bottom: var(--space-8); }
+.login-main { min-width: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 64px 48px; }
+.login-card { width: min(400px, 100%); }
+.login-card h2 { font-size: 32px; font-weight: 600; letter-spacing: -.03em; line-height: 1.3; margin-bottom: 40px; text-wrap: balance; }
 .login-card h2 + .sub { margin-top: -16px; margin-bottom: var(--space-6); }
 .login-card .field { margin: 0 0 var(--space-6); }
-.login-card .field label { font-size: 14px; }
-.login-card .field input { min-height: 56px; background: var(--page); }
-.login-card .btn { width: 100%; min-height: 52px; font-size: 15px; margin-top: var(--space-4); }
-.login-card-logo { width: 160px; max-width: 100%; margin-bottom: var(--space-8); }
+.login-card .field label { font-size: 13px; font-weight: 500; }
+.login-card .field input { min-height: 52px; background: var(--white); }
+.login-card .btn { width: 100%; min-height: 52px; font-size: 14px; margin-top: var(--space-4); }
+.login-card-logo { width: 120px; max-width: 100%; margin-bottom: 40px; }
 .password-input { position: relative; }
 .password-input input { padding-right: 76px; }
 .password-toggle { position: absolute; right: 4px; top: 2px; bottom: 2px; min-width: 64px; border: 0; border-radius: 6px; background: transparent; color: var(--brown); font-size: 13px; font-weight: 600; }
@@ -22,20 +22,24 @@
 .back-link { display: block; margin: var(--space-4) auto 0; }
 .reset-message { overflow-wrap: anywhere; }
 .login-card .error:not(:empty) { margin: var(--space-3) 0; }
-.login-intro { width: min(440px, 100%); margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--line); }
+.login-intro { width: min(400px, 100%); margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--line); }
 .login-subtitle { margin: 0; font-size: 12px; line-height: 1.8; color: var(--muted); }
 @media (max-width: 900px) {
-  .login-page { grid-template-columns: minmax(0, 1fr); }
+  .login-page { grid-template-columns: minmax(0, 1fr); padding: 0; gap: 0; }
   .login-art { display: none; }
 }
+@media (max-width: 800px) {
+  .login-page { width: 100%; min-height: 100vh; min-height: 100dvh; margin: 0; border-radius: 0; box-shadow: none; }
+}
 @media (max-width: 560px) {
-  .login-main { padding: 32px 24px; }
-  .login-card h2 { font-size: 30px; }
+  .login-main { padding: 40px 24px; }
+  .login-card h2 { font-size: 28px; margin-bottom: 32px; }
 }
 
 /* Architecture is a reading surface, with the shared navigation and controls. */
-.architecture { display: grid; gap: var(--space-4); }
-.arch-card { padding: var(--space-6); }
+.architecture { display: grid; gap: var(--space-3); }
+.architecture, .notice { max-width: 800px; }
+.arch-card { padding: var(--space-8); }
 .arch-card ul { margin: var(--space-4) 0 0; padding-left: 20px; color: var(--muted); }
 .arch-card li + li { margin-top: var(--space-2); }
 .architecture .arrow { text-align: center; color: var(--brown); transform: rotate(90deg); }

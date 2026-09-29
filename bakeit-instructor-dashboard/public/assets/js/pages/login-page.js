@@ -1,4 +1,5 @@
 import { AuthService } from '../services/auth-service.js';
+import { beginBusy } from '../views/busy-action.js';
 
 export class LoginPage {
   constructor({ auth = new AuthService() } = {}) {
@@ -45,6 +46,7 @@ export class LoginPage {
 
   updateCooldown() {
     clearTimeout(this.cooldownTimer);
+    if (this.pending) return;
     const seconds = this.auth.loginCooldown();
     const button = this.loginForm.querySelector('[type="submit"]');
     button.disabled = seconds > 0;
@@ -58,16 +60,21 @@ export class LoginPage {
     }
   }
 
-  signIn(event) {
+  async signIn(event) {
     event.preventDefault();
+    if (this.pending) return;
     const error = document.querySelector('[data-login-error]');
     error.textContent = '';
     this.loginForm.email.removeAttribute('aria-invalid');
     this.loginForm.password.removeAttribute('aria-invalid');
+    this.pending = true;
+    const finish = beginBusy(this.loginForm.querySelector('[type="submit"]'), 'Signing in…', this.loginView);
     try {
-      this.auth.login(this.loginForm.email.value, this.loginForm.password.value);
+      await this.auth.login(this.loginForm.email.value, this.loginForm.password.value);
       location.href = '/dashboard.html';
     } catch (exception) {
+      finish();
+      this.pending = false;
       error.textContent = exception.message;
       const input = this.loginForm.elements.namedItem(exception.field);
       if (input) {
@@ -104,30 +111,40 @@ export class LoginPage {
     focus.focus();
   }
 
-  requestReset(event) {
+  async requestReset(event) {
     event.preventDefault();
+    if (this.pending) return;
     const error = document.querySelector('[data-request-error]');
     error.textContent = '';
+    this.pending = true;
+    const finish = beginBusy(this.requestForm.querySelector('[type="submit"]'), 'Sending code…', this.recoveryView);
     try {
-      const email = this.auth.requestPasswordReset(this.requestForm.resetEmail.value.trim());
+      const email = await this.auth.requestPasswordReset(this.requestForm.resetEmail.value.trim());
+      finish();
       document.querySelector('[data-reset-email]').textContent = email;
       this.showResetStep('confirm');
       this.confirmForm.resetCode.focus();
     } catch (exception) { error.textContent = exception.message; }
+    finally { finish(); this.pending = false; }
   }
 
-  confirmReset(event) {
+  async confirmReset(event) {
     event.preventDefault();
+    if (this.pending) return;
     const error = document.querySelector('[data-confirm-error]');
     error.textContent = '';
+    this.pending = true;
+    const finish = beginBusy(this.confirmForm.querySelector('[type="submit"]'), 'Updating password…', this.recoveryView);
     try {
-      this.auth.resetPassword(
+      await this.auth.resetPassword(
         this.confirmForm.resetCode.value.trim(),
         this.confirmForm.newPassword.value,
         this.confirmForm.confirmPassword.value
       );
+      finish();
       this.showResetStep('success');
     } catch (exception) { error.textContent = exception.message; }
+    finally { finish(); this.pending = false; }
   }
 
   finishRecovery() {

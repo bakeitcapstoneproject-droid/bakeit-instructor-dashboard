@@ -1,0 +1,40 @@
+{
+  "report": {
+    "schemaVersion": "1.0",
+    "generatedAt": "2026-09-29T00:00:00.000Z",
+    "section": {
+      "id": "example-section",
+      "name": "Example section"
+    },
+    "rows": [
+      {
+        "schema_version": "1.0",
+        "generated_at": "2026-09-29T00:00:00.000Z",
+        "section_id": "example-section",
+        "section_name": "Example section",
+        "learner_id": "EXAMPLE-001",
+        "learner_name": "Example Learner",
+        "data_source": "demo",
+        "recipe": "Cookies",
+        "session_id": "example-attempt-002",
+        "assessed_at": "2026-09-28T08:30:00.000Z",
+        "session_count": 2,
+        "score_percent": 88,
+        "score_remark": "Passed",
+        "completion_status": "Completed",
+        "completion_percent": 100,
+        "completion_scope": "Cookies recipe practice",
+        "safety_score_percent": 80,
+        "safety_checks_passed": 4,
+        "safety_checks_total": 5,
+        "safety_incident_count": 1,
+        "waste_level": "Low",
+        "waste_quantity": 15,
+        "waste_unit": "g",
+        "procedural_correct_steps": 14,
+        "procedural_assessed_steps": 16,
+        "procedural_accuracy_percent": 87.5
+      }
+    ]
+  }
+}

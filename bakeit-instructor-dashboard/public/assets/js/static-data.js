@@ -1,5 +1,6 @@
 import { BrowserWorkspaceRepository, staticStorageKey } from './services/browser-workspace-repository.js';
 import { scoreRemark } from './domain/performance.js';
+import { buildSectionReport } from './domain/section-report.js';
 
 export { staticStorageKey, BrowserWorkspaceRepository };
 
@@ -15,6 +16,14 @@ export class StaticDataService {
     const method = options.method || 'GET';
     const sectionId = url.searchParams.get('sectionId') || 'all';
     const filter = items => items.filter(item => sectionId === 'all' || item.sectionId === sectionId);
+    const reportRoute = method === 'GET' && url.pathname.match(/^\/api\/reports\/sections\/([^/]+)$/);
+    if (reportRoute) {
+      const id = decodeURIComponent(reportRoute[1]);
+      if (id === 'all') throw new Error('Choose a class section first.');
+      const section = data.sections.find(item => item.id === id);
+      if (!section) throw new Error('Section not found. It may already have been deleted.');
+      return { report: buildSectionReport(section, data.students, { source: 'demo' }) };
+    }
     if (method === 'GET' && url.pathname === '/api/sections') {
       return { sections: data.sections.map(section => ({ ...section,
         learnerCount: data.students.filter(student => student.sectionId === section.id).length

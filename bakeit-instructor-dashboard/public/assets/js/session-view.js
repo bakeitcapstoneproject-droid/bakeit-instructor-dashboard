@@ -29,7 +29,6 @@ export class SessionView {
         <p class="step">${escapeHtml(heading)}</p>
         ${progress ? `<div class="progress" role="progressbar" aria-label="Recipe steps completed" aria-valuemin="0" aria-valuemax="${progress.total}" aria-valuenow="${progress.completedSteps}"><i style="width:${progress.percent}%"></i></div>
         <p class="session-progress-caption"><span>${progress.completedSteps} of ${progress.total} steps completed</span><strong>${progress.percent}%</strong></p>` : ''}
-        ${recipe ? `<p class="step-instruction">${escapeHtml(progress.completed ? recipe.scope : progress.step.instruction)}</p>` : ''}
         <p class="sub">Session time ${escapeHtml(session.time ?? '—')}</p>
         ${recipe ? `<details class="recipe-details" data-session="${escapeHtml(key)}" ${expanded.has(key) ? 'open' : ''}>
           <summary>View recipe steps (${progress.total})</summary>
@@ -41,7 +40,6 @@ export class SessionView {
             return `<li ${current ? 'aria-current="step"' : ''}><div class="recipe-step-title"><strong>${escapeHtml(step.title)}</strong><span>${current ? 'Current' : done ? 'Done' : 'Upcoming'}</span></div><p>${escapeHtml(step.instruction)}</p></li>`;
           }).join('')}</ol>
         </details>` : ''}
-        <ul class="event-list">${(session.events ?? []).map(event => `<li><span>${escapeHtml(event)}</span><span class="session-badge badge">Recorded</span></li>`).join('')}</ul>
       </article>`;
     }).join('') || '<div class="card empty">No active VR sessions in this section.</div>';
     this.snapshot = snapshot;

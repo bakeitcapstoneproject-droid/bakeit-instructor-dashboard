@@ -31,4 +31,7 @@ Poppins regular, medium, semibold, and bold are hosted locally under `public/ass
 
 ## BakeIT logo
 
-`public/assets/images/bakeit-logo-current.png` is the pre-existing user-supplied BakeIT logo. Its artwork is unchanged. The bakery reference's logo is not used.
+- User-supplied source: `C:/Users/LENOVO/Downloads/bakeit LOGO.png`, supplied on 2026-09-29.
+- Shipping file: `public/assets/images/bakeit-logo-chef.png` (2000 × 2000), copied byte-for-byte from the source. The white chef's hat and BakeIT wordmark have an alpha-transparent background.
+- Replaces `bakeit-logo-current.png` in every sidebar, mobile header, and sign-in logo placement. The bakery reference's logo is not used.
+- CSS frames the visible artwork without changing the file or clipping the hat or lettering. Its nontransparent bounds are x 426–1614 and y 468–1336 on the square source canvas. Desktop navigation uses a 164px-wide frame, mobile headers 88px, the photo overlay 240px, and the mobile sign-in frame 160px.

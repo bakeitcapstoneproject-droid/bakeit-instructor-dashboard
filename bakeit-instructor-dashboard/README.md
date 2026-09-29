@@ -6,7 +6,7 @@ Node.js prototype for creating class sections, enrolling learners by class code,
 
 Use the [Vercel deployment guide](docs/vercel-deployment.md) to publish a static demo on Hobby. `npm run build` produces `dist/` with browser storage and fictional initial data; no backend or paid integration is required. The committed Vercel configuration runs this build automatically. The main URL opens the login page.
 
-The static demo keeps data separately in each browser. Class codes do not connect VR clients, login is not production authentication, and reports remain a presentation feature. The sections below describe the original **local Node server** workflow, which remains available with `npm start`.
+The static demo keeps data separately in each browser. Class codes do not connect VR clients, and login is not production authentication. Reports download per-section Excel snapshots from available records. The sections below describe the original **local Node server** workflow, which remains available with `npm start`.
 
 The interface uses the original full-height left sidebar with a mobile navigation drawer, white cards on a light gray background, and warm brown navigation and accents. Page headers contain titles and controls without subtitles.
 
@@ -61,6 +61,8 @@ See [OOP architecture](docs/oop-architecture.md) for class responsibilities, dep
 
 ## Future AWS integration
 
+Section reports work locally and in the static build. Select a section on Reports and choose Prepare report, then confirm the section and Excel download in the popup. Cancel returns without downloading. Stale sections are rejected, duplicate submissions are blocked, and failures can be retried within the popup. Excel has colored headings, readable columns, three assessment tabs and a complete data tab. Each learner gets one latest-result row, with unrecorded measurements left blank. A blank Excel template is available on the same page. See [Excel reports and AWS handoff](docs/section-reports.md) for the files, versioned JSON contract, field definitions, and integration boundary. Run `node scripts/generate-report-examples.mjs` to regenerate the supplied template and fictional example.
+
 1. Configure Cognito sign-in and role claims in `AuthService`.
 2. Move the local class endpoints to authenticated API Gateway requests. `CloudDataService` already loads saved classes and enrollments from the Node server; mock performance data is used only when explicitly requested by tests.
 3. Validate and process Unity events in Lambda, then persist minimal learner/session records in DynamoDB.
@@ -69,4 +71,4 @@ See [OOP architecture](docs/oop-architecture.md) for class responsibilities, dep
 
 ## Notes
 
-The prototype supports section creation and enrollment, alongside instructor monitoring. It does not start, stop, or control Unity sessions. VR score/session ingestion remains future work. Demo exports show UI feedback but do not create files. The existing login is browser-only; the new API has no server-side authentication and shares one instructor workspace. Use it for local/trusted development until authenticated instructor and learner access is implemented.
+The prototype supports section creation and enrollment, instructor monitoring, and downloadable section Excel reports. It does not start, stop, or control Unity sessions. VR assessment ingestion and AWS integration remain future work. The existing login is browser-only; the API has no server-side authentication and shares one instructor workspace. Use it for local/trusted development until authenticated instructor and learner access is implemented.

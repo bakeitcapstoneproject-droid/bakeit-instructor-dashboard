@@ -7,6 +7,8 @@ import assert from 'node:assert/strict';
 import { StaticWebsiteServer } from '../bakeit-instructor-dashboard/src/server.js';
 import { addDemoLearners } from '../bakeit-instructor-dashboard/src/demo.js';
 import { checkReliability } from '../bakeit-instructor-dashboard/scripts/check-reliability.mjs';
+import { checkLoading } from '../bakeit-instructor-dashboard/scripts/check-loading.mjs';
+import { checkReports } from '../bakeit-instructor-dashboard/scripts/check-reports.mjs';
 
 const temporary = await mkdtemp(join(tmpdir(), 'bakeit-layout-'));
 const staticMode = process.argv.includes('--static');
@@ -111,6 +113,10 @@ try {
     assert.equal(await evaluate("window.firstResultRow === document.querySelector('tbody tr')"), true, 'Unchanged refresh must preserve table DOM');
   };
   const size = async (width, height) => cdp('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: false });
+  if (process.argv.includes('--loading')) {
+    if (staticMode) throw new Error('Loading checks require the local server transport.');
+    await checkLoading({ cdp, evaluate, until, navigate, size, origin });
+  } else {
   await size(1440, 1000);
   await until("document.readyState === 'complete' && !!document.querySelector('#login-form')");
   await screenshot('login-desktop');
@@ -154,8 +160,7 @@ try {
     await until("document.querySelectorAll('.live-card').length > 0");
     await screenshot('static-sessions-mobile');
     await navigate('reports');
-    await evaluate("document.querySelector('[data-export]').click()");
-    assert.match(await evaluate("document.querySelector('[data-report-status]').textContent"), /not available yet/);
+    await checkReports({cdp,evaluate,until,size});
     await evaluate("document.querySelector('[data-logout]').click()");
     await until("location.pathname === '/login.html' && document.readyState === 'complete' && !!document.querySelector('#login-form')");
     await evaluate("document.querySelector('#email').value='instructor@mcl.edu.ph'; document.querySelector('#password').value='demo123'; document.querySelector('#login-form').requestSubmit()");
@@ -273,7 +278,7 @@ try {
     await navigate(page);
     assert.doesNotMatch(await evaluate("document.body.innerText"), /sample|demo/i);
     if (page === 'reports') {
-      await evaluate("document.querySelector('[data-export]').click()");
+      await checkReports({cdp,evaluate,until,size});
       assert.doesNotMatch(await evaluate("document.body.innerText"), /sample|demo/i);
     }
     assert.equal(await evaluate("document.querySelector('.nav a[aria-current=page]').getAttribute('href')"), `/${page}.html`);
@@ -332,6 +337,7 @@ try {
   assert.equal(await evaluate("document.querySelector('[data-section-select]').value"), 'all');
   assert.deepEqual(errors, []);
   console.log('Browser checks passed: section creation/deletion, cancel and focus restoration, deletion error/retry, persisted deletion, empty-state filters, enrollment, recipe cards, desktop/mobile layouts, and no JavaScript exceptions.');
+  }
   }
 } finally {
   socket?.close();

@@ -30,14 +30,14 @@ colors:
 typography:
   headline:
     fontFamily: "Poppins, \"Segoe UI\", Arial, sans-serif"
-    fontSize: "34px"
-    fontWeight: 700
+    fontSize: "32px"
+    fontWeight: 600
     lineHeight: 1.3
     letterSpacing: "-.03em"
   signin-title:
     fontFamily: "Poppins, \"Segoe UI\", Arial, sans-serif"
-    fontSize: "36px"
-    fontWeight: 700
+    fontSize: "32px"
+    fontWeight: 600
     lineHeight: 1.3
     letterSpacing: "-.03em"
   title:
@@ -57,17 +57,16 @@ typography:
     lineHeight: 1.6
   metric:
     fontFamily: "Poppins, \"Segoe UI\", Arial, sans-serif"
-    fontSize: "34px"
-    fontWeight: 600
+    fontSize: "38px"
+    fontWeight: 500
     lineHeight: 1.2
-    letterSpacing: "-.025em"
+    letterSpacing: "-.03em"
 rounded:
   badge: "5px"
   count: "8px"
-  control: "10px"
-  nav: "12px"
-  panel: "16px"
-  frame: "28px"
+  control: "8px"
+  nav: "8px"
+  panel: "12px"
 spacing:
   space-1: "4px"
   space-2: "8px"
@@ -110,7 +109,7 @@ components:
     backgroundColor: "{colors.accent}"
     textColor: "{colors.accent-ink}"
     rounded: "{rounded.nav}"
-    padding: "14px 16px"
+    padding: "12px 16px"
   badge-good:
     backgroundColor: "{colors.green-bg}"
     textColor: "{colors.green}"
@@ -121,11 +120,11 @@ components:
     textColor: "{colors.text}"
     rounded: "{rounded.panel}"
     padding: "{spacing.space-6}"
-  metric:
+  metric-band:
     backgroundColor: "{colors.white}"
     textColor: "{colors.brown-dark}"
     rounded: "{rounded.panel}"
-    padding: "{spacing.space-6}"
+    padding: "24px 0"
 ---
 
 # Design System: BakeIT
@@ -136,15 +135,15 @@ components:
 
 BakeIT adapts the user-selected bakery reference into a warm, practical instructor interface. Ivory surfaces, a deep cocoa navigation area, amber-orange actions, and Poppins give the existing class and learner tools a consistent identity.
 
-Solid panels, visible table rules, and restrained blurred shadows support scanning. The original BakeIT logo remains the identity asset. Photography belongs to sign-in; records and performance views rely on real application content.
+A full-height workspace, a divided metric band, horizontal class rows, and fine table rules support scanning. Permanent surfaces are flat; restrained shadows identify temporary layers. The original BakeIT logo remains the identity asset. Photography belongs to sign-in; records and performance views rely on real application content.
 
 Extracted from the shipped [dashboard styles](bakeit-instructor-dashboard/public/assets/css/dashboard.css), [component details](bakeit-instructor-dashboard/public/assets/css/theme.css), and [sign-in styles](bakeit-instructor-dashboard/public/assets/css/styles.css). Frontmatter owns reusable primitives; [.impeccable/design.json](.impeccable/design.json) holds component examples and extension tokens. [PRODUCT.md](PRODUCT.md) remains authoritative for product capabilities and prototype limits.
 
 **Key Characteristics:**
 
 - Ivory workspace, cocoa navigation, and orange active states.
-- Locally hosted Poppins with clear size and weight hierarchy.
-- Rounded panels, explicit borders, and compact task controls.
+- Locally hosted Poppins with restrained headings and tabular metrics.
+- Flat 12px panels, 8px controls, fine dividers, and compact horizontal class rows.
 - Short feedback motion with reduced-motion support.
 
 ## Colors
@@ -157,7 +156,7 @@ Amber orange is `accent`, with `accent-hover` for hover and `accent-ink` for its
 
 ### Neutral
 
-`canvas` surrounds the desktop frame; `page` fills the frame and scrollable content; `white` fills panels and ordinary controls. `sidebar-brown` holds navigation, with pale `nav-text` and a lighter cocoa `nav-hover`. `text` and `brown-dark` share the darkest cocoa; `muted` supports secondary copy. `line` divides content; `control-line` gives fields a stronger boundary. `brown-light` and `table-surface` distinguish selected/supporting areas.
+`canvas` remains the body fallback; `page` fills the continuous full-height workspace; `white` fills panels and ordinary controls. `sidebar-brown` holds navigation, with pale `nav-text` and a lighter cocoa `nav-hover`. `text` and `brown-dark` share the darkest cocoa; `muted` supports secondary copy. `line` divides content; `control-line` gives fields a stronger boundary. `brown-light` and `table-surface` distinguish selected/supporting areas.
 
 ### Status
 
@@ -169,72 +168,80 @@ Paired green, amber, and red tokens color status labels and error feedback. Dest
 
 Poppins serves headings, body text, labels, and controls, with Segoe UI, Arial, and sans-serif fallbacks. Regular, medium, semibold, and bold weights (400/500/600/700) ship locally with their license.
 
-Use the frontmatter's headline for page titles, title for section headings, body for general text, and label for standard buttons. Dense table cells and activity text use 13px; table headers and supporting captions use 12px. Navigation uses 15px medium, changing to semibold when active. Metrics use tabular numerals. Class codes alone use Consolas/monospace at 23px with .1em tracking.
+Page and sign-in titles use 32px semibold, 1.3 line height, and -.03em tracking. Shared section headings use 18px semibold; class row titles use 20px and report titles 24px. Body text uses 14px/1.6. Table cells use 12px, table headers 11px, and activity text 13px. Navigation uses 14px medium, becoming semibold when active. Metrics use 38px medium, 1.2 line height, -.03em tracking, and tabular numerals. Class codes alone use 23px Consolas/monospace with .1em tracking.
 
-At 560px and below, page titles become 28px, metric values 30px, and sign-in titles 30px. Mobile inputs and selects become 16px at 800px and below.
+At 560px and below, page and sign-in titles become 28px and metric values 30px. Mobile inputs and selects become 16px at 800px and below. This redesign preserves the font family while deliberately revising sizes and weights.
 
 ## Layout
 
-Desktop uses an inset app frame with a maximum width of 1600px, 24px outer margins, rounded 28px corners, and a 232px sidebar. The frame fits the viewport height. Main content scrolls inside it while the sidebar stays aligned with the frame; overflow is clipped to the outer corners so the ivory background remains continuous. Main content has 40px top, 32px side, and 48px bottom padding. Reused gaps and padding follow the frontmatter's 4px-based spacing scale.
+Desktop uses a full-width, full-height shell with a 224px sidebar. Main content scrolls independently, with a stable scrollbar gutter, 40px top padding, responsive side padding of clamp(24px, 3vw, 64px), and 64px bottom padding. Direct content blocks are capped at 1360px and centered. The page header has a fine bottom divider and 32px bottom padding and margin; header buttons and selectors have at least 48px height. Reused spacing follows the frontmatter's 4px-based scale.
 
-Performance metrics use four equal columns. Results and activity use a 2.3:1 split with a 260px minimum secondary column. Each overview has a 368px-high, independently scrollable body with a reserved scrollbar gutter and keyboard access. Panel titles stay outside the scrolling body, and result column headers remain sticky. Class and session grids use two equal columns. Record tables retain a 620px minimum width inside their own scroll container. Reports use a single column capped at 720px.
+Performance metrics share one bordered band with four equal columns and vertical dividers. Values align at the bottom when labels wrap. Results occupy the flexible column beside a 272px activity column, separated by 24px. Each overview has a 408px-high, independently scrollable body with a reserved scrollbar gutter and keyboard access. Divided panel headers sit above the scrolling body, and table column headers remain sticky. Record tables retain a 620px minimum width inside their own horizontal scroll region, with 24px outer cell padding and reserved space for names, sections, and scores.
+
+Class sections form a single list of horizontal rows with the section name, learner count, and open action. Session panels use two columns on wide screens. Reports use a panel capped at 920px, with title and action beside a divided contents list in a 1:1.2 split. Architecture content remains a bounded reading surface, capped at 800px with a 75ch notice.
 
 | Maximum width | Shipped change |
 | --- | --- |
-| 1320px | Results and activity stack. |
-| 1100px | Frame margins become 16px; sidebar becomes 208px; metrics use two columns; page header wraps; main padding becomes 32px 24px 48px. |
+| 1279px | Results and activity stack. |
+| 1100px | Sidebar becomes 208px; metrics become a divided two-by-two band; sessions stack; page header wraps; main padding becomes 32px 24px 48px. |
 | 900px | Sign-in hides the photograph and shows its logo above the form. |
-| 800px | The frame becomes full width with natural document scrolling; navigation becomes a fixed drawer; compact brand/menu bar appears; sessions stack. |
-| 560px | Main padding becomes 28px 20px 64px; class grid stacks; panel padding tightens; filters and actions wrap. |
+| 800px | App uses natural document scrolling; compact brand/menu bar appears; navigation becomes a fixed drawer. |
+| 560px | Main padding becomes 28px 20px 64px; class rows wrap; report content stacks; panels tighten; filters and actions wrap; header and dialog actions expand. |
 
-The mobile drawer is at most 280px wide and 85vw, with an overlay and scroll lock while open. The metric grid remains two columns on phones.
+The mobile drawer is at most 280px wide and 85vw, with an overlay and scroll lock while open. Metrics remain two columns on phones.
 
-Sign-in uses a .9:1.1 photo/form split. The centered form is at most 440px wide; desktop form padding is 48px, becoming 32px 24px at 560px. The user-supplied baking ingredients photograph has a monochrome brown tint and uses a cover crop at 15% 50%, keeping the whisk, flour, and milk in the narrow image panel. The BakeIT logo is centered horizontally and vertically directly over the photograph with a transparent background.
+Sign-in uses equal photo/form columns with 16px outer padding and a 16px gap. The photograph has 12px corners; the centered form is at most 400px wide, with 64px 48px desktop padding, becoming 40px 24px on phones. Its institutional copy shares the 400px width below a divider. The user-supplied baking ingredients photograph retains its monochrome brown tint and cover crop at 15% 50%. The full BakeIT logo is centered over it with a transparent background. Below 900px the single-column sign-in surface removes the outer inset and photograph.
 
 ## Elevation & Depth
 
-Solid tonal layering and fine borders supply most structure. Soft blurred shadows distinguish the frame, metrics, transient options, dialogs, and feedback. The shipped implementation does not use hard offset shadows.
+Permanent workspace panels and the metric band use solid surfaces and fine borders without decorative shadows. The full-height shell and sign-in surface are flat. Soft shadows remain for temporary options, dialogs, and feedback; the table header's inset shadow supplies a sticky divider.
 
 | Role | Shadow |
 | --- | --- |
-| App frame | `0 8px 28px #50311c12` |
-| Metric panel | `0 3px 12px #50311c12` |
 | Section options | `0 8px 28px #38291f26` |
 | Dialog | `0 24px 90px #30261f20` |
 | Feedback | `0 4px 20px #30261f0c` |
 
 ## Shapes
 
-The desktop frame has rounded 28px corners and clips both the sidebar and scrollable content to one continuous surface. Panels and dialogs retain the shared panel radius. Controls, navigation, count labels, and status labels step down through the frontmatter's shape scale. Panels and fields use 1px borders. Learner initials sit inside circular avatars. Mobile removes the outer app rounding; the drawer has exposed corners rounded at 24px.
+Panels and dialogs use 12px corners; controls and navigation use 8px. The desktop shell has square outer edges. Status labels use 5px and counts 8px; fields and panels have 1px borders. Learner and instructor initials use circular avatars. The mobile drawer rounds its exposed corners at 24px. The options popover retains 10px corners.
 
 ## Components
 
-**Buttons.** Standard controls have a 44px minimum height and the frontmatter's control shape. Primary buttons use orange with semibold cocoa text; hover deepens orange, and press uses #eb8910. Secondary buttons use a pale surface and stronger border, changing to cream on hover. Quiet buttons have transparent backgrounds. The sidebar sign-out control uses orange. Destructive confirmation uses red with white text. Disabled buttons reduce opacity and use a waiting cursor.
+**Buttons.** Standard controls have a 44px minimum height and the frontmatter's control shape. Primary buttons use orange with semibold cocoa text; hover deepens orange, and press uses #eb8910. Secondary buttons use a pale surface and stronger border, changing to cream on hover. Quiet buttons have transparent backgrounds. Sidebar sign-out uses a transparent background with a muted light border and pale text. Destructive confirmation uses red with white text. Disabled buttons reduce opacity and use a waiting cursor.
 
-**Inputs.** Ordinary fields and selects have a 48px minimum height. Sign-in fields are 56px tall and match the page background; sign-in action buttons are 52px tall. Labels remain visible. Invalid fields use the error border and adjacent error text. Placeholder text uses the muted token.
+**Inputs.** Ordinary fields and selects have a 48px minimum height. Sign-in fields and action buttons have a 52px minimum height; fields use the warm panel surface. Labels remain visible. Invalid fields use the error border and adjacent error text. Placeholder text uses the muted token.
 
 **Navigation.** A vertical list of text links sits on cocoa. Hover uses lighter cocoa; the current page uses orange and semibold dark text. Below the mobile breakpoint, the Menu button controls the drawer and exposes its expanded state.
 
-**Instructor profile.** Above Sign out, a warm tan (#efd9b4) profile row pairs a 36px orange initials avatar with the signed-in instructor's name and email. Account text wraps within the sidebar, and the same profile appears in the mobile drawer. It is an account summary, not an interactive control.
+**Instructor profile.** A divider separates the instructor profile from navigation. A 32px cream initials avatar accompanies the name and wrapping email above Sign out. The same profile appears in the mobile drawer. It is a noninteractive account summary.
 
-**Cards and tables.** Shared panels use the panel shape and surface. Class cards contain section names and a visible open action; selecting a section changes its border to cocoa. Table headers have a pale cream fill and semibold text, with horizontal row dividers and a matching row-hover fill. Metric cards contain a label and a large value without decorative icon tiles.
+**Cards and tables.** Shared panels use the panel shape and surface. Horizontal class rows pair section names and learner counts with a visible open action; selecting a section changes its border to cocoa. Table headers have a pale cream fill and semibold text, with horizontal row dividers and a matching row-hover fill. The single divided metric band contains labels and large values without decorative icon tiles. A dashed creation row follows the class list.
 
-**Status and progress.** Status labels use paired foreground/background colors with 11px semibold text. Count labels use the cream/cocoa pair and a softer rectangle. Progress tracks are 5px high in compact records and 10px high in session panels. Session progress also has a text caption and expandable recipe instructions.
+**Status and progress.** Status labels use paired foreground/background colors with 11px semibold text. Count labels use the cream/cocoa pair and a softer rectangle. Progress tracks are 5px high in compact records and 6px high in session panels. Session progress also has a text caption and expandable recipe instructions.
+
+**Session layout.** A fine rule separates learner identity from progress. On wide screens, summary headers, step titles, and instructions reserve room for wrapping so adjacent cards align with typical recipe content. Disclosures still expand independently; their summary controls have a 44px minimum height. Event status labels retain their width next to wrapping descriptions. Empty session content spans the grid.
 
 **Dialogs and feedback.** Native dialogs are at most 440px wide, with 32px padding (24px on phones). Confirmation actions wrap when needed. Feedback appears near the viewport bottom; in-page errors retain their message and retry control. The options popover keeps the class code, copy action, and delete action together.
+
+**Report downloads.** The report panel preserves the three assessment categories. Its action area contains Prepare report and an underlined Download Excel template link. Prepare report opens a native confirmation dialog naming the selected section and Excel format, with Cancel and Prepare report actions. There is no format selector. Preparing is disabled until a specific section is selected. Section changes are checked before and after requesting data. Pending exports show Preparing Excel and lock the dialog controls and page selector until success or failure. Success closes the dialog, restores focus and confirms the download; failures remain in the dialog with a retry message. Cancel and Escape dismiss idle dialogs without downloading. The action area stacks below the category list on phones. Excel workbooks use cocoa title bands, orange section bands, colored category headings, readable column widths, frozen headers and learner columns, filters, alternating ivory rows and landscape printing. Three assessment sheets carry descriptive labels; a fourth Report data sheet preserves every original contract field.
+
+**Loading.** Initial metrics use static neutral placeholders; results, activity, class sections, and sessions show named loading messages. A small bottom-right status appears after 150ms while page data is pending. Refreshes retain existing content and show "Updating data" instead of replacing records. The live status sits outside the busy content region. Pending actions use a 16px current-color spinner and an action-specific label; related form controls are disabled until completion and restored on failure. Spinner rotation takes 800ms and stops under reduced motion, leaving the text visible. Fast local work has no artificial delay. Report preparation retains its existing unavailable-download feedback.
 
 **Focus and motion.** The shared focus treatment is a 3px cocoa outline with a 4px offset; the sidebar uses pale ivory. Recipe disclosure uses a 2px outline. Color and border state changes take 140ms ease. Options and dialogs open over 160ms with a small 4px translation; backdrop feedback takes 120ms; the mobile drawer takes 200ms. Reduced motion disables animations and transitions. There are no scrolling entrances or cursor effects.
 
 **The Visible Focus Rule.** Keep the keyboard outline visible on every interactive control, using the light outline on the cocoa sidebar.
 
-**Assets.** Preserve the existing BakeIT logo artwork. Sign-in uses an edited version of the user's baking ingredients photograph with a monochrome brown tint. Its source, edit prompt, shipping filename, and font provenance are recorded in [design-assets.md](bakeit-instructor-dashboard/docs/design-assets.md).
+**Assets.** Use the user's 2026-09-29 white chef-hat and BakeIT wordmark PNG unchanged. The 1.3:1 logo frame trims only the square file's transparent margins, displaying the full hat and lettering. Frame widths are 128px in the sidebar, 64px in the mobile header, 240px over the sign-in photo, and 120px above the mobile sign-in form. Sign-in uses an edited version of the user's baking ingredients photograph with a monochrome brown tint. Asset sources, edit prompts, shipping filenames, and font provenance are recorded in [design-assets.md](bakeit-instructor-dashboard/docs/design-assets.md).
+
+**2026-09-29 redesign.** This pass preserves the palette, Poppins family, assets, all content, and application behavior while changing the layout and typography hierarchy. No new raster assets were introduced. The current evidence and earlier refinement history are separated in the [interface review](bakeit-instructor-dashboard/docs/interface-review.md).
 
 ## Do's and Don'ts
 
 ### Do
 
 - Do preserve the BakeIT logo and the supplied ivory, cocoa, and orange direction.
-- Do use the shared spacing scale, rounded panels, table dividers, and locally hosted Poppins.
+- Do use the shared spacing scale, 12px panels, 8px controls, fine table dividers, and locally hosted Poppins.
 - Do retain visible labels, keyboard focus, readable status text, and reduced-motion behavior.
 - Do keep record tables usable through their own horizontal scrolling region on narrow screens.
 - Do record image origins and generation prompts in the asset provenance document.

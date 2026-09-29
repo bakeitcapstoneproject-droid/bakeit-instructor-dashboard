@@ -1,6 +1,7 @@
 import { randomInt, randomUUID } from 'node:crypto';
 import { RequestError } from '../http/request-error.js';
 import { scoreRemark } from '../../public/assets/js/domain/performance.js';
+import { buildSectionReport } from '../../public/assets/js/domain/section-report.js';
 
 function requiredText(value, label, max) {
   if (typeof value !== 'string' || !value.trim() || value.trim().length > max) {
@@ -71,6 +72,16 @@ export class ClassroomService {
   }
   async learners(sectionId = 'all') {
     const data = await this.repository.snapshot();
+    return this.learnerRows(data, sectionId);
+  }
+  async sectionReport(sectionId) {
+    if (sectionId === 'all') throw new RequestError(400, 'Choose a class section first.');
+    const data = await this.repository.snapshot();
+    const section = data.sections.find(item => item.id === sectionId);
+    if (!section) throw new RequestError(404, 'Section not found. It may already have been deleted.');
+    return buildSectionReport(section, this.learnerRows(data, sectionId));
+  }
+  learnerRows(data, sectionId) {
     return data.enrollments.filter(item => sectionId === 'all' || item.sectionId === sectionId).map(item => {
       const result = item.demo === true ? item.demoResult : null;
       const score = result?.score ?? null;

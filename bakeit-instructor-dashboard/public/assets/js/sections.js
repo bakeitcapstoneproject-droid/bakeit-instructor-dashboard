@@ -1,4 +1,5 @@
 import { escapeHtml } from './utils/html.js';
+import { beginBusy } from './views/busy-action.js';
 
 export class SectionManager {
   constructor(shell, onSelect, onDelete = () => {}) {
@@ -25,16 +26,16 @@ export class SectionManager {
         ? this.deleteTrigger : this.list.querySelector('[data-open-create]');
       target?.focus();
     });
-    this.render();
+    this.render(true);
   }
-  render() {
+  render(loading = false) {
     const sections = this.shell.sections.sections.filter(section => section.id !== 'all');
-    document.querySelector('[data-section-count]').textContent = `${sections.length} section${sections.length === 1 ? '' : 's'}`;
+    document.querySelector('[data-section-count]').textContent = loading ? 'Loading sections…' : `${sections.length} section${sections.length === 1 ? '' : 's'}`;
     // Avoid replacing a focused card during the automatic refresh.
     const active = document.activeElement;
     const focusKey = active?.dataset.view;
     const createFocused = active?.hasAttribute('data-open-create');
-    const markup = sections.map(section => `<article class="card class-card" id="class-${escapeHtml(section.id)}">
+    const markup = (loading ? '<p class="empty loading-block" data-loading-placeholder="Loading class sections…">Loading class sections…</p>' : '') + sections.map(section => `<article class="card class-card" id="class-${escapeHtml(section.id)}">
       <div class="class-card-heading"><h3>${escapeHtml(section.name)}</h3><span class="count-badge">${section.learnerCount} learner${section.learnerCount === 1 ? '' : 's'}</span></div>
       <a class="btn section-open" href="#section=${encodeURIComponent(section.id)}" data-view="${escapeHtml(section.id)}" aria-label="View learners in ${escapeHtml(section.name)}">View learners <span aria-hidden="true">&rarr;</span></a>
     </article>`).join('') + '<button class="create-section-card" type="button" data-open-create><span aria-hidden="true">+</span> Create class section</button>';
@@ -59,10 +60,8 @@ export class SectionManager {
       input.focus();
       return;
     }
-    button.disabled = true;
     this.saving = true;
-    this.form.querySelector('[data-cancel-create]').disabled = true;
-    button.textContent = 'Creating…';
+    const finish = beginBusy(button, 'Creating…', this.form);
     try {
       const section = await this.shell.sections.create(input.value.trim());
       this.shell.selector.refresh();
@@ -74,10 +73,8 @@ export class SectionManager {
     } catch (failure) {
       error.textContent = failure.message;
     } finally {
-      button.disabled = false;
+      finish();
       this.saving = false;
-      this.form.querySelector('[data-cancel-create]').disabled = false;
-      button.textContent = 'Create class section';
     }
   }
   openCreate() {
@@ -101,12 +98,10 @@ export class SectionManager {
     if (this.deleting || !this.deleteTarget) return;
     const section = this.deleteTarget;
     const confirm = document.querySelector('[data-confirm-delete]');
-    const cancel = document.querySelector('[data-cancel-delete]');
     const error = document.querySelector('[data-delete-error]');
     error.textContent = '';
     this.deleting = true;
-    confirm.disabled = cancel.disabled = true;
-    confirm.textContent = 'Deleting…';
+    const finish = beginBusy(confirm, 'Deleting…', this.deleteDialog);
     try {
       await this.shell.sections.delete(section.id);
       this.shell.selector.refresh();
@@ -119,19 +114,24 @@ export class SectionManager {
       error.textContent = failure.message;
     } finally {
       this.deleting = false;
-      confirm.disabled = cancel.disabled = false;
-      confirm.textContent = 'Delete Section';
+      finish();
     }
   }
   handleAction(event) {
     if (event.target.closest('[data-open-create]')) this.openCreate();
   }
-  async copy(code) {
+  async copy(code, button) {
+    if (this.copying) return;
+    this.copying = true;
+    const finish = button ? beginBusy(button, 'Copying…') : () => {};
     try {
       await navigator.clipboard.writeText(code);
       this.message.textContent = `Class code ${code} copied.`;
     } catch {
       this.message.textContent = `Select and copy this class code: ${code}`;
+    } finally {
+      finish();
+      this.copying = false;
     }
   }
 }

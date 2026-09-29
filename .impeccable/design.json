@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-28T03:32:13Z",
+  "generatedAt": "2026-09-29T01:12:48.751Z",
   "title": "Design System: BakeIT",
   "extensions": {
     "colorMeta": {
@@ -388,7 +388,7 @@
       },
       "signin-title": {
         "displayName": "Sign-in title",
-        "purpose": "Sign-in and recovery headings; 30px below 560px."
+        "purpose": "Sign-in and recovery headings; 28px at 560px and below."
       },
       "title": {
         "displayName": "Section title",
@@ -408,16 +408,6 @@
       }
     },
     "shadows": [
-      {
-        "name": "app-frame",
-        "value": "0 8px 28px #50311c12",
-        "purpose": "Soft separation for the rounded desktop frame; content scrolls inside its continuous background."
-      },
-      {
-        "name": "metric",
-        "value": "0 3px 12px #50311c12",
-        "purpose": "Light separation for performance summaries."
-      },
       {
         "name": "options",
         "value": "0 8px 28px #38291f26",
@@ -464,7 +454,7 @@
     "breakpoints": [
       {
         "name": "results-stack",
-        "value": "1320px"
+        "value": "1279px"
       },
       {
         "name": "compact-desktop",
@@ -497,7 +487,7 @@
       "refersTo": "button-primary",
       "description": "Orange primary task action.",
       "html": "<button class=\"ds-primary\" type=\"button\">Prepare report</button>",
-      "css": ".ds-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border: 1px solid var(--control-line, #958268); border-radius: 10px; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 13px; line-height: 1.6; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-primary:disabled { opacity: .55; cursor: wait; } .ds-primary:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-primary { transition: none; } }.ds-primary { border-color: transparent; background: var(--accent, #ffae38); color: var(--accent-ink, #392010); font-weight: 600; } .ds-primary:hover { background: var(--accent-hover, #f69a20); } .ds-primary:active { background: #eb8910; }"
+      "css": ".ds-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border: 1px solid var(--control-line, #958268); border-radius: var(--radius-control, 8px); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 13px; line-height: 1.6; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-primary:disabled { opacity: .55; cursor: wait; } .ds-primary:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-primary { transition: none; } }.ds-primary { border-color: transparent; background: var(--accent, #ffae38); color: var(--accent-ink, #392010); font-weight: 600; } .ds-primary:hover { background: var(--accent-hover, #f69a20); } .ds-primary:active { background: #eb8910; }"
     },
     {
       "name": "Secondary button",
@@ -505,7 +495,7 @@
       "refersTo": "button-secondary",
       "description": "Bordered supporting task control.",
       "html": "<button class=\"ds-secondary\" type=\"button\">Copy code</button>",
-      "css": ".ds-secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border: 1px solid var(--control-line, #958268); border-radius: 10px; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 13px; line-height: 1.6; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-secondary:disabled { opacity: .55; cursor: wait; } .ds-secondary:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-secondary { transition: none; } }.ds-secondary { background: var(--white, #fffef9); color: var(--text, #321d15); } .ds-secondary:hover { border-color: var(--brown, #75462c); background: var(--brown-light, #fff1d4); } .ds-secondary:active { background: #f5e4be; }"
+      "css": ".ds-secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border: 1px solid var(--control-line, #958268); border-radius: var(--radius-control, 8px); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 13px; line-height: 1.6; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-secondary:disabled { opacity: .55; cursor: wait; } .ds-secondary:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-secondary { transition: none; } }.ds-secondary { background: var(--white, #fffef9); color: var(--text, #321d15); } .ds-secondary:hover { border-color: var(--brown, #75462c); background: var(--brown-light, #fff1d4); } .ds-secondary:active { background: #f5e4be; }"
     },
     {
       "name": "Quiet button",
@@ -513,7 +503,7 @@
       "refersTo": "button-quiet",
       "description": "Low-emphasis action used beside a primary control.",
       "html": "<button class=\"ds-quiet\" type=\"button\">Cancel</button>",
-      "css": ".ds-quiet { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border: 1px solid var(--control-line, #958268); border-radius: 10px; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 13px; line-height: 1.6; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-quiet:disabled { opacity: .55; cursor: wait; } .ds-quiet:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-quiet { transition: none; } }.ds-quiet { border-color: transparent; background: transparent; color: var(--muted, #73614f); } .ds-quiet:hover { background: var(--brown-light, #fff1d4); color: var(--text, #321d15); } .ds-quiet:active { background: #f5e4be; }"
+      "css": ".ds-quiet { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border: 1px solid var(--control-line, #958268); border-radius: var(--radius-control, 8px); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 13px; line-height: 1.6; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-quiet:disabled { opacity: .55; cursor: wait; } .ds-quiet:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-quiet { transition: none; } }.ds-quiet { border-color: transparent; background: transparent; color: var(--muted, #73614f); } .ds-quiet:hover { background: var(--brown-light, #fff1d4); color: var(--text, #321d15); } .ds-quiet:active { background: #f5e4be; }"
     },
     {
       "name": "Destructive button",
@@ -521,7 +511,7 @@
       "refersTo": "button-danger",
       "description": "Confirmation action for deleting a class section.",
       "html": "<button class=\"ds-danger\" type=\"button\">Delete Section</button>",
-      "css": ".ds-danger { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border: 1px solid var(--control-line, #958268); border-radius: 10px; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 13px; line-height: 1.6; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-danger:disabled { opacity: .55; cursor: wait; } .ds-danger:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-danger { transition: none; } }.ds-danger { border-color: #9c3028; background: #9c3028; color: #fff; } .ds-danger:hover { background: #7d261f; } .ds-danger:disabled { opacity: .6; }"
+      "css": ".ds-danger { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border: 1px solid var(--control-line, #958268); border-radius: var(--radius-control, 8px); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 13px; line-height: 1.6; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-danger:disabled { opacity: .55; cursor: wait; } .ds-danger:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-danger { transition: none; } }.ds-danger { border-color: #9c3028; background: #9c3028; color: #fff; } .ds-danger:hover { background: #7d261f; } .ds-danger:disabled { opacity: .6; }"
     },
     {
       "name": "Text field",
@@ -529,7 +519,7 @@
       "refersTo": "input",
       "description": "Visible label, strong border, and keyboard focus for class entry.",
       "html": "<label class=\"ds-field\">Section name<input class=\"ds-input\" placeholder=\"e.g. BSHM 2A\"></label>",
-      "css": ".ds-field { display: block; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 12px; line-height: 1.6; font-weight: 600; color: var(--text, #321d15); } .ds-input { display: block; width: 100%; margin-top: 8px; min-height: 48px; padding: 12px 14px; border: 1px solid var(--control-line, #958268); border-radius: 10px; background: var(--white, #fffef9); color: var(--text, #321d15); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 1.6; caret-color: var(--brown, #75462c); transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-input::placeholder { color: var(--muted, #73614f); opacity: 1; } .ds-input[aria-invalid=\"true\"] { border-color: var(--red, #a04437); } .ds-input:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (max-width: 800px) { .ds-input { font-size: 16px; } } @media (prefers-reduced-motion: reduce) { .ds-input { transition: none; } }"
+      "css": ".ds-field { display: block; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 12px; line-height: 1.6; font-weight: 600; color: var(--text, #321d15); } .ds-input { display: block; width: 100%; margin-top: 8px; min-height: 48px; padding: 12px 14px; border: 1px solid var(--control-line, #958268); border-radius: var(--radius-control, 8px); background: var(--white, #fffef9); color: var(--text, #321d15); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 1.6; caret-color: var(--brown, #75462c); transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease; } .ds-input::placeholder { color: var(--muted, #73614f); opacity: 1; } .ds-input[aria-invalid=\"true\"] { border-color: var(--red, #a04437); } .ds-input:focus-visible { outline: 3px solid var(--brown, #75462c); outline-offset: 4px; } @media (max-width: 800px) { .ds-input { font-size: 16px; } } @media (prefers-reduced-motion: reduce) { .ds-input { transition: none; } }"
     },
     {
       "name": "Workspace navigation",
@@ -537,7 +527,7 @@
       "refersTo": "nav-active",
       "description": "Cocoa text navigation with a clear orange current-page state.",
       "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><a class=\"ds-nav-link ds-current\" href=\"#dashboard\" aria-current=\"page\">Dashboard</a><a class=\"ds-nav-link\" href=\"#learners\">Learners</a><a class=\"ds-nav-link\" href=\"#sessions\">Live sessions</a><a class=\"ds-nav-link\" href=\"#reports\">Reports</a></nav>",
-      "css": ".ds-nav { display: flex; flex-direction: column; gap: 12px; padding: 20px; width: 192px; background: var(--sidebar-brown, #704329); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; } .ds-nav-link { display: block; padding: 14px 16px; border-radius: 12px; color: #f9e6b8; font-size: 15px; line-height: 1.6; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 140ms ease, color 140ms ease; } .ds-nav-link:hover { color: #fff6df; background: #865537; } .ds-nav-link.ds-current { color: var(--accent-ink, #392010); background: var(--accent, #ffae38); font-weight: 600; } .ds-nav-link:focus-visible { outline: 3px solid #f6e5d5; outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-nav-link { transition: none; } }"
+      "css": ".ds-nav { display: flex; flex-direction: column; gap: 8px; padding: 16px; width: 192px; background: var(--sidebar-brown, #704329); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; } .ds-nav-link { display: flex; align-items: center; min-height: 48px; padding: 12px 16px; border-radius: var(--radius-control, 8px); color: #f9e6b8; font-size: 14px; line-height: 1.6; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 140ms ease, color 140ms ease; } .ds-nav-link:hover { color: #fff6df; background: #865537; } .ds-nav-link.ds-current { color: var(--accent-ink, #392010); background: var(--accent, #ffae38); font-weight: 600; } .ds-nav-link:focus-visible { outline: 3px solid #f6e5d5; outline-offset: 4px; } @media (prefers-reduced-motion: reduce) { .ds-nav-link { transition: none; } }"
     },
     {
       "name": "Status labels",
@@ -553,32 +543,32 @@
       "refersTo": "card",
       "description": "Shared bordered panel for readable application content.",
       "html": "<section class=\"ds-card\"><h2 class=\"ds-card-title\">Recent activity</h2><p class=\"ds-card-copy\">Activity appears here as learners complete sessions.</p></section>",
-      "css": ".ds-card { padding: 24px; border: 1px solid var(--line, #e3dccb); border-radius: var(--radius, 16px); background: var(--white, #fffef9); color: var(--text, #321d15); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; } .ds-card-title { margin: 0 0 24px; font-size: 18px; line-height: 1.3; font-weight: 600; } .ds-card-copy { margin: 0; font-size: 13px; line-height: 1.6; } @media (max-width: 560px) { .ds-card { padding: 20px; } }"
+      "css": ".ds-card { padding: 24px; border: 1px solid var(--line, #e3dccb); border-radius: var(--radius, 12px); background: var(--white, #fffef9); color: var(--text, #321d15); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; } .ds-card-title { margin: 0 0 24px; font-size: 18px; line-height: 1.3; font-weight: 600; } .ds-card-copy { margin: 0; font-size: 13px; line-height: 1.6; } @media (max-width: 560px) { .ds-card { padding: 20px; } }"
     },
     {
-      "name": "Metric panel",
+      "name": "Performance band",
       "kind": "card",
-      "refersTo": "metric",
-      "description": "Text-only summary; the example shows the application's initial loading placeholder.",
-      "html": "<article class=\"ds-metric\"><span class=\"ds-metric-label\">Enrolled learners</span><div class=\"ds-metric-value\">—</div></article>",
-      "css": ".ds-metric { padding: 24px; border-radius: var(--radius, 16px); background: var(--white, #fffef9); box-shadow: 0 3px 12px #50311c12; font-family: Poppins, \"Segoe UI\", Arial, sans-serif; } .ds-metric-label { color: var(--muted, #73614f); font-size: 13px; line-height: 1.6; } .ds-metric-value { margin-top: 8px; font-size: 34px; line-height: 1.2; font-weight: 600; letter-spacing: -.025em; font-variant-numeric: tabular-nums; color: var(--brown-dark, #321d15); } @media (max-width: 560px) { .ds-metric { padding: 20px 16px; } .ds-metric-label { font-size: 12px; } .ds-metric-value { font-size: 30px; } }"
+      "refersTo": "metric-band",
+      "description": "One divided performance band; dashes are initial loading placeholders.",
+      "html": "<section class=\"ds-metrics\" aria-label=\"Performance summary\"><article class=\"ds-metric\"><span class=\"ds-metric-label\">Enrolled learners</span><div class=\"ds-metric-value\">&#8212;</div></article><article class=\"ds-metric\"><span class=\"ds-metric-label\">Average score</span><div class=\"ds-metric-value\">&#8212;</div></article><article class=\"ds-metric\"><span class=\"ds-metric-label\">Pass rate</span><div class=\"ds-metric-value\">&#8212;</div></article><article class=\"ds-metric\"><span class=\"ds-metric-label\">Completed sessions</span><div class=\"ds-metric-value\">&#8212;</div></article></section>",
+      "css": ".ds-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 24px 0; border: 1px solid var(--line, #e3dccb); border-radius: var(--radius, 12px); background: var(--white, #fffef9); font-family: Poppins, \"Segoe UI\", Arial, sans-serif; } .ds-metric { display: flex; flex-direction: column; min-width: 0; padding: 0 32px; } .ds-metric + .ds-metric { border-left: 1px solid var(--line, #e3dccb); } .ds-metric-label { margin-bottom: 12px; color: var(--muted, #73614f); font-size: 13px; line-height: 1.6; } .ds-metric-value { margin-top: auto; font-size: 38px; line-height: 1.2; font-weight: 500; letter-spacing: -.03em; font-variant-numeric: tabular-nums; color: var(--brown-dark, #321d15); } @media (max-width: 1100px) { .ds-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0; } .ds-metric { padding: 20px 24px; } .ds-metric:nth-child(3) { border-left: 0; } .ds-metric:nth-child(n+3) { border-top: 1px solid var(--line, #e3dccb); } } @media (max-width: 560px) { .ds-metric { padding: 20px 16px; } .ds-metric-label { font-size: 12px; } .ds-metric-value { font-size: 30px; } }"
     },
     {
       "name": "Session progress",
       "kind": "custom",
-      "description": "Thicker session progress track; 50% here is a component preview value.",
+      "description": "Session progress track; 50% is a component preview value.",
       "html": "<div class=\"ds-progress\" role=\"progressbar\" aria-label=\"Recipe progress\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"50\"><span class=\"ds-progress-fill\"></span></div>",
-      "css": ".ds-progress { height: 10px; margin: 12px 0 8px; border-radius: 10px; background: var(--brown-light, #fff1d4); overflow: hidden; } .ds-progress-fill { display: block; width: 50%; height: 100%; border-radius: inherit; background: #ad621d; }"
+      "css": ".ds-progress { height: 6px; margin: 16px 0 12px; border-radius: 10px; background: var(--brown-light, #fff1d4); overflow: hidden; } .ds-progress-fill { display: block; width: 50%; height: 100%; border-radius: inherit; background: #ad621d; }"
     }
   ],
   "narrative": {
     "northStar": "A familiar instructor workspace",
-    "overview": "BakeIT adapts the user-selected bakery reference into a warm, practical instructor interface. Ivory surfaces, a deep cocoa navigation area, amber-orange actions, and Poppins give the existing class and learner tools a consistent identity.\n\nSolid panels, visible table rules, and restrained blurred shadows support scanning. The original BakeIT logo remains the identity asset. Photography belongs to sign-in; records and performance views rely on real application content.",
+    "overview": "BakeIT adapts the user-selected bakery reference into a warm, practical instructor interface. Ivory surfaces, a deep cocoa navigation area, amber-orange actions, and Poppins give the existing class and learner tools a consistent identity.\n\nA full-height workspace, a divided metric band, horizontal class rows, and fine table rules support scanning. Permanent surfaces are flat; restrained shadows identify temporary layers. The original BakeIT logo remains the identity asset. Photography belongs to sign-in; records and performance views rely on real application content.",
     "keyCharacteristics": [
-      "Ivory workspace, cocoa navigation, and orange active states.",
-      "Locally hosted Poppins with clear size and weight hierarchy.",
-      "Rounded panels, explicit borders, and compact task controls.",
-      "Short feedback motion with reduced-motion support."
+      "Full-height ivory workspace with compact cocoa navigation.",
+      "Local Poppins with restrained headings and tabular metrics.",
+      "Flat 12px panels, 8px controls, fine dividers, and horizontal class rows.",
+      "Orange actions and current navigation; short feedback motion with reduced-motion support."
     ],
     "rules": [
       {
@@ -594,7 +584,7 @@
     ],
     "dos": [
       "Do preserve the BakeIT logo and the supplied ivory, cocoa, and orange direction.",
-      "Do use the shared spacing scale, rounded panels, table dividers, and locally hosted Poppins.",
+      "Do use the shared spacing scale, 12px panels, 8px controls, fine table dividers, and locally hosted Poppins.",
       "Do retain visible labels, keyboard focus, readable status text, and reduced-motion behavior.",
       "Do keep record tables usable through their own horizontal scrolling region on narrow screens.",
       "Do record image origins and generation prompts in the asset provenance document."
