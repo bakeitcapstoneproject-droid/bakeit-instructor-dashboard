@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ClassStore } from './classes.js';
+import { students as rubricSamples } from '../public/assets/js/data.js';
 
 const examples = [
   { name: 'Angela Dela Cruz', recipe: 'Brownies', sessions: 4, score: 88, waste: 'Low' },
@@ -28,6 +29,9 @@ export class DemoLearnerSeeder {
           const learnerId = `DEMO-${section.id.slice(0, 8).toUpperCase()}-${index + 1}`;
           if (data.enrollments.some(item => item.sectionId === section.id && item.learnerId === learnerId)) continue;
           const { name, ...result } = examples[(sectionIndex * 6 + index) % examples.length];
+          const sample = rubricSamples.find(student => student.name === name);
+          result.assessment = result.sessions > 0 ? structuredClone(sample.assessment) : undefined;
+          delete result.score;
           data.enrollments.push({ sectionId: section.id, learnerId, learnerName: name,
             joinedAt: new Date().toISOString(), demo: true, demoResult: result });
           added++;
@@ -44,15 +48,31 @@ export class DemoLearnerSeeder {
       return count - data.enrollments.length;
     });
   }
+
+  scores() {
+    return this.store.mutate(data => {
+      let updated = 0;
+      for (const learner of data.enrollments) {
+        if (learner.demo !== true || learner.assessment != null
+          || learner.demoResult?.assessment != null || !(learner.demoResult?.sessions > 0)) continue;
+        const sample = rubricSamples.find(student => student.name === learner.learnerName);
+        if (!sample) continue;
+        learner.demoResult.assessment = structuredClone(sample.assessment);
+        updated++;
+      }
+      return updated;
+    });
+  }
 }
 
 export const addDemoLearners = store => new DemoLearnerSeeder(store).add();
 export const removeDemoLearners = store => new DemoLearnerSeeder(store).remove();
+export const addDemoScores = store => new DemoLearnerSeeder(store).scores();
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const action = process.argv[2];
-  if (!['add', 'remove'].includes(action)) throw new Error('Use demo.js add or demo.js remove.');
+  if (!['add', 'remove', 'scores'].includes(action)) throw new Error('Use demo.js add, demo.js remove, or demo.js scores.');
   const store = new ClassStore(process.env.BAKEIT_DATA_FILE || fileURLToPath(new URL('../data/classes.json', import.meta.url)));
-  const count = await (action === 'add' ? addDemoLearners(store) : removeDemoLearners(store));
-  console.log(`${count} demo learners ${action === 'add' ? 'added' : 'removed'}.`);
+  const count = await ({ add: addDemoLearners, remove: removeDemoLearners, scores: addDemoScores }[action])(store);
+  console.log(action === 'scores' ? `${count} existing demo learners received sample scores.` : `${count} demo learners ${action === 'add' ? 'added' : 'removed'}.`);
 }

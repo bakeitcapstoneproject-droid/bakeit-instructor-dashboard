@@ -14,6 +14,15 @@ export class ClassApiController {
     try {
       const route = `${req.method} ${url.pathname}`;
       if (route === 'GET /api/sections') return this.json(res, 200, { sections: await this.classes.listSections() });
+      const historyRoute = req.method === 'GET' && url.pathname.match(/^\/api\/learners\/([^/]+)\/history$/);
+      if (historyRoute) {
+        let learnerId;
+        try { learnerId = decodeURIComponent(historyRoute[1]); }
+        catch { throw new RequestError(400, 'Enter a valid learner ID.'); }
+        const sectionId = url.searchParams.get('sectionId');
+        if (!sectionId || sectionId === 'all') throw new RequestError(400, 'Choose a class section first.');
+        return this.json(res, 200, { history: await this.classes.learnerHistory(sectionId, learnerId) });
+      }
       const sectionReport = req.method === 'GET' && url.pathname.match(/^\/api\/reports\/sections\/([^/]+)$/);
       if (sectionReport) {
         let sectionId;

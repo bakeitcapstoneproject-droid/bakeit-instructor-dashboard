@@ -30,6 +30,29 @@ async function fixture(t) {
   return { app, dataFile, request, post, base };
 }
 
+test('learner history API reads persisted records and checks section membership', async t => {
+  const { post, request, app, dataFile } = await fixture(t);
+  const section = (await post('/api/sections', { name: 'History' })).body.section;
+  await post('/api/sections/join', { classCode: section.classCode, learnerId: 'learner-1', learnerName: 'Ana' });
+  const path = `/api/learners/learner-1/history?sectionId=${section.id}`;
+  assert.deepEqual((await request(path)).body.history.entries, []);
+  await app.classes.mutate(data => { data.enrollments[0].sessionHistory = [{ id: 'one', recipe: 'Brownies',
+    startedAt: '2026-09-28T01:00:00Z', endedAt: '2026-09-28T01:30:00Z', status: 'Completed',
+    ratings: { decorum: 4, kitchen_organization: 4, safety_sanitation: 5, baking_skills: 4, product_appraisal: 5 } }]; });
+  const before = await readFile(dataFile, 'utf8');
+  const response = await request(path);
+  assert.equal(response.status, 200);
+  assert.equal(response.body.history.entries[0].score, 22);
+  assert.equal(response.body.history.entries[0].startedAt, '2026-09-28T01:00:00Z');
+  assert.deepEqual(await new ClassStore(dataFile).learnerHistory(section.id, 'learner-1'), response.body.history);
+  assert.deepEqual((await request('/api/reports/sections/' + section.id)).body.report.histories[0], response.body.history);
+  assert.equal((await request('/api/learners/learner-1/history?sectionId=other')).status, 404);
+  assert.equal((await request('/api/learners/learner-1/history')).status, 400);
+  assert.equal((await request('/api/learners/learner-1/history?sectionId=all')).status, 400);
+  assert.equal((await request('/api/learners/%ZZ/history?sectionId=' + section.id)).status, 400);
+  assert.equal(await readFile(dataFile, 'utf8'), before);
+});
+
 test('section report endpoint returns a scoped snapshot including unstarted learners', async t => {
   const { post, request } = await fixture(t);
   const first = (await post('/api/sections', { name: 'Report A' })).body.section;
@@ -40,11 +63,29 @@ test('section report endpoint returns a scoped snapshot including unstarted lear
   assert.equal(result.status, 200);
   assert.equal(result.body.report.section.name, 'Report A');
   assert.deepEqual(result.body.report.rows.map(row => row.learner_id), ['A-1']);
-  assert.equal(result.body.report.rows[0].score_percent, null);
+  assert.equal(result.body.report.rows[0].total_score, null);
   assert.equal(result.body.report.rows[0].completion_status, 'Not started');
   assert.equal((await request('/api/reports/sections/all')).status, 400);
   assert.equal((await request('/api/reports/sections/missing')).status, 404);
   assert.equal((await request('/api/reports/sections/%ZZ')).status, 400);
+});
+
+test('monitoring API reads supplied results and rejects manual grading', async t => {
+  const { post, request, app, dataFile } = await fixture(t);
+  const section = (await post('/api/sections', {name:'VR class'})).body.section;
+  await post('/api/sections/join', {classCode:section.classCode,learnerId:'1',learnerName:'Ana'});
+  const ratings = {decorum:1,kitchen_organization:2,safety_sanitation:3,baking_skills:4,product_appraisal:5};
+  // Fixture represents an assessment supplied by the future VR data provider.
+  await app.classes.mutate(data => { data.enrollments[0].assessment = {ratings}; });
+  assert.equal((await request('/api/learners')).body.students[0].score,15);
+  assert.equal((await new ClassStore(dataFile).learners(section.id))[0].score,15);
+  const row = (await request('/api/reports/sections/'+section.id)).body.report.rows[0];
+  assert.equal(row.total_score,15);
+  assert.equal(row.decorum_rating,1);
+  assert.equal(row.product_appraisal_rating,5);
+  const before = await readFile(dataFile,'utf8');
+  assert.equal((await post('/api/assessments',{sectionId:section.id,learnerId:'1',ratings})).status,404);
+  assert.equal(await readFile(dataFile,'utf8'),before);
 });
 
 test('create a section, join from a separate client, filter learners, and reload saved enrollment', async t => {
@@ -71,7 +112,7 @@ test('create a section, join from a separate client, filter learners, and reload
   const learners = await cloud.getStudents(section.id);
   assert.equal(learners.length, 1);
   assert.equal(learners[0].name, 'Ana Santos');
-  assert.equal(learners[0].status, 'Not started');
+  assert.equal(learners[0].status, 'Awaiting assessment');
   assert.equal(learners[0].score, null);
   assert.deepEqual(await cloud.getStudents(second.id), []);
   assert.deepEqual(await cloud.getLiveSessions(), []);
@@ -131,8 +172,8 @@ test('demo learners can be added repeatedly and removed without changing real en
   assert.equal(learners.length, 7);
   assert.equal(learners.find(item => item.id === 'real-1').score, null);
   assert.equal(learners.filter(item => item.demo).length, 6);
-  assert.deepEqual(new Set(learners.map(item => item.status)), new Set(['Passed', 'Needs Practice', 'Not started']));
-  assert.ok(learners.some(item => item.score === 88 && item.recipe === 'Brownies' && item.sessions === 4));
+  assert.deepEqual(new Set(learners.map(item => item.status)), new Set(['Passed', 'Failed', 'Awaiting assessment']));
+  assert.ok(learners.some(item => item.score === 22 && item.recipe === 'Brownies' && item.sessions === 4));
   assert.equal((await request(`/api/learners?sectionId=${second.id}`)).body.students.length, 6);
   assert.deepEqual((await request('/api/sections')).body.sections.map(item => item.learnerCount), [7, 6]);
   const samples = (await request('/api/sessions')).body.sessions;

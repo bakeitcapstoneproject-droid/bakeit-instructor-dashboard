@@ -26,7 +26,7 @@ Open `http://localhost:3000`. The demo instructor login is `instructor@mcl.edu.p
 
 ## Demo learners
 
-Run `npm run demo:add` to add six fictional learners to each existing section. Repeating it skips existing samples. Sample scores cover Passed, Needs Practice, and Not started across Brownies, Cookies, and Cupcakes. Records retain internal demo tags and DEMO-prefixed IDs; the interface omits the label and ID prefix for presentation. Demo learners contribute to section counts and dashboard metrics while present.
+Run `npm run demo:add` to add six fictional learners to each existing section. Repeating it skips existing samples. Sample records cover Passed, Failed, and Awaiting assessment across Brownies, Cookies, and Cupcakes. Records retain internal demo tags and DEMO-prefixed IDs; sample learner IDs appear beneath names as stable 10-digit numeric values and are searchable. Stored VR identities remain unchanged. Demo learners contribute to section counts and dashboard metrics while present.
 
 Run `npm run demo:remove` to remove only the tagged demo learners and keep real enrollments and class sections. Stop the server before running these data commands, then restart it; they use the same data file as the server (including `BAKEIT_DATA_FILE` when set). New class sections stay empty until learners join or you run the add command again.
 
@@ -61,7 +61,7 @@ See [OOP architecture](docs/oop-architecture.md) for class responsibilities, dep
 
 ## Future AWS integration
 
-Section reports work locally and in the static build. Select a section on Reports and choose Prepare report, then confirm the section and Excel download in the popup. Cancel returns without downloading. Stale sections are rejected, duplicate submissions are blocked, and failures can be retried within the popup. Excel has colored headings, readable columns, three assessment tabs and a complete data tab. Each learner gets one latest-result row, with unrecorded measurements left blank. A blank Excel template is available on the same page. See [Excel reports and AWS handoff](docs/section-reports.md) for the files, versioned JSON contract, field definitions, and integration boundary. Run `node scripts/generate-report-examples.mjs` to regenerate the supplied template and fictional example.
+Section reports work locally and in the static build. Select a section on Reports and choose Prepare report, then confirm the section and Excel download in the popup. Cancel returns without downloading. Stale sections are rejected, duplicate submissions are blocked, and failures can be retried within the popup. Excel has colored headings, readable columns, only the Class performance and Session history tabs. Each learner gets one latest-result row, with unrecorded measurements left blank. A blank Excel template is available on the same page. See [Excel reports and AWS handoff](docs/section-reports.md) for the files, versioned JSON contract, field definitions, and integration boundary. Run `node scripts/generate-report-examples.mjs` to regenerate the supplied template and fictional example.
 
 1. Configure Cognito sign-in and role claims in `AuthService`.
 2. Move the local class endpoints to authenticated API Gateway requests. `CloudDataService` already loads saved classes and enrollments from the Node server; mock performance data is used only when explicitly requested by tests.
@@ -72,3 +72,11 @@ Section reports work locally and in the static build. Select a section on Report
 ## Notes
 
 The prototype supports section creation and enrollment, instructor monitoring, and downloadable section Excel reports. It does not start, stop, or control Unity sessions. VR assessment ingestion and AWS integration remain future work. The existing login is browser-only; the API has no server-side authentication and shares one instructor workspace. Use it for local/trusted development until authenticated instructor and learner access is implemented.
+
+### VR assessment monitoring
+
+Learner progress includes a **View history** button for each learner. The read-only popup lists all available sessions, newest first, with recipe, start/end date and time in Philippine time, total out of 25, and Passed/Failed results. Existing sample learners have fictional history with internal sample provenance; real learners without detailed records show an empty state. See [Learner session history](docs/learner-history.md) for the data contract.
+
+Older browser demo records automatically receive the current fictional sample ratings when loaded, preserving saved classes and existing assessments. For older local server demo learners, run `node src/demo.js scores` to fill missing sample ratings. Real learners and learners with existing assessments are left unchanged.
+
+The baking VR game owns scoring. The website displays the total out of 25 in Learner progress and the dashboard, with all five criterion ratings available in Excel reports. Instructors cannot create or edit scores from the website. Report schema 2.1 retains the five ratings (each from 1 to 5), their total, and supporting session data. Existing scores remain stored; older percentages are not converted into ratings. Actual VR ingestion and AWS integration remain future work. See docs/section-reports.md for the provider contract.

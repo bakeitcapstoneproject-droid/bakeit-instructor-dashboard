@@ -13,8 +13,8 @@ const build = students => buildSectionReport(section, students, { generatedAt })
 test('reports include only the selected section and never invent missing measurements', () => {
   const report = build([learner(), learner({ id: 'foreign', sectionId: 'section-b' })]);
   assert.equal(report.rows.length, 1);
-  assert.equal(report.rows[0].score_percent, 88);
-  assert.equal(report.rows[0].score_remark, 'Passed');
+  assert.equal(report.rows[0].legacy_score_percent, 88);
+  assert.equal(report.rows[0].score_remark, null);
   assert.equal(report.rows[0].waste_level, 'Low');
   for (const key of ['safety_score_percent', 'safety_incident_count', 'completion_percent', 'completion_status', 'procedural_accuracy_percent', 'waste_quantity', 'assessed_at']) {
     assert.equal(report.rows[0][key], null, key);
@@ -32,8 +32,8 @@ test('unstarted learners keep unknown results blank and measured zeroes are reta
     safety_incident_count: 0, waste_quantity: 0, waste_unit: 'g', completion_percent: 0,
     procedural_correct_steps: 0, procedural_assessed_steps: 16
   } })]).rows[0];
-  assert.equal(measured.score_percent, 0);
-  assert.equal(measured.score_remark, 'Needs Practice');
+  assert.equal(measured.legacy_score_percent, 0);
+  assert.equal(measured.score_remark, null);
   assert.equal(measured.procedural_accuracy_percent, 0);
   assert.equal(measured.waste_quantity, 0);
   assert.equal(measured.data_source, 'demo');
@@ -67,7 +67,7 @@ test('invalid measurements and ambiguous reports are rejected', () => {
 test('empty section reports preserve the contract and use a safe Excel filename', () => {
   const report = build([]);
   assert.deepEqual(report.rows, []);
-  assert.equal(reportColumns.length, 26);
+  assert.equal(reportColumns.length, 33);
   assert.match(sectionReportFilename(report), /^bakeit-BSHM-2A-section-a-2026-09-29T00-00-00-000Z\.xlsx$/);
   assert.doesNotMatch(sectionReportFilename({ ...report, section: {id:'../bad',name:'<Bad>: / name'} }), /[<>:"/\\|?*]/);
 });
@@ -81,8 +81,11 @@ test('client validates the report section, schema and rows before download', asy
   assert.equal(await cloud.getSectionReport('section-a'), report);
   await assert.rejects(cloud.getSectionReport('all'), /Choose a class section/);
   assert.throws(() => validateSectionReport(report, 'section-b'), /invalid section report/);
-  assert.throws(() => validateSectionReport({...report, schemaVersion:'2.0'}), /invalid section report/);
+  assert.throws(() => validateSectionReport({...report, schemaVersion:'1.0'}), /invalid section report/);
   assert.throws(() => validateSectionReport({...report, rows:[{}]}), /invalid section report/);
+  assert.throws(() => validateSectionReport({...report, histories:[]}), /invalid section report/);
+  assert.throws(() => validateSectionReport({...report, histories:[{...report.histories[0],sectionId:'foreign'}]}), /invalid section report/);
+  assert.throws(() => validateSectionReport({...report, histories:[{...report.histories[0],learnerId:'foreign'}]}), /invalid section report/);
 });
 
 test('static reports are isolated by section and label demonstration rows', async () => {

@@ -1,21 +1,22 @@
 import { escapeHtml } from '../utils/html.js';
-import { scoreRemark } from '../domain/performance.js';
+import { learnerPerformance } from '../domain/performance.js';
+import { learnerDisplayId } from '../domain/learner-identity.js';
 
 export class TableView {
-  constructor(root) { this.root = root; }
+  constructor(root, { history = false } = {}) { this.root = root; this.history = history; }
   statusClass(value) {
-    return value === 'Passed' || value === 'Low' ? 'good' : value === 'High' || value === 'Incomplete' ? 'danger' : 'warn';
+    return value === 'Passed' ? 'good' : value === 'Failed' ? 'danger' : 'warn';
   }
   render(students) {
     const snapshot = JSON.stringify(students);
     if (snapshot === this.snapshot) return;
-    this.root.innerHTML = students.map(student => `<tr>
-      <td><div class="person"><span class="avatar">${escapeHtml(student.initials)}</span><div><strong>${escapeHtml(student.name)}</strong><small style="display:block;color:var(--muted)">${escapeHtml(student.demo ? student.id.replace(/^DEMO-/, '') : student.id)}</small></div></div></td>
+    this.root.innerHTML = students.map(learnerPerformance).map(student => `<tr>
+      <td><div class="person"><span class="avatar">${escapeHtml(student.initials)}</span><div><strong>${escapeHtml(student.name)}</strong><small class="learner-id">${escapeHtml(learnerDisplayId(student))}</small></div></div></td>
       <td><span class="section-tag">${escapeHtml(student.section)}</span></td><td>${escapeHtml(student.recipe)}</td><td>${escapeHtml(student.sessions)}</td>
-      <td><strong>${student.score == null ? '—' : escapeHtml(student.score)}</strong>${student.score == null ? '' : `<div class="progress"><i style="width:${Math.max(0, Math.min(100, Number(student.score) || 0))}%"></i></div>`}</td>
-      <td><span class="badge ${this.statusClass(student.waste)}">${escapeHtml(student.waste)}</span></td>
-      <td><span class="badge ${this.statusClass(scoreRemark(student.score))}">${scoreRemark(student.score)}</span></td>
-    </tr>`).join('') || '<tr><td colspan="7" class="empty">No learners to show.</td></tr>';
+      <td><strong>${student.score == null ? '—' : `${student.score} / 25`}</strong></td>
+      <td><span class="badge ${this.statusClass(student.status)}">${student.status}</span></td>
+      ${this.history ? `<td><button class="btn history-button" type="button" data-history="${escapeHtml(student.id)}" aria-label="View session history for ${escapeHtml(student.name)}" aria-haspopup="dialog">View history</button></td>` : ''}
+    </tr>`).join('') || `<tr><td colspan="${this.history ? 7 : 6}" class="empty">No learners to show.</td></tr>`;
     this.snapshot = snapshot;
   }
 }

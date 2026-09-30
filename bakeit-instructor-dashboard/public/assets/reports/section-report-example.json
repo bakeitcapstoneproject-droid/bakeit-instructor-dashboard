@@ -1,25 +1,67 @@
 {
   "report": {
-    "schemaVersion": "1.0",
-    "generatedAt": "2026-09-29T00:00:00.000Z",
+    "schemaVersion": "2.1",
+    "generatedAt": "2026-09-30T00:00:00.000Z",
     "section": {
       "id": "example-section",
       "name": "Example section"
     },
     "rows": [
       {
-        "schema_version": "1.0",
-        "generated_at": "2026-09-29T00:00:00.000Z",
+        "schema_version": "2.1",
+        "generated_at": "2026-09-30T00:00:00.000Z",
         "section_id": "example-section",
         "section_name": "Example section",
-        "learner_id": "EXAMPLE-001",
+        "learner_id": "2026000002",
+        "learner_name": "Example Developing Learner",
+        "data_source": "demo",
+        "recipe": "Brownies",
+        "session_id": null,
+        "assessed_at": null,
+        "session_count": 1,
+        "decorum_rating": 2,
+        "kitchen_organization_rating": 3,
+        "safety_sanitation_rating": 3,
+        "baking_skills_rating": 3,
+        "product_appraisal_rating": 2,
+        "total_score": 13,
+        "max_score": 25,
+        "legacy_score_percent": null,
+        "score_remark": "Failed",
+        "completion_status": null,
+        "completion_percent": null,
+        "completion_scope": null,
+        "safety_score_percent": null,
+        "safety_checks_passed": null,
+        "safety_checks_total": null,
+        "safety_incident_count": null,
+        "waste_level": null,
+        "waste_quantity": null,
+        "waste_unit": null,
+        "procedural_correct_steps": null,
+        "procedural_assessed_steps": null,
+        "procedural_accuracy_percent": null
+      },
+      {
+        "schema_version": "2.1",
+        "generated_at": "2026-09-30T00:00:00.000Z",
+        "section_id": "example-section",
+        "section_name": "Example section",
+        "learner_id": "2026000001",
         "learner_name": "Example Learner",
         "data_source": "demo",
         "recipe": "Cookies",
-        "session_id": "example-attempt-002",
-        "assessed_at": "2026-09-28T08:30:00.000Z",
+        "session_id": "sample-session-2",
+        "assessed_at": "2026-09-29T02:27:00.000Z",
         "session_count": 2,
-        "score_percent": 88,
+        "decorum_rating": 4,
+        "kitchen_organization_rating": 4,
+        "safety_sanitation_rating": 5,
+        "baking_skills_rating": 4,
+        "product_appraisal_rating": 5,
+        "total_score": 22,
+        "max_score": 25,
+        "legacy_score_percent": null,
         "score_remark": "Passed",
         "completion_status": "Completed",
         "completion_percent": 100,
@@ -34,6 +76,93 @@
         "procedural_correct_steps": 14,
         "procedural_assessed_steps": 16,
         "procedural_accuracy_percent": 87.5
+      },
+      {
+        "schema_version": "2.1",
+        "generated_at": "2026-09-30T00:00:00.000Z",
+        "section_id": "example-section",
+        "section_name": "Example section",
+        "learner_id": "2026000003",
+        "learner_name": "Example New Learner",
+        "data_source": "demo",
+        "recipe": null,
+        "session_id": null,
+        "assessed_at": null,
+        "session_count": 0,
+        "decorum_rating": null,
+        "kitchen_organization_rating": null,
+        "safety_sanitation_rating": null,
+        "baking_skills_rating": null,
+        "product_appraisal_rating": null,
+        "total_score": null,
+        "max_score": 25,
+        "legacy_score_percent": null,
+        "score_remark": null,
+        "completion_status": "Not started",
+        "completion_percent": null,
+        "completion_scope": null,
+        "safety_score_percent": null,
+        "safety_checks_passed": null,
+        "safety_checks_total": null,
+        "safety_incident_count": null,
+        "waste_level": null,
+        "waste_quantity": null,
+        "waste_unit": null,
+        "procedural_correct_steps": null,
+        "procedural_assessed_steps": null,
+        "procedural_accuracy_percent": null
+      }
+    ],
+    "histories": [
+      {
+        "learnerId": "2026000001",
+        "sectionId": "example-section",
+        "sample": true,
+        "sessionCount": 2,
+        "entries": [
+          {
+            "id": "sample-session-2",
+            "recipe": "Cookies",
+            "startedAt": "2026-09-29T02:00:00.000Z",
+            "endedAt": "2026-09-29T02:27:00.000Z",
+            "status": "Completed",
+            "score": 22,
+            "result": "Passed"
+          },
+          {
+            "id": "sample-session-1",
+            "recipe": "Cookies",
+            "startedAt": "2026-09-28T02:00:00.000Z",
+            "endedAt": "2026-09-28T02:24:00.000Z",
+            "status": "Completed",
+            "score": 17,
+            "result": "Passed"
+          }
+        ]
+      },
+      {
+        "learnerId": "2026000002",
+        "sectionId": "example-section",
+        "sample": true,
+        "sessionCount": 1,
+        "entries": [
+          {
+            "id": "sample-session-1",
+            "recipe": "Brownies",
+            "startedAt": "2026-09-29T02:00:00.000Z",
+            "endedAt": "2026-09-29T02:24:00.000Z",
+            "status": "Completed",
+            "score": 13,
+            "result": "Failed"
+          }
+        ]
+      },
+      {
+        "learnerId": "2026000003",
+        "sectionId": "example-section",
+        "sample": true,
+        "sessionCount": 0,
+        "entries": []
       }
     ]
   }

@@ -15,7 +15,7 @@
       </div>
       <nav class="nav" aria-label="Main navigation">
         <a href="/dashboard.html"><span>Dashboard</span></a>
-        <a href="/students.html"><span>Learners</span></a>
+        <a href="/students.html"><span>Class</span></a>
         <a href="/sessions.html"><span>Live sessions</span></a>
         <a href="/reports.html"><span>Reports</span></a>
       </nav>
@@ -33,15 +33,15 @@
       <div class="page-head"><h1>Dashboard</h1><div class="page-actions"><select data-section-select aria-label="Class section"></select><a class="btn" href="/reports.html">Export report</a></div></div>
       <section class="metrics" aria-label="Class performance">
         <article class="metric"><span class="label">Enrolled learners</span><div class="value" data-metric="enrolled">—</div></article>
-        <article class="metric"><span class="label">Average score</span><div class="value" data-metric="average">—</div></article>
-        <article class="metric"><span class="label">Passed</span><div class="value" data-metric="passed">—</div></article>
-        <article class="metric"><span class="label">High waste flags</span><div class="value" data-metric="waste">—</div></article>
+        <article class="metric"><span class="label">Average total / 25</span><div class="value" data-metric="average">—</div></article>
+        <article class="metric"><span class="label">Assessed learners</span><div class="value" data-metric="assessed">—</div></article>
+        <article class="metric"><span class="label">Awaiting assessment</span><div class="value" data-metric="pending">—</div></article>
       </section>
       <div class="grid-2">
         <section class="card section overview-card">
           <div class="section-head"><h2 id="results-heading">Recent learner results</h2><a href="/students.html">View all</a></div>
           <div class="overview-scroll table-scroll" data-overview-scroll tabindex="0" role="region" aria-labelledby="results-heading">
-            <table><thead><tr><th scope="col">Learner</th><th scope="col">Section</th><th scope="col">Recipe</th><th scope="col">Sessions</th><th scope="col">Score</th><th scope="col">Waste</th><th scope="col">Status</th></tr></thead><tbody><tr><td colspan="7" class="empty loading-block" data-loading-placeholder="Loading learner results…">Loading learner results…</td></tr></tbody></table>
+            <table><thead><tr><th scope="col">Learner</th><th scope="col">Section</th><th scope="col">Recipe</th><th scope="col">Sessions</th><th scope="col">Total / 25</th><th scope="col">Status</th></tr></thead><tbody><tr><td colspan="6" class="empty loading-block" data-loading-placeholder="Loading learner results…">Loading learner results…</td></tr></tbody></table>
           </div>
         </section>
         <section class="card section overview-card">

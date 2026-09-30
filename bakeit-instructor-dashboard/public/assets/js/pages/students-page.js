@@ -2,15 +2,19 @@ import { PageController } from '../app/page-controller.js';
 import { CloudDataService } from '../services/cloud-data-service.js';
 import { TableView } from '../views/table-view.js';
 import { SectionManager } from '../sections.js';
+import { LearnerHistoryDialog } from '../views/learner-history-dialog.js';
+import { learnerDisplayId } from '../domain/learner-identity.js';
 
 export class StudentsPage extends PageController {
-  constructor({ shell, cloud = new CloudDataService(), table = new TableView(document.querySelector('tbody')) } = {}) {
+  constructor({ shell, cloud = new CloudDataService(), table = new TableView(document.querySelector('tbody'), { history: true }) } = {}) {
     super({ shell });
     this.cloud = cloud;
     this.table = table;
   }
   setup() {
     this.students = [];
+    this.historyDialog = new LearnerHistoryDialog({ cloud: this.cloud, table: document.querySelector('tbody'),
+      findStudent: id => this.students.find(student => student.id === id && student.sectionId === this.currentSection()?.id) });
     this.sectionManager = new SectionManager(this.shell, () => this.render(), section => {
       this.students = this.students.filter(student => student.sectionId !== section.id);
       if (new URLSearchParams(location.hash.slice(1)).get('section') === section.id) {
@@ -70,6 +74,7 @@ export class StudentsPage extends PageController {
     document.querySelector('.learner-sections').hidden = !!section;
     document.querySelector('#learner-records').hidden = !section;
     if (previous !== this.openSectionId) {
+      this.historyDialog.close();
       this.setOptionsOpen(false);
       document.querySelectorAll('[data-filter]').forEach(element => { element.value = ''; });
       document.querySelector('[data-section-message]').textContent = '';
@@ -98,7 +103,7 @@ export class StudentsPage extends PageController {
     const learners = this.students.filter(student => student.sectionId === section.id);
     document.querySelector('[data-learner-count]').textContent = `${learners.length} learner${learners.length === 1 ? '' : 's'}`;
     this.table.render(learners.filter(student =>
-      (student.name.toLowerCase().includes(query) || student.id.toLowerCase().includes(query)) &&
+      (student.name.toLowerCase().includes(query) || learnerDisplayId(student).toLowerCase().includes(query) || student.id.toLowerCase().includes(query)) &&
       (!status || student.status === status) && (!recipe || student.recipe === recipe)
     ));
   }

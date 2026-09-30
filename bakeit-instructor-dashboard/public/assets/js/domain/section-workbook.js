@@ -1,4 +1,6 @@
-import { reportColumns, validateSectionReport, sectionReportFilename } from './section-report.js';
+import { validateSectionReport, sectionReportFilename } from './section-report.js';
+import { rubricCriteria } from './performance.js';
+import { learnerDisplayId } from './learner-identity.js';
 import { xlsxPackage } from './xlsx-package.js';
 
 export const workbookMime = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
@@ -7,22 +9,18 @@ const relationshipNs = 'http://schemas.openxmlformats.org/officeDocument/2006/re
 const declaration = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
 const column = (key, label, width, kind = 'text') => ({ key, label, width, kind });
 const identity = [column('learner_name', 'Learner name', 27), column('learner_id', 'Learner ID', 20),
-  column('recipe', 'Latest recipe', 22), column('assessed_at', 'Assessed at (UTC)', 26, 'date')];
+  column('recipe', 'Latest recipe', 22), column('assessed_at', 'Assessed at (PHT)', 26, 'date')];
 const sheets = [
-  { name: 'Scores and completion', color: 'FFAE38', style: 6, columns: [...identity,
-    column('session_count', 'Sessions', 12, 'number'), column('score_percent', 'Score (%)', 14, 'percent'),
-    column('score_remark', 'Score remark', 20), column('completion_status', 'Completion status', 21),
-    column('completion_percent', 'Completion (%)', 17, 'percent'), column('completion_scope', 'Completion scope', 38)] },
-  { name: 'Safety and waste', color: '3E684E', style: 7, columns: [...identity,
-    column('safety_score_percent', 'Safety score (%)', 17, 'percent'), column('safety_checks_passed', 'Checks passed', 16, 'number'),
-    column('safety_checks_total', 'Checks assessed', 17, 'number'), column('safety_incident_count', 'Safety incidents', 17, 'number'),
-    column('waste_level', 'Waste level', 16), column('waste_quantity', 'Waste quantity', 17, 'number'), column('waste_unit', 'Waste unit', 14)] },
-  { name: 'Procedural accuracy', color: '75462C', style: 8, columns: [...identity,
-    column('procedural_correct_steps', 'Correct steps', 18, 'number'), column('procedural_assessed_steps', 'Assessed steps', 19, 'number'),
-    column('procedural_accuracy_percent', 'Procedural accuracy (%)', 25, 'percent')] },
-  // Every contract field is retained, with original values and machine headers.
-  { name: 'Report data', color: '73614F', style: 5, raw: true,
-    columns: reportColumns.map(key => column(key, key, Math.max(20, Math.min(38, key.length + 4)), 'raw')) }
+  { name: 'Class performance', color: 'FFAE38', style: 6, columns: [...identity,
+    ...rubricCriteria.map(({ key, label }) => column(key + '_rating', (key === 'decorum' ? 'Decorum (waste)' : label) + ' / 5', 24, 'number')),
+    column('total_score', 'Total / 25', 14, 'number'), column('session_count', 'Sessions', 12, 'number'),
+    column('score_remark', 'Status', 22)] },
+  { name: 'Session history', color: 'FFAE38', style: 6, history: true, columns: [
+    column('learner_name', 'Learner name', 27), column('learner_id', 'Learner ID', 20),
+    column('recipe', 'Recipe', 22), column('session_status', 'Session status', 20),
+    column('started_at', 'Started (PHT)', 26, 'date'), column('ended_at', 'Ended (PHT)', 26, 'date'),
+    column('total_score', 'Total / 25', 14, 'number'), column('score_remark', 'Result', 22)
+  ] }
 ];
 function xml(value) {
   return String(value).replace(/[^\u0009\u000A\u000D\u0020-\uD7FF\uE000-\uFFFD\u{10000}-\u{10FFFF}]/gu, '')
@@ -42,46 +40,53 @@ function cell(reference, value, style) {
   return `<c r="${reference}" s="${style}" t="inlineStr"><is><t xml:space="preserve">${text}</t></is></c>`;
 }
 function styles() {
-  const font = (size, color, bold = false) => `<font><sz val="${size}"/><color rgb="FF${color}"/><name val="Calibri"/><family val="2"/>${bold ? '<b/>' : ''}</font>`;
+  const font = (size, bold = false) => `<font><sz val="${size}"/><color rgb="FF000000"/><name val="Calibri"/><family val="2"/>${bold ? '<b/>' : ''}</font>`;
   const fill = color => `<fill><patternFill patternType="solid"><fgColor rgb="FF${color}"/><bgColor indexed="64"/></patternFill></fill>`;
   const xf = (fontId, fillId, borderId = 0, numFmtId = 0, alignment = 'left') => `<xf numFmtId="${numFmtId}" fontId="${fontId}" fillId="${fillId}" borderId="${borderId}" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyNumberFormat="1" applyAlignment="1"><alignment horizontal="${alignment}" vertical="center" wrapText="1" indent="1"/></xf>`;
   const formats = [xf(0, 0), xf(1, 2), xf(2, 3), xf(3, 4), xf(3, 0),
     xf(4, 2), xf(2, 3), xf(2, 5), xf(4, 6),
     xf(0, 0, 1), xf(0, 4, 1), xf(0, 0, 1, 0, 'right'), xf(0, 4, 1, 0, 'right'),
-    xf(0, 0, 1, 165, 'right'), xf(0, 4, 1, 165, 'right')];
+    xf(0, 0, 1, 165, 'right'), xf(0, 4, 1, 165, 'right'),
+    xf(0, 0, 1, 0, 'center'), xf(0, 4, 1, 0, 'center'),
+    xf(0, 0, 1, 166), xf(0, 4, 1, 166)];
   return declaration + `<styleSheet xmlns="${spreadsheetNs}">
-    <numFmts count="1"><numFmt numFmtId="165" formatCode="0.00%"/></numFmts>
-    <fonts count="5">${font(11, '321D15')}${font(18, 'FFFFFF', true)}${font(11, '321D15', true)}${font(10, '73614F')}${font(11, 'FFFFFF', true)}</fonts>
-    <fills count="7"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>${fill('704329')}${fill('FFAE38')}${fill('FFF7E4')}${fill('EAF2EB')}${fill('75462C')}</fills>
+    <numFmts count="2"><numFmt numFmtId="165" formatCode="0.00%"/><numFmt numFmtId="166" formatCode="mmm d, yyyy h:mm AM/PM"/></numFmts>
+    <fonts count="5">${font(11)}${font(18, true)}${font(11, true)}${font(10)}${font(11, true)}</fonts>
+    <fills count="7"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>${fill('FFF1D4')}${fill('FFAE38')}${fill('FFF7E4')}${fill('EAF2EB')}${fill('FFF1D4')}</fills>
     <borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left/><right/><top/><bottom style="hair"><color rgb="FFE3DCCB"/></bottom><diagonal/></border></borders>
     <cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
     <cellXfs count="${formats.length}">${formats.join('')}</cellXfs>
     <cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>
   </styleSheet>`;
 }
-function worksheet(report, sheet, template) {
+function worksheet(report, sheet, template, historyRows) {
   const end = letters(sheet.columns.length - 1), rows = [];
   const heading = (row, value, style, height) => rows.push(`<row r="${row}" ht="${height}" customHeight="1">${sheet.columns.map((_, index) => cell(`${letters(index)}${row}`, index ? null : value, style)).join('')}</row>`);
-  const sources = [...new Set(report.rows.map(row => row.data_source))];
   heading(1, `BakeIT | ${sheet.name}`, 1, 38);
-  heading(2, template ? 'Class section: ____________________' : `${report.section.name}  |  ${report.rows.length} learner${report.rows.length === 1 ? '' : 's'}`, 2, 28);
-  heading(3, template ? 'Blank report template' : `Generated: ${new Date(report.generatedAt).toISOString().replace('T', ' ').replace('.000Z', ' UTC')}  |  Source: ${sources.join(', ') || 'No learner records'}`, 3, 24);
-  heading(4, sheet.raw ? 'Original report fields. Percentages use 0–100; blank cells mean unrecorded.' : 'One row per learner’s latest result. Unrecorded measurements are left blank.', 4, 24);
+  heading(2, template ? 'Class: ____________________' : `${report.section.name}  |  ${report.rows.length} learner${report.rows.length === 1 ? '' : 's'}`, 2, 28);
+  heading(3, template ? 'Blank report template' : `Generated: ${new Date(report.generatedAt).toISOString().replace('T', ' ').replace('.000Z', ' UTC')}`, 3, 24);
+  heading(4, sheet.name === 'Class performance' ? '5 Excellent · 4 Good · 3 Satisfactory · 2 Needs improvement · 1 Poor' : '', 4, sheet.name === 'Class performance' ? 24 : 8);
   rows.push('<row r="5" ht="10" customHeight="1"/>');
-  rows.push(`<row r="6" ht="36" customHeight="1">${sheet.columns.map((col, index) => cell(`${letters(index)}6`, col.label, index < 4 && !sheet.raw ? 5 : sheet.style)).join('')}</row>`);
-  const data = template ? Array.from({ length: 12 }, () => ({})) : report.rows;
+  rows.push(`<row r="6" ht="36" customHeight="1">${sheet.columns.map((col, index) => cell(`${letters(index)}6`, col.label, index < 4 ? 5 : sheet.style)).join('')}</row>`);
+  const data = template ? Array.from({ length: 12 }, () => ({})) : sheet.history ? historyRows : report.rows;
   data.forEach((record, index) => {
     const row = index + 7;
     let height = 28;
     const values = sheet.columns.map((col, colIndex) => {
       let value = record[col.key];
+      if (col.key === 'learner_id' && value != null) value = learnerDisplayId({ id: value, demo: record.data_source === 'demo' });
+      if (col.key === 'score_remark' && !template) value ??= 'Awaiting assessment';
       const numeric = typeof value === 'number';
       const percent = col.kind === 'percent';
       if (percent && numeric) value /= 100;
-      if (col.kind === 'date' && value) value = new Date(value).toISOString().replace('T', ' ').replace('.000Z', ' UTC');
+      if (col.kind === 'date' && value) value = (Date.parse(value) + 8 * 60 * 60 * 1000) / 86400000 + 25569;
       const lines = String(value ?? '').split('\n').reduce((count, line) => count + Math.max(1, Math.ceil(line.length / (col.width - 3))), 0);
       height = Math.min(409, Math.max(height, lines * 15 + 10));
-      return cell(`${letters(colIndex)}${row}`, value, (percent ? 13 : numeric || col.kind === 'number' ? 11 : 9) + index % 2);
+      const centered = col.kind === 'number' || col.key === 'score_remark';
+      // Status text is always black on an unfilled cell, including striped rows.
+      const style = col.key === 'score_remark' ? 15
+        : (col.kind === 'date' ? 17 : centered ? 15 : percent ? 13 : numeric || col.kind === 'number' ? 11 : 9) + index % 2;
+      return cell(`${letters(colIndex)}${row}`, value, style);
     });
     rows.push(`<row r="${row}" ht="${height}" customHeight="1">${values.join('')}</row>`);
   });
@@ -104,14 +109,20 @@ function worksheet(report, sheet, template) {
 
 export function sectionReportWorkbook(report, { template = false } = {}) {
   validateSectionReport(report);
-  if (report.rows.length > 1048570) throw new Error('This report exceeds Excel’s row limit. Choose a smaller class section.');
+  const histories = new Map(report.histories.map(history => [history.learnerId, history]));
+  const historyRows = report.rows.flatMap(row => [...histories.get(row.learner_id).entries]
+    .sort((a, b) => (Date.parse(b.startedAt) || 0) - (Date.parse(a.startedAt) || 0) || a.id.localeCompare(b.id))
+    .map(entry => ({ learner_name: row.learner_name, learner_id: row.learner_id, data_source: row.data_source,
+      recipe: entry.recipe, session_status: entry.status, started_at: entry.startedAt, ended_at: entry.endedAt,
+      total_score: entry.score, score_remark: entry.result })));
+  if (Math.max(report.rows.length, historyRows.length) > 1048570) throw new Error('This report exceeds Excel’s row limit. Choose a smaller class section.');
   const parts = [
     ['[Content_Types].xml', declaration + `<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((_, index) => `<Override PartName="/xl/worksheets/sheet${index + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')}</Types>`],
     ['_rels/.rels', declaration + `<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="${relationshipNs}/officeDocument" Target="xl/workbook.xml"/></Relationships>`],
     ['xl/workbook.xml', declaration + `<workbook xmlns="${spreadsheetNs}" xmlns:r="${relationshipNs}"><bookViews><workbookView activeTab="0"/></bookViews><sheets>${sheets.map((sheet, index) => `<sheet name="${sheet.name}" sheetId="${index + 1}" r:id="rId${index + 1}"/>`).join('')}</sheets><definedNames>${sheets.map((sheet, index) => `<definedName name="_xlnm.Print_Titles" localSheetId="${index}">'${sheet.name}'!$1:$6</definedName>`).join('')}</definedNames></workbook>`],
     ['xl/_rels/workbook.xml.rels', declaration + `<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_, index) => `<Relationship Id="rId${index + 1}" Type="${relationshipNs}/worksheet" Target="worksheets/sheet${index + 1}.xml"/>`).join('')}<Relationship Id="rId${sheets.length + 1}" Type="${relationshipNs}/styles" Target="styles.xml"/></Relationships>`],
     ['xl/styles.xml', styles()],
-    ...sheets.map((sheet, index) => [`xl/worksheets/sheet${index + 1}.xml`, worksheet(report, sheet, template)])
+    ...sheets.map((sheet, index) => [`xl/worksheets/sheet${index + 1}.xml`, worksheet(report, sheet, template, historyRows)])
   ];
   return xlsxPackage(parts);
 }

@@ -1,6 +1,7 @@
 import { BrowserWorkspaceRepository, staticStorageKey } from './services/browser-workspace-repository.js';
-import { scoreRemark } from './domain/performance.js';
+import { learnerPerformance } from './domain/performance.js';
 import { buildSectionReport } from './domain/section-report.js';
+import { buildLearnerHistory } from './domain/learner-history.js';
 
 export { staticStorageKey, BrowserWorkspaceRepository };
 
@@ -16,6 +17,14 @@ export class StaticDataService {
     const method = options.method || 'GET';
     const sectionId = url.searchParams.get('sectionId') || 'all';
     const filter = items => items.filter(item => sectionId === 'all' || item.sectionId === sectionId);
+    const historyRoute = method === 'GET' && url.pathname.match(/^\/api\/learners\/([^/]+)\/history$/);
+    if (historyRoute) {
+      if (sectionId === 'all') throw new Error('Choose a class section first.');
+      const id = decodeURIComponent(historyRoute[1]);
+      const student = data.students.find(item => item.id === id && item.sectionId === sectionId);
+      if (!student) throw new Error('Learner not found in this section. Refresh the learner list.');
+      return { history: buildLearnerHistory(student) };
+    }
     const reportRoute = method === 'GET' && url.pathname.match(/^\/api\/reports\/sections\/([^/]+)$/);
     if (reportRoute) {
       const id = decodeURIComponent(reportRoute[1]);
@@ -31,9 +40,7 @@ export class StaticDataService {
     }
     if (method === 'POST' && url.pathname === '/api/sections') return this.createSection(data, options.body);
     if (method === 'DELETE' && url.pathname.startsWith('/api/sections/')) return this.deleteSection(data, decodeURIComponent(url.pathname.slice('/api/sections/'.length)));
-    if (method === 'GET' && url.pathname === '/api/learners') return { students: filter(data.students).map(student => ({
-      ...student, status: scoreRemark(student.score)
-    })) };
+    if (method === 'GET' && url.pathname === '/api/learners') return { students: filter(data.students).map(learnerPerformance) };
     if (method === 'GET' && url.pathname === '/api/sessions') return { sessions: filter(data.sessions) };
     if (method === 'GET' && url.pathname === '/api/activities') {
       return { activities: filter(data.students).sort((a, b) => b.joinedAt.localeCompare(a.joinedAt)).map(student => ({

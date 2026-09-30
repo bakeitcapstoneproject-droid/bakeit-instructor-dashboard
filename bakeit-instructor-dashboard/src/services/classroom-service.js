@@ -1,7 +1,8 @@
 import { randomInt, randomUUID } from 'node:crypto';
 import { RequestError } from '../http/request-error.js';
-import { scoreRemark } from '../../public/assets/js/domain/performance.js';
+import { learnerPerformance } from '../../public/assets/js/domain/performance.js';
 import { buildSectionReport } from '../../public/assets/js/domain/section-report.js';
+import { buildLearnerHistory } from '../../public/assets/js/domain/learner-history.js';
 
 function requiredText(value, label, max) {
   if (typeof value !== 'string' || !value.trim() || value.trim().length > max) {
@@ -81,18 +82,28 @@ export class ClassroomService {
     if (!section) throw new RequestError(404, 'Section not found. It may already have been deleted.');
     return buildSectionReport(section, this.learnerRows(data, sectionId));
   }
+  async learnerHistory(sectionId, learnerId) {
+    const data = await this.repository.snapshot();
+    const enrollment = data.enrollments.find(item => item.sectionId === sectionId && item.learnerId === learnerId);
+    if (!enrollment) throw new RequestError(404, 'Learner not found in this section. Refresh the learner list.');
+    const student = this.learnerRows(data, sectionId).find(item => item.id === learnerId);
+    return buildLearnerHistory({ ...student, sessionHistory: enrollment.sessionHistory ?? enrollment.demoResult?.sessionHistory });
+  }
   learnerRows(data, sectionId) {
     return data.enrollments.filter(item => sectionId === 'all' || item.sectionId === sectionId).map(item => {
       const result = item.demo === true ? item.demoResult : null;
       const score = result?.score ?? null;
-      return {
+      return learnerPerformance({
+      assessment: item.assessment ?? result?.assessment,
+      sessionHistory: item.sessionHistory ?? result?.sessionHistory,
+      legacy_score_percent: result?.score ?? null,
       id: item.learnerId, name: item.learnerName,
       initials: item.learnerName.split(/\s+/).slice(0, 2).map(word => Array.from(word)[0]).join('').toUpperCase(),
       sectionId: item.sectionId, section: data.sections.find(section => section.id === item.sectionId).name,
       joinedAt: item.joinedAt, recipe: result?.recipe ?? 'Not started', sessions: result?.sessions ?? 0, score,
       progress: 0, waste: result?.waste ?? '—',
-      status: scoreRemark(score), rating: 0,
+
       demo: item.demo === true
-    }; });
+    }); });
   }
 }

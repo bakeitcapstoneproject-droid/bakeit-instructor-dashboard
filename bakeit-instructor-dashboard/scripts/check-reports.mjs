@@ -91,6 +91,9 @@ export async function checkReports({cdp,evaluate,until,size}) {
   await evaluate("ReportCloud.prototype.getSectionReport=originalReport;document.querySelector('[data-export]').click();document.querySelector('[data-confirm-report]').click()");
   await until("reportFiles.length===1 && !document.querySelector('[data-report-dialog]').open && document.activeElement.matches('[data-export]')");
   assert.match(await evaluate("document.querySelector('[data-report-status]').textContent"),/Excel download started/);
+  await until("document.querySelector('[data-report-status]').textContent === ''");
+  assert.equal(await evaluate("getComputedStyle(document.querySelector('[data-report-status]')).display"),'none');
+  assert.equal(await evaluate("getComputedStyle(document.querySelector('[data-section-select]')).borderTopColor"),'rgb(227, 220, 203)');
   const readDownload = async filename => {
     for(let attempt=0;attempt<40;attempt++) {
       try { return await readFile(join(directory,filename)); } catch { await new Promise(resolve=>setTimeout(resolve,50)); }
@@ -100,13 +103,23 @@ export async function checkReports({cdp,evaluate,until,size}) {
   const excelName=await evaluate('reportFiles[0]');
   assert.match(excelName,/\.xlsx$/);
   const workbook=workbookParts(await readDownload(excelName));
-  assert.match(workbook.get('xl/workbook.xml'),/Scores and completion/);
-  assert.match(workbook.get('xl/workbook.xml'),/Safety and waste/);
-  assert.match(workbook.get('xl/workbook.xml'),/Procedural accuracy/);
-  const raw=workbook.get('xl/worksheets/sheet4.xml');
-  const sectionCells=[...raw.matchAll(/<c r="C(\d+)"[^>]*>(.*?)<\/c>/g)].filter(match=>Number(match[1])>6);
-  assert.ok(sectionCells.length>0);
-  assert.ok(sectionCells.every(match=>match[2].includes(`>${id}</t>`)));
+  assert.ok([...workbook.get('xl/styles.xml').matchAll(/<font>(.*?)<\/font>/g)].every(match => /<color rgb="FF000000"\/>/.test(match[1])));
+  for (const sheet of [1,2]) assert.doesNotMatch(workbook.get(`xl/worksheets/sheet${sheet}.xml`), /conditionalFormatting/);
+  assert.match(workbook.get('xl/workbook.xml'),/Class performance/);
+  assert.match(workbook.get('xl/workbook.xml'),/Session history/);
+  assert.deepEqual([...workbook.get('xl/workbook.xml').matchAll(/<sheet name="([^"]+)"/g)].map(match=>match[1]), ['Class performance','Session history']);
+  const expected = await evaluate(`(async()=>{
+    const report=await originalReport.call(new ReportCloud(),${JSON.stringify(id)});
+    const {learnerDisplayId}=await import('/assets/js/domain/learner-identity.js');
+    return {ids:report.rows.map(row=>learnerDisplayId({id:row.learner_id,demo:row.data_source==='demo'})),
+      sessions:report.histories.reduce((sum,history)=>sum+history.entries.length,0)};
+  })()`);
+  const exportedIds = [...workbook.get('xl/worksheets/sheet1.xml').matchAll(/<c r="B(\d+)"[^>]*>.*?<t[^>]*>([^<]*)<\/t>.*?<\/c>/g)]
+    .filter(match=>Number(match[1])>6).map(match=>match[2]);
+  assert.deepEqual(exportedIds,expected.ids);
+  const historyRows = [...workbook.get('xl/worksheets/sheet2.xml').matchAll(/<row r="(\d+)"/g)].filter(match=>Number(match[1])>6);
+  assert.equal(historyRows.length,expected.sessions);
+  assert.ok(exportedIds.length>0);
   await capture('ready-390');
   await size(1440,1000);
   await capture('ready-1440');

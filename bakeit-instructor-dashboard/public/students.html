@@ -15,7 +15,7 @@
       </div>
       <nav class="nav" aria-label="Main navigation">
         <a href="/dashboard.html"><span>Dashboard</span></a>
-        <a href="/students.html"><span>Learners</span></a>
+        <a href="/students.html"><span>Class</span></a>
         <a href="/sessions.html"><span>Live sessions</span></a>
         <a href="/reports.html"><span>Reports</span></a>
       </nav>
@@ -30,7 +30,7 @@
     <button class="nav-overlay" data-nav-overlay type="button" tabindex="-1" aria-label="Close navigation" hidden></button>
     <div class="mobile-header"><a class="wordmark" href="/dashboard.html" aria-label="BakeIT Instructor Dashboard"><span class="logo-frame"><img class="brand-logo" src="/assets/images/bakeit-logo-chef.png" alt="BakeIT" width="2000" height="2000"></span></a><button class="btn" type="button" data-nav-toggle aria-controls="main-sidebar" aria-expanded="false">Menu</button></div>
     <main class="main">
-      <div class="page-head"><h1>Learners</h1></div>
+      <div class="page-head"><h1>Class</h1></div>
       <section class="learner-sections" aria-labelledby="class-sections-title">
         <div class="section-head"><h2 id="class-sections-title">Class sections</h2><span class="count-badge" data-section-count>0 sections</span></div>
         <div class="class-list" data-section-list><p class="empty">Loading class sections…</p></div>
@@ -52,10 +52,10 @@
       <div class="section-head"><h2 id="learner-records-title">Learner progress</h2><span class="count-badge" data-learner-count></span></div>
       <div class="filters">
         <input id="search" data-filter placeholder="Search learner or ID" aria-label="Search learner or ID" type="search">
-        <select id="status" data-filter aria-label="Learner status"><option value="">All Status</option><option>Passed</option><option>Needs Practice</option><option>Not started</option></select>
+        <select id="status" data-filter aria-label="Learner status"><option value="">All Status</option><option>Passed</option><option>Failed</option><option>Awaiting assessment</option></select>
         <select id="recipe" data-filter aria-label="Recipe"><option value="">All recipes</option><option>Brownies</option><option>Cookies</option><option>Cupcakes</option></select>
       </div>
-      <section class="card table-scroll"><table><thead><tr><th>Learner</th><th>Section</th><th>Latest recipe</th><th>Sessions</th><th>Score</th><th>Waste</th><th>Status</th></tr></thead><tbody></tbody></table></section>
+      <section class="card table-scroll" tabindex="0" aria-label="Learner progress table"><table class="learner-progress-table"><thead><tr><th scope="col">Learner</th><th scope="col">Section</th><th scope="col">Latest recipe</th><th scope="col">Sessions</th><th scope="col">Total / 25</th><th scope="col">Status</th><th scope="col">History</th></tr></thead><tbody></tbody></table></section>
       </section>
       <p class="feedback" data-section-message role="status" aria-live="polite"></p>
       <dialog class="class-dialog" data-create-dialog aria-labelledby="create-title">

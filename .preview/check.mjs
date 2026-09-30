@@ -30,7 +30,7 @@ const server = createServer((req, res) => {
   return app.respond(req, res);
 });
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-const origin = `http://127.0.0.1:${server.address().port}`;
+const origin = process.argv.includes('--running-server') ? 'http://localhost:3000' : `http://127.0.0.1:${server.address().port}`;
 const browser = spawn('C:/Program Files/Google/Chrome/Application/chrome.exe', [
   '--headless=new', '--no-first-run', '--no-default-browser-check', '--disable-gpu',
   '--remote-debugging-port=0', `--user-data-dir=${join(temporary, 'chrome')}`, 'about:blank'
@@ -99,9 +99,9 @@ try {
     await writeFile(`.preview/review/${filename}.png`, Buffer.from(data, 'base64'));
   };
   const checkFilters = async () => {
-    for (const status of ['Passed', 'Needs Practice', 'Not started']) {
+    for (const status of ['Passed', 'Failed', 'Awaiting assessment']) {
       await evaluate(`document.querySelector('#status').value=${JSON.stringify(status)}; document.querySelector('#status').dispatchEvent(new Event('input'))`);
-      assert.equal(await evaluate(`Array.from(document.querySelectorAll('tbody tr')).every(row => row.cells.length === 1 || row.cells[6].textContent.trim() === ${JSON.stringify(status)})`), true);
+      assert.equal(await evaluate(`Array.from(document.querySelectorAll('tbody tr')).every(row => row.cells.length === 1 || row.cells[5].textContent.trim() === ${JSON.stringify(status)})`), true);
     }
     await evaluate("document.querySelector('#status').value=''; document.querySelector('#status').dispatchEvent(new Event('input'))");
     for (const recipe of ['Cookies', 'Brownies', 'Cupcakes']) {
@@ -113,7 +113,21 @@ try {
     assert.equal(await evaluate("window.firstResultRow === document.querySelector('tbody tr')"), true, 'Unchanged refresh must preserve table DOM');
   };
   const size = async (width, height) => cdp('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: false });
-  if (process.argv.includes('--loading')) {
+  if (process.argv.includes('--reports-only')) {
+    if (!staticMode && !process.argv.includes('--running-server')) {
+      await app.classes.createSection({ name: 'Export check' });
+      await addDemoLearners(app.classes);
+    }
+    await size(1440, 1000);
+    await until("document.readyState==='complete' && !!document.querySelector('#login-form')");
+    await evaluate("document.querySelector('#email').value='instructor@mcl.edu.ph';document.querySelector('#password').value='demo123';document.querySelector('#login-form').requestSubmit()");
+    await until("location.pathname==='/dashboard.html' && !!document.querySelector('[data-section-select] option')");
+    await navigate('reports');
+    await checkReports({cdp,evaluate,until,size});
+  } else if (process.argv.includes('--rubric')) {
+    const { checkRubric } = await import('../bakeit-instructor-dashboard/scripts/check-rubric.mjs');
+    await checkRubric({ app, staticMode, evaluate, until, navigate, size, screenshot, cdp });
+  } else if (process.argv.includes('--loading')) {
     if (staticMode) throw new Error('Loading checks require the local server transport.');
     await checkLoading({ cdp, evaluate, until, navigate, size, origin });
   } else {

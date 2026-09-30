@@ -42,6 +42,24 @@ test('classroom rules and demo seeding run against an injected repository withou
   assert.deepEqual(await repository.read(), { sections: [], enrollments: [] });
 });
 
+test('sample score refresh updates only older demo results and is repeatable', async () => {
+  const repository = new MemoryRepository();
+  const service = new ClassroomService(repository, () => 'ABCD2345');
+  const section = await service.createSection({name:'Samples'});
+  await service.joinSection({classCode:section.classCode,learnerId:'real-1',learnerName:'Angela Dela Cruz'});
+  const seeder = new DemoLearnerSeeder(service);
+  await seeder.add();
+  await service.mutate(data => {
+    for (const learner of data.enrollments) if (learner.demo) delete learner.demoResult.assessment;
+  });
+  assert.equal(await seeder.scores(),5);
+  assert.equal(await seeder.scores(),0);
+  const learners = await service.learners(section.id);
+  assert.equal(learners.find(s=>s.id==='real-1').score,null);
+  assert.equal(learners.find(s=>s.demo && s.name==='Angela Dela Cruz').score,22);
+  assert.equal(learners.filter(s=>s.score!==null).length,5);
+});
+
 test('API clients use interchangeable transports and keep instances isolated', async () => {
   const first = new ApiClient(new StaticDataService(browserStorage(), null));
   const second = new ApiClient(new StaticDataService(browserStorage(), null));

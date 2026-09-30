@@ -8,6 +8,39 @@ function fixture() {
   return { values, storage, request: createStaticRequest(storage, null) };
 }
 
+test('older saved demo learners receive sample totals without clearing classes or changing real results', async () => {
+  const { storage, request, values } = fixture();
+  await request('/api/sections');
+  const data = JSON.parse(values.get(staticStorageKey));
+  const originalSections = structuredClone(data.sections);
+  for (const student of data.students) {
+    delete student.assessment;
+    delete student.demo;
+    student.score = 88;
+  }
+  data.students[1].assessment = { ratings: {decorum:1,kitchen_organization:1,safety_sanitation:1,baking_skills:1,product_appraisal:1} };
+  data.students[2].demo = false;
+  data.students.push({...data.students[0],id:'real-learner',name:'Real learner'});
+  const untouched = structuredClone([data.students[1], data.students[2], data.students.at(-1)]);
+  values.set(staticStorageKey,JSON.stringify(data));
+  const reload = createStaticRequest(storage,null);
+  const {students} = await reload('/api/learners');
+  assert.equal(students.find(s=>s.id==='S-0241').score,22);
+  assert.equal(students.find(s=>s.id==='S-0241').demo,true);
+  assert.equal(students.find(s=>s.id==='S-0241').legacy_score_percent,88);
+  assert.equal(students.find(s=>s.id==='S-0242').score,5);
+  assert.equal(students.find(s=>s.id==='S-0243').score,null);
+  assert.equal(students.find(s=>s.id==='real-learner').score,null);
+  const migrated = JSON.parse(values.get(staticStorageKey));
+  assert.deepEqual(migrated.sections,originalSections);
+  assert.deepEqual([migrated.students[1],migrated.students[2],migrated.students.at(-1)],untouched);
+  const saved = values.get(staticStorageKey);
+  await reload('/api/learners');
+  assert.equal(values.get(staticStorageKey),saved);
+  const report = (await reload('/api/reports/sections/section-a')).report;
+  assert.equal(report.rows.find(row=>row.learner_id==='S-0241').total_score,22);
+});
+
 test('static demo persists creation, filters samples and starts new classes empty', async () => {
   const { storage, request } = fixture();
   const initial = await request('/api/sections');
@@ -21,7 +54,7 @@ test('static demo persists creation, filters samples and starts new classes empt
   assert.deepEqual(await reloaded(`/api/learners?sectionId=${section.id}`), { students: [] });
   const { students } = await request('/api/learners?sectionId=section-a');
   assert.ok(students.length > 0 && students.every(student => student.sectionId === 'section-a'));
-  assert.equal(students.find(student => student.score === 62).status, 'Passed');
+  assert.equal(students.find(student => student.id === 'S-0242').status, 'Failed');
   const { activities } = await request('/api/activities?sectionId=section-a');
   assert.equal(activities.length, students.length);
   assert.ok(activities.length > 5);

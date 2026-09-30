@@ -24,7 +24,18 @@
         "recipe": "Brownies",
         "sessions": 4,
         "score": 88,
-        "waste": "Low"
+        "waste": "Low",
+        "assessment": {
+          "ratings": {
+            "decorum": 4,
+            "kitchen_organization": 4,
+            "safety_sanitation": 5,
+            "baking_skills": 4,
+            "product_appraisal": 5
+          },
+          "assessed_at": "2026-09-30T06:46:24.922Z",
+          "session_id": "demo-brownies-sample-001"
+        }
       }
     },
     {
@@ -37,7 +48,16 @@
         "recipe": "Cookies",
         "sessions": 2,
         "score": 54,
-        "waste": "High"
+        "waste": "High",
+        "assessment": {
+          "ratings": {
+            "decorum": 2,
+            "kitchen_organization": 3,
+            "safety_sanitation": 3,
+            "baking_skills": 3,
+            "product_appraisal": 2
+          }
+        }
       }
     },
     {
@@ -50,7 +70,16 @@
         "recipe": "Cupcakes",
         "sessions": 5,
         "score": 95,
-        "waste": "Low"
+        "waste": "Low",
+        "assessment": {
+          "ratings": {
+            "decorum": 5,
+            "kitchen_organization": 5,
+            "safety_sanitation": 5,
+            "baking_skills": 4,
+            "product_appraisal": 5
+          }
+        }
       }
     },
     {
@@ -63,7 +92,16 @@
         "recipe": "Brownies",
         "sessions": 3,
         "score": 74,
-        "waste": "Medium"
+        "waste": "Medium",
+        "assessment": {
+          "ratings": {
+            "decorum": 3,
+            "kitchen_organization": 4,
+            "safety_sanitation": 4,
+            "baking_skills": 3,
+            "product_appraisal": 4
+          }
+        }
       }
     },
     {
@@ -76,7 +114,16 @@
         "recipe": "Cookies",
         "sessions": 1,
         "score": 42,
-        "waste": "High"
+        "waste": "High",
+        "assessment": {
+          "ratings": {
+            "decorum": 2,
+            "kitchen_organization": 2,
+            "safety_sanitation": 3,
+            "baking_skills": 2,
+            "product_appraisal": 2
+          }
+        }
       }
     },
     {

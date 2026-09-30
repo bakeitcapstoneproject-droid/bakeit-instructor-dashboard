@@ -22,8 +22,6 @@
 .back-link { display: block; margin: var(--space-4) auto 0; }
 .reset-message { overflow-wrap: anywhere; }
 .login-card .error:not(:empty) { margin: var(--space-3) 0; }
-.login-intro { width: min(400px, 100%); margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--line); }
-.login-subtitle { margin: 0; font-size: 12px; line-height: 1.8; color: var(--muted); }
 @media (max-width: 900px) {
   .login-page { grid-template-columns: minmax(0, 1fr); padding: 0; gap: 0; }
   .login-art { display: none; }

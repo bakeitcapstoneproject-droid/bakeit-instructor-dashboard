@@ -8,7 +8,7 @@ Web. The existing Node.js application is in `bakeit-instructor-dashboard/`, with
 
 ## Users and purpose
 
-Instructors review baking learners, class sections, performance results, and recipe session progress. The current sign-in identifies Mapúa Malayan Colleges Laguna, ETYCB, Hospitality Management.
+Instructors review baking learners, class sections, performance results, and recipe session progress. The intended institution is Mapúa Malayan Colleges Laguna, ETYCB, Hospitality Management; sign-in omits the institutional subtitle.
 
 ## Existing capabilities
 
@@ -18,7 +18,9 @@ Repository evidence: `bakeit-instructor-dashboard/README.md`, `public/*.html`, a
 - Dashboard metrics, recent learner results, recent activity, and section filtering.
 - Class section creation, viewing learners, copying class codes, deletion with confirmation, and learner search/status/recipe filters.
 - Session progress, current recipe instructions, and expandable recipe steps for Cookies, Brownies, and Cupcakes.
-- Per-section Excel downloads with one row per learner's latest recorded result, plus a blank template. Prepare report opens a confirmation popup identifying the section and Excel format, with section validation, cancellation, duplicate-submit protection and retryable errors. Excel provides colored headings, readable columns and separate scores/completion, safety/waste and procedural-accuracy sheets. A complete data sheet preserves the integration fields; missing measurements remain blank. The versioned JSON data contract is documented in `bakeit-instructor-dashboard/docs/section-reports.md` for future AWS integration.
+- The website monitors results supplied by the baking VR game. Instructors do not assign or edit scores here. Learner progress and dashboard results show only the total out of 25; Excel reports retain Decorum (waste management), Kitchen Organization, Safety and Sanitation, Baking Skills, and Product Appraisal. Each VR criterion uses an integer from 1 to 5 and totals are their unweighted sum. A total of 15/25 or above is Passed; lower assessed totals are Failed. Older percentage grades remain stored without inferred ratings. Learner IDs appear beneath names; sample IDs use stable 10-digit numeric display values while stored identities and internal provenance are retained. VR ingestion and AWS integration are still future work.
+- Learner rows include View history: a read-only popup with all available sessions, newest first, recipe, start/end dates and times in Philippine time, total and result. Existing sample learners have fictional histories with sample provenance retained in data; real learners without supplied records show an empty state.
+- Per-section Excel downloads with one row per learner's latest recorded result, plus a blank template. Prepare report opens a confirmation popup identifying the section and Excel format, with section validation, cancellation, duplicate-submit protection and retryable errors. Excel provides colored headings, readable columns and exactly two sheets: Class performance and Session history. A Session history sheet includes available dated attempts. The JSON response preserves the integration fields; missing measurements remain blank. The versioned JSON data contract is documented in `bakeit-instructor-dashboard/docs/section-reports.md` for future AWS integration.
 
 ## Constraints
 

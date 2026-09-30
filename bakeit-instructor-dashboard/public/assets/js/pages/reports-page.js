@@ -30,10 +30,14 @@ export class ReportsPage extends PageController {
       this.reportSectionId = null;
       (this.button.disabled ? this.selector : this.button).focus();
     });
-    this.selector.addEventListener('change', () => { this.status.textContent = ''; this.updateSelection(); });
+    this.selector.addEventListener('change', () => { this.clearStatus(); this.updateSelection(); });
     this.updateSelection();
   }
   refresh() { this.updateSelection(); }
+  clearStatus() {
+    clearTimeout(this.statusTimer);
+    this.status.textContent = '';
+  }
   selectedSection() {
     return this.shell.sections.sections.find(item => item.id === this.shell.sections.selected() && item.id !== 'all');
   }
@@ -50,7 +54,7 @@ export class ReportsPage extends PageController {
     }
     this.reportSectionId = section.id;
     this.description.textContent = `Download an Excel (.xlsx) report for ${section.name}?`;
-    this.status.textContent = '';
+    this.clearStatus();
     this.error.textContent = '';
     this.dialog.showModal();
     this.confirm.focus();
@@ -65,7 +69,7 @@ export class ReportsPage extends PageController {
       return;
     }
     this.preparing = true;
-    this.status.textContent = '';
+    this.clearStatus();
     const finish = beginBusy(this.confirm, 'Preparing Excel…', this.form);
     const selectorDisabled = this.selector.disabled;
     this.selector.disabled = true;
@@ -79,6 +83,7 @@ export class ReportsPage extends PageController {
       this.status.textContent = report.rows.length
         ? `Excel download started for ${report.section.name}: ${report.rows.length} learner${report.rows.length === 1 ? '' : 's'}.`
         : `Excel template downloaded for ${report.section.name}. This section has no enrolled learners yet.`;
+      this.statusTimer = setTimeout(() => this.clearStatus(), 2000);
       succeeded = true;
     } catch (error) {
       this.error.textContent = `${error.message} You can prepare the report again.`;
