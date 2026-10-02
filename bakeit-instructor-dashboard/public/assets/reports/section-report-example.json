@@ -27,7 +27,7 @@
         "total_score": 13,
         "max_score": 25,
         "legacy_score_percent": null,
-        "score_remark": "Failed",
+        "score_remark": "Needs practice",
         "completion_status": null,
         "completion_percent": null,
         "completion_scope": null,
@@ -153,7 +153,7 @@
             "endedAt": "2026-09-29T02:24:00.000Z",
             "status": "Completed",
             "score": 13,
-            "result": "Failed"
+            "result": "Needs practice"
           }
         ]
       },

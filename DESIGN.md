@@ -265,7 +265,7 @@ The following exclusions are the user's confirmed direction.
 
 **Subtitle policy.** Omit explanatory page and section subtitles throughout the website, including sign-in branding text. Preserve learner identities, field instructions, confirmation details, errors, loading indicators and status messages.
 
-**Excel consistency.** Class performance is the first worksheet. Instructor-facing sheets use the website's 10-digit sample learner IDs, five integer ratings, totals out of 25, and Passed/Failed/Awaiting assessment. Session history exports the popup records with native Excel dates in PHT. Source IDs and UTC timestamps remain in the JSON response; no raw data worksheet is exported.
+**Excel consistency.** Class performance is the first worksheet. Instructor-facing sheets use the website's 10-digit sample learner IDs, five integer ratings, totals out of 25, and Passed/Needs practice/Awaiting assessment. Session history exports the popup records with native Excel dates in PHT. Source IDs and UTC timestamps remain in the JSON response; no raw data worksheet is exported.
 
 **Excel text color.** Use pure black (#000000) for every workbook font, including titles, metadata and status labels. Status cells have no background fill and no conditional color formatting; title/header surfaces stay light enough for black text. This applies to exports, templates and examples.
 

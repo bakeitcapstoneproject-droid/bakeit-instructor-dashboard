@@ -65,7 +65,7 @@ export class LearnerHistoryDialog {
         <td><strong>${escapeHtml(entry.recipe)}</strong><small>${escapeHtml(entry.status)}</small></td>
         <td>${dateCell(entry.startedAt)}</td><td>${entry.endedAt ? dateCell(entry.endedAt) : entry.status === 'In progress' ? 'In progress' : 'Not recorded'}</td>
         <td>${entry.score === null ? '—' : `${entry.score} / 25`}</td>
-        <td><span class="badge ${entry.result === 'Passed' ? 'good' : entry.result === 'Failed' ? 'danger' : 'warn'}">${escapeHtml(entry.result)}</span></td>
+        <td><span class="badge ${entry.result === 'Passed' ? 'good' : entry.result === 'Needs practice' ? 'danger' : 'warn'}">${escapeHtml(entry.result)}</span></td>
       </tr>`).join('')}</tbody></table></div>` : `<p class="empty">${history.sessionCount ? 'No detailed session logs received yet.' : 'No sessions recorded yet.'}</p>`;
     } catch (error) {
       if (sequence !== this.sequence || !this.dialog.open) return;

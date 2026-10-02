@@ -1,16 +1,16 @@
-﻿import test from 'node:test';
+import test from 'node:test';
 import assert from 'node:assert/strict';
 import { scoreRemark, CloudDataService, DashboardMetrics, TableView } from '../public/assets/js/core.js';
 const assessment = {ratings:{decorum:4,kitchen_organization:3,safety_sanitation:5,baking_skills:4,product_appraisal:5}};
 
 test('scores pass at 15 out of 25 and missing scores stay pending', () => {
   for (const score of [null, undefined, 0, 100]) assert.equal(scoreRemark(score), 'Awaiting assessment');
-  for (const score of [5, 14]) assert.equal(scoreRemark(score), 'Failed');
+  for (const score of [5, 14]) assert.equal(scoreRemark(score), 'Needs practice');
   for (const score of [15, 25]) assert.equal(scoreRemark(score), 'Passed');
 });
 test('demo learners and dashboard metrics use criterion totals', async () => {
   const students = await new CloudDataService({mode:'mock'}).getStudents();
-  assert.ok(students.every(student=>student.score>=5 && student.score<=25 && student.status===(student.score>=15?'Passed':'Failed')));
+  assert.ok(students.every(student=>student.score>=5 && student.score<=25 && student.status===(student.score>=15?'Passed':'Needs practice')));
   assert.equal(new DashboardMetrics(students).summary().assessed,20);
 });
 test('pending and legacy records do not lower the class average', () => {

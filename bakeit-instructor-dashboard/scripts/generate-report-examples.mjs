@@ -35,7 +35,7 @@ properties.schema_version={const:reportVersion};
 properties.generated_at={type:'string',format:'date-time'};
 properties.assessed_at={type:['string','null'],format:'date-time'};
 properties.data_source={enum:['local','demo','aws']};
-properties.score_remark={enum:['Passed','Failed',null]};
+properties.score_remark={enum:['Passed','Needs practice',null]};
 for (const {key} of rubricCriteria) properties[key+'_rating']={type:['integer','null'],minimum:1,maximum:5};
 properties.total_score={type:['integer','null'],minimum:5,maximum:25};
 properties.max_score={const:25};
@@ -55,7 +55,7 @@ const schema={
             id:{type:'string',minLength:1},recipe:{type:'string',minLength:1},
             startedAt:{type:['string','null'],format:'date-time'},endedAt:{type:['string','null'],format:'date-time'},
             status:{enum:['Completed','In progress','Abandoned']},score:{type:['integer','null'],minimum:5,maximum:25},
-            result:{enum:['Passed','Failed','Awaiting assessment']}
+            result:{enum:['Passed','Needs practice','Awaiting assessment']}
           }}}
       }}}
   }

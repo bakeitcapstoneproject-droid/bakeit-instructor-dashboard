@@ -54,7 +54,7 @@ test('static demo persists creation, filters samples and starts new classes empt
   assert.deepEqual(await reloaded(`/api/learners?sectionId=${section.id}`), { students: [] });
   const { students } = await request('/api/learners?sectionId=section-a');
   assert.ok(students.length > 0 && students.every(student => student.sectionId === 'section-a'));
-  assert.equal(students.find(student => student.id === 'S-0242').status, 'Failed');
+  assert.equal(students.find(student => student.id === 'S-0242').status, 'Needs practice');
   const { activities } = await request('/api/activities?sectionId=section-a');
   assert.equal(activities.length, students.length);
   assert.ok(activities.length > 5);

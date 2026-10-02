@@ -26,7 +26,7 @@ Open `http://localhost:3000`. The demo instructor login is `instructor@mcl.edu.p
 
 ## Demo learners
 
-Run `npm run demo:add` to add six fictional learners to each existing section. Repeating it skips existing samples. Sample records cover Passed, Failed, and Awaiting assessment across Brownies, Cookies, and Cupcakes. Records retain internal demo tags and DEMO-prefixed IDs; sample learner IDs appear beneath names as stable 10-digit numeric values and are searchable. Stored VR identities remain unchanged. Demo learners contribute to section counts and dashboard metrics while present.
+Run `npm run demo:add` to add six fictional learners to each existing section. Repeating it skips existing samples. Sample records cover Passed, Needs practice, and Awaiting assessment across Brownies, Cookies, and Cupcakes. Records retain internal demo tags and DEMO-prefixed IDs; sample learner IDs appear beneath names as stable 10-digit numeric values and are searchable. Stored VR identities remain unchanged. Demo learners contribute to section counts and dashboard metrics while present.
 
 Run `npm run demo:remove` to remove only the tagged demo learners and keep real enrollments and class sections. Stop the server before running these data commands, then restart it; they use the same data file as the server (including `BAKEIT_DATA_FILE` when set). New class sections stay empty until learners join or you run the add command again.
 
@@ -75,7 +75,7 @@ The prototype supports section creation and enrollment, instructor monitoring, a
 
 ### VR assessment monitoring
 
-Learner progress includes a **View history** button for each learner. The read-only popup lists all available sessions, newest first, with recipe, start/end date and time in Philippine time, total out of 25, and Passed/Failed results. Existing sample learners have fictional history with internal sample provenance; real learners without detailed records show an empty state. See [Learner session history](docs/learner-history.md) for the data contract.
+Learner progress includes a **View history** button for each learner. The read-only popup lists all available sessions, newest first, with recipe, start/end date and time in Philippine time, total out of 25, and Passed/Needs practice results. Existing sample learners have fictional history with internal sample provenance; real learners without detailed records show an empty state. See [Learner session history](docs/learner-history.md) for the data contract.
 
 Older browser demo records automatically receive the current fictional sample ratings when loaded, preserving saved classes and existing assessments. For older local server demo learners, run `node src/demo.js scores` to fill missing sample ratings. Real learners and learners with existing assessments are left unchanged.
 

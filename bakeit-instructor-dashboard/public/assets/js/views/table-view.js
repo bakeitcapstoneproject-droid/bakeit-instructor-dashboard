@@ -5,7 +5,7 @@ import { learnerDisplayId } from '../domain/learner-identity.js';
 export class TableView {
   constructor(root, { history = false } = {}) { this.root = root; this.history = history; }
   statusClass(value) {
-    return value === 'Passed' ? 'good' : value === 'Failed' ? 'danger' : 'warn';
+    return value === 'Passed' ? 'good' : value === 'Needs practice' ? 'danger' : 'warn';
   }
   render(students) {
     const snapshot = JSON.stringify(students);

@@ -1,6 +1,6 @@
 # Learner session history
 
-The Learners table opens a read-only native dialog through **View history**. History is scoped to the learner's selected class section. Dates and times display in `Asia/Manila` (UTC+08:00), newest sessions first. Each row includes recipe, session state, start/end time, criterion total out of 25 and the shared Passed/Failed result. Missing ratings remain Awaiting assessment; missing timestamps remain Not recorded. The dialog supports Close, Escape, keyboard focus restoration, loading, retry and empty states.
+The Learners table opens a read-only native dialog through **View history**. History is scoped to the learner's selected class section. Dates and times display in `Asia/Manila` (UTC+08:00), newest sessions first. Each row includes recipe, session state, start/end time, criterion total out of 25 and the shared Passed/Needs practice result. Missing ratings remain Awaiting assessment; missing timestamps remain Not recorded. The dialog supports Close, Escape, keyboard focus restoration, loading, retry and empty states.
 
 `GET /api/learners/:learnerId/history?sectionId=:sectionId` returns `{ history }`, where history contains `learnerId`, `sectionId`, `sample`, `sessionCount` and `entries`. Each response entry contains `id`, `recipe`, `startedAt`, `endedAt`, `status`, `score` and `result`. Missing/all sections return 400; learners not enrolled in the requested section return 404. This is membership scoping, not production authorization; the prototype's existing authentication limits still apply.
 

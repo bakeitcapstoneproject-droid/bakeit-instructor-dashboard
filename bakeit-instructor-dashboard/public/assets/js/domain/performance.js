@@ -26,7 +26,7 @@ export function rubricTotal(ratings) {
 }
 export function scoreRemark(score) {
   if (!Number.isInteger(score) || score < 5 || score > 25) return 'Awaiting assessment';
-  return score >= 15 ? 'Passed' : 'Failed';
+  return score >= 15 ? 'Passed' : 'Needs practice';
 }
 export function learnerPerformance(student) {
   const score = rubricTotal(student.assessment?.ratings);

@@ -172,7 +172,7 @@ test('demo learners can be added repeatedly and removed without changing real en
   assert.equal(learners.length, 7);
   assert.equal(learners.find(item => item.id === 'real-1').score, null);
   assert.equal(learners.filter(item => item.demo).length, 6);
-  assert.deepEqual(new Set(learners.map(item => item.status)), new Set(['Passed', 'Failed', 'Awaiting assessment']));
+  assert.deepEqual(new Set(learners.map(item => item.status)), new Set(['Passed', 'Needs practice', 'Awaiting assessment']));
   assert.ok(learners.some(item => item.score === 22 && item.recipe === 'Brownies' && item.sessions === 4));
   assert.equal((await request(`/api/learners?sectionId=${second.id}`)).body.students.length, 6);
   assert.deepEqual((await request('/api/sections')).body.sections.map(item => item.learnerCount), [7, 6]);

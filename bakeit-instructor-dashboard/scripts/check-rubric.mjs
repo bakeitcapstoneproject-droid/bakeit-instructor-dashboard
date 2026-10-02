@@ -1,4 +1,4 @@
-﻿import assert from 'node:assert/strict';
+import assert from 'node:assert/strict';
 export async function checkRubric({ app, staticMode, evaluate, until, navigate, size, screenshot, cdp }) {
   if (!staticMode && !process.argv.includes('--running-server')) {
     const section = await app.classes.createSection({name:'VR progress'});
@@ -37,10 +37,10 @@ export async function checkRubric({ app, staticMode, evaluate, until, navigate, 
     assert.match(await evaluate("document.querySelector('tbody').textContent"), /\d+ \/ 25/);
     assert.equal(await evaluate(`Array.from(document.querySelectorAll('tbody tr')).every(row => {
       const total=Number.parseInt(row.cells[4].textContent,10);
-      return row.cells[5].textContent.trim()===(Number.isNaN(total)?'Awaiting assessment':total>=15?'Passed':'Failed');
+      return row.cells[5].textContent.trim()===(Number.isNaN(total)?'Awaiting assessment':total>=15?'Passed':'Needs practice');
     })`),true);
     if(page==='students') {
-      for(const status of ['Passed','Failed','Awaiting assessment']) {
+      for(const status of ['Passed','Needs practice','Awaiting assessment']) {
         await evaluate(`document.querySelector('#status').value='${status}';document.querySelector('#status').dispatchEvent(new Event('input'))`);
         assert.equal(await evaluate(`Array.from(document.querySelectorAll('tbody tr')).every(row=>row.cells.length===1 || row.cells[5].textContent.trim()==='${status}')`),true);
       }

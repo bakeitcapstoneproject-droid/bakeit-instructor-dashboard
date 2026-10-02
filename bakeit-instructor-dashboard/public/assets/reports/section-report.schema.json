@@ -198,7 +198,7 @@
           "score_remark": {
             "enum": [
               "Passed",
-              "Failed",
+              "Needs practice",
               null
             ]
           },
@@ -383,7 +383,7 @@
                 "result": {
                   "enum": [
                     "Passed",
-                    "Failed",
+                    "Needs practice",
                     "Awaiting assessment"
                   ]
                 }

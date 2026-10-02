@@ -38,7 +38,7 @@ test('report totals are derived from criterion ratings and tampered totals are r
   assert.equal(report.rows[0].baking_skills_rating,4);
   assert.equal(report.rows[0].legacy_score_percent,null);
   assert.equal(report.rows[0].score_remark,'Passed');
-  for (const patch of [{total_score:100},{max_score:100},{decorum_rating:0},{score_remark:'Failed'}]) {
+  for (const patch of [{total_score:100},{max_score:100},{decorum_rating:0},{score_remark:'Needs practice'}]) {
     assert.throws(()=>validateSectionReport({...report,rows:[{...report.rows[0],...patch}]}),/invalid section report/);
   }
 });

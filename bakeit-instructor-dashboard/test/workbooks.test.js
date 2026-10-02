@@ -46,13 +46,14 @@ test('Excel matches ten-digit display IDs, history dates in PHT, and monitoring 
   const performance = parts.get('xl/worksheets/sheet1.xml');
   assert.match(contents(performance, 'L7'), />Passed<\/t>/);
   assert.match(contents(performance, 'L8'), />Awaiting assessment<\/t>/);
-  assert.match(contents(performance, 'L9'), />Failed<\/t>/);
+  assert.match(contents(performance, 'L9'), />Needs practice<\/t>/);
   assert.doesNotMatch(performance, /conditionalFormatting/);
   for (const row of [7,8,9]) assert.match(contents(performance, `L${row}`), /s="15"/);
   const styles = parts.get('xl/styles.xml');
   const cellStyles = [...styles.match(/<cellXfs[^>]*>([\s\S]*?)<\/cellXfs>/)[1].matchAll(/<xf\b[^>]*>/g)];
   assert.match(cellStyles[15][0], /fontId="0" fillId="0"/);
   const history = parts.get('xl/worksheets/sheet2.xml');
+  assert.match(contents(history, 'H9'), />Needs practice<\/t>/);
   for (const row of [7,8,9]) assert.match(contents(history, `H${row}`), /s="15"/);
   assert.equal((history.match(/<row r="(?:7|8|9)"/g)||[]).length, 3);
   assert.match(contents(history, 'G7'), /<v>22<\/v>/);
@@ -98,6 +99,10 @@ test('blank Excel templates have writable styled rows; empty sections never inve
   assert.doesNotMatch(empty.get('xl/worksheets/sheet1.xml'), /<row r="7"/);
   const template = workbookParts(await readFile('public/assets/reports/section-report-template.xlsx'));
   const example = workbookParts(await readFile('public/assets/reports/section-report-example.xlsx'));
+  for (const sheet of [1, 2]) {
+    assert.match(example.get(`xl/worksheets/sheet${sheet}.xml`), />Needs practice<\/t>/);
+    assert.doesNotMatch(example.get(`xl/worksheets/sheet${sheet}.xml`), />Failed<\/t>/);
+  }
   for (const artifact of [template, example]) {
     assert.doesNotMatch(artifact.get('xl/worksheets/sheet1.xml'), /Completion status|Completion \(%\)|Completion scope/);
     assert.deepEqual([...artifact.get('xl/workbook.xml').matchAll(/<sheet name="([^"]+)"/g)].map(match=>match[1]), ['Class performance','Session history']);
